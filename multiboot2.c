@@ -55,6 +55,43 @@ static void multiboot2_memmap(uint32_t length, const multiboot2_memmap_t *memmap
     }
 }
 
+uintptr_t bfb_addr = 0;
+uint32_t bfb_width = 0;
+uint32_t bfb_height = 0;
+uint16_t bfb_bpp = 0;
+uint32_t bfb_scanline = 0;
+
+uint8_t bfb_red_pos = 0;
+uint8_t bfb_red_size = 0;
+
+uint8_t bfb_green_pos = 0;
+uint8_t bfb_green_size = 0;
+
+uint8_t bfb_blue_pos = 0;
+uint8_t bfb_blue_size = 0;
+
+static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
+{
+    if (fbinfo->visual == MULTIBOOT2_VISUAL_RGB) {
+        bfb_addr = fbinfo->addr;
+        bfb_width = fbinfo->width;
+        bfb_height = fbinfo->height;
+        bfb_bpp = fbinfo->bpp;
+        bfb_scanline = fbinfo->scanline;
+        
+        bfb_red_pos = fbinfo->rgb.red_pos;
+        bfb_red_size = fbinfo->rgb.red_size;
+        
+        bfb_green_pos = fbinfo->rgb.green_pos;
+        bfb_green_size = fbinfo->rgb.green_size;
+        
+        bfb_blue_pos = fbinfo->rgb.blue_pos;
+        bfb_blue_size = fbinfo->rgb.blue_size;
+
+        printf("fb at 0x%x %dx%d %d bpp\n", bfb_addr, bfb_width, bfb_height, bfb_bpp);
+    }
+}
+
 void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
 	const multiboot2_tag_t *tag = (const multiboot2_tag_t *)
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
@@ -76,6 +113,9 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
             break;
         case MULTIBOOT2_TAG_BASIC_MEMINFO:
             printf("%x %x\n", tag->basic_meminfo.mem_lower, tag->basic_meminfo.mem_upper);
+            break;
+        case MULTIBOOT2_TAG_FBINFO:
+            multiboot2_fbinfo(&tag->fbinfo);
             break;
         default:
             printf("\n");
