@@ -9,13 +9,13 @@ SECTIONS {
   .text : ALIGN(4K) {
     PROVIDE(code = .);
     KEEP(*(.multiboot))
-    *(.text* .gnu.linkonce.t.*)
+    *(.text* .stub .gnu.linkonce.t.*)
   }
 
   /* Read-only data. */
   .rodata : ALIGN(4K) {
     PROVIDE(rodata = .);
-    *(.rodata .rodata.* .gnu.linkonce.r.*)
+    *(.rodata* .gnu.linkonce.r.*)
   }
 
   /* Read-write data (initialized). */
