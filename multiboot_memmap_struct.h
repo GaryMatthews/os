@@ -17,4 +17,5 @@ typedef struct multiboot_memmap {
 	e820memmap_t mm_info;
 } __attribute__((packed)) multiboot_memmap_t;
 
-#endif
+#endif /* __ASSEMBLER__ */
+

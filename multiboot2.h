@@ -1,5 +1,4 @@
-#ifndef KERN_MULTIBOOT2_H_
-#define KERN_MULTIBOOT2_H_
+#pragma once
 
 #define MULTIBOOT2_HEADER_MAGIC      0xe85250d6
 #define MULTIBOOT2_HEADER_ARCH_I386  0
@@ -131,7 +130,3 @@ extern void multiboot2_info_parse(uint32_t, const multiboot2_info_t *);
 
 #endif /* __ASSEMBLER__ */
 
-#endif
-
-/** @}
- */
