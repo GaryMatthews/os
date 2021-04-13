@@ -114,6 +114,9 @@ _start:
     
 	movl $stack_top, %esp
 
+    /* Call global constructors. */
+    call _init
+
     pushl %ebx
     pushl %eax
 
