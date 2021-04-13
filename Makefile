@@ -45,15 +45,15 @@ qemu-nox: iso
 	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
 
 $(KERNEL): $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^
-	grub-file --is-x86-multiboot $(KERNEL)
-	grub-file --is-x86-multiboot2 $(KERNEL)
+	@$(LD) $(LDFLAGS) -o $@ $^
+	@grub-file --is-x86-multiboot $(KERNEL)
+	@grub-file --is-x86-multiboot2 $(KERNEL)
 
 .c.o:
-	$(CC) -MD $(CFLAGS) -o $@ -c $<
+	@$(CC) -MD $(CFLAGS) -o $@ -c $<
 
 .S.o:
-	$(CC) -MD $(ASFLAGS) -o $@ -c $<
+	@$(CC) -MD $(ASFLAGS) -o $@ -c $<
 
 kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
