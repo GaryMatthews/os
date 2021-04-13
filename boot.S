@@ -1,0 +1,136 @@
+#define ASM_FILE        1
+
+#include <multiboot.h>
+#include <multiboot2.h>
+
+    .set CONFIG_BFB_WIDTH, 640
+    .set CONFIG_BFB_HEIGHT, 480
+    .set CONFIG_BFB_BPP, 32
+    
+    .set ALIGN,    1 << 0
+    .set MEMINFO,  1 << 1
+    .set VIDINFO,  1 << 2
+    
+    .set FLAGS,    ALIGN | MEMINFO | VIDINFO
+    .set MAGIC,    0x1BADB002
+    .set CHECKSUM, -(MAGIC + FLAGS)
+
+    /* Declare Multiboot 1 header. */
+    .section .multiboot
+    .code32
+    .align 4
+multiboot_header:
+    .long MAGIC
+    .long FLAGS
+    .long CHECKSUM
+
+    .long 0, 0, 0, 0, 0
+
+    .long 0 # 0 = set graphics mode
+    .long CONFIG_BFB_WIDTH, CONFIG_BFB_HEIGHT, CONFIG_BFB_BPP /* Width, height, depth */
+multiboot_header_end:
+
+    /*  Align 64 bits boundary. */
+    .section .multiboot
+    .code32
+    .align  8
+        
+    /*  Declare Multiboot2 header. */
+multiboot2_header:
+    /*  magic */
+    .long   MULTIBOOT2_HEADER_MAGIC
+    /*  ISA: i386 */
+    .long   MULTIBOOT2_HEADER_ARCH_I386
+    /*  Header length. */
+    .long   multiboot2_header_end - multiboot2_header
+    /*  checksum */
+    .long   -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT2_HEADER_ARCH_I386 + (multiboot2_header_end - multiboot2_header))
+
+    /* Information request tag */
+    .align 8
+tag_info_req_start:
+    .word MULTIBOOT2_TAG_INFO_REQ
+    .word MULTIBOOT2_FLAGS_REQUIRED
+    .long tag_info_req_end - tag_info_req_start
+    .long MULTIBOOT2_TAG_CMDLINE
+    .long MULTIBOOT2_TAG_MODULE
+    .long MULTIBOOT2_TAG_MEMMAP
+tag_info_req_end:
+
+    /* Entry address tag */
+	.align 8
+tag_entry_address_start:
+	.word MULTIBOOT2_TAG_ENTRY_ADDRESS
+	.word MULTIBOOT2_FLAGS_REQUIRED
+	.long tag_entry_address_end - tag_entry_address_start
+	.long _start
+tag_entry_address_end:
+
+   	/* Flags tag */
+	.align 8
+tag_flags_start:
+	.word MULTIBOOT2_TAG_FLAGS
+	.word MULTIBOOT2_FLAGS_REQUIRED
+	.long tag_flags_end - tag_flags_start
+	.long MULTIBOOT2_FLAGS_CONSOLE
+tag_flags_end:
+
+    /* Framebuffer tag */
+	.align 8
+tag_framebuffer_start:
+    .word MULTIBOOT2_TAG_FRAMEBUFFER
+    .word MULTIBOOT2_FLAGS_REQUIRED
+    .long tag_framebuffer_end - tag_framebuffer_start
+    .long CONFIG_BFB_WIDTH
+    .long CONFIG_BFB_HEIGHT
+    .long CONFIG_BFB_BPP
+tag_framebuffer_end:
+
+	/* Module alignment tag */
+	.align 8
+tag_module_align_start:
+	.word MULTIBOOT2_TAG_MODULE_ALIGN
+	.word MULTIBOOT2_FLAGS_REQUIRED
+	.long tag_module_align_end - tag_module_align_start
+	.long 0
+tag_module_align_end:
+
+    /* Tag terminator */
+    .align 8
+tag_terminator_start:
+    .word MULTIBOOT2_TAG_TERMINATOR
+    .word MULTIBOOT2_FLAGS_REQUIRED
+    .long tag_terminator_end - tag_terminator_start
+tag_terminator_end:
+multiboot2_header_end:
+
+    /* The kernel entry point. */
+    .section .text
+    .global _start
+    .type _start, @function
+_start:
+    /* Disable interrupts. */
+    cli
+    
+	movl $stack_top, %esp
+
+    pushl %ebx
+    pushl %eax
+
+	/* Transfer control to the main kernel. */
+	call kernel_main
+
+	/* Hang if kernel_main unexpectedly returns. */
+	cli
+1:
+	hlt
+	jmp 1b
+.size _start, . - _start
+
+    /* Reserve a stack for the initial thread. */
+    .section .bss, "aw", @nobits
+    .align 16
+stack_bottom:
+    .skip 32768
+stack_top:
+
