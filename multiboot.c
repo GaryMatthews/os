@@ -1,6 +1,5 @@
 #include <multiboot.h>
 #include <stddef.h>
-#include <string.h>
 
 /** Extract command name from the multiboot module command line.
  *
