@@ -40,10 +40,10 @@ qemu-kernel: $(KERNEL)
 	$(QEMU) -kernel $(KERNEL) $(QEMUFLAGS) -display none -serial 'mon:stdio'
 
 qemu-iso: iso
-	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d -serial 'mon:stdio'
+	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d,menu=off -serial 'mon:stdio'
 
 qemu-nox: iso
-	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d -display none -serial 'mon:stdio'
+	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
 
 $(KERNEL): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
