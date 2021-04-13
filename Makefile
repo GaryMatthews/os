@@ -59,7 +59,7 @@ kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
 
 clean:
-	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *~ os.iso iso
+	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *.d *~ os.iso iso
 
 .PHONY: all iso qemu-kernel qemu-iso qemu-nox clean
 
