@@ -34,6 +34,6 @@ SECTIONS {
   PROVIDE(end = .);
 
   /DISCARD/ : {
-    *(.eh_frame .rel.eh_frame .note.gnu.build-id .note.GNU-stack)
+    *(.comment .eh_frame .rel.eh_frame .note.gnu.build-id .note.GNU-stack)
   }
 }
