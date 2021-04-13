@@ -13,6 +13,29 @@ static const char *e820names[] = {
     "unusable"
 };
 
+extern uintptr_t bfb_addr;
+extern uint32_t bfb_width;
+extern uint32_t bfb_height;
+extern uint16_t bfb_bpp;
+
+uint32_t * screen = NULL;
+
+int get_pixel_idx(int x, int y) {
+    return bfb_width * y + x;
+}
+
+void set_pixel(uint32_t val, int x, int y) {
+    screen[get_pixel_idx(x, y)] = val;
+}
+
+void draw_rect(uint32_t val, int x, int y, int width, int height) {
+    for (int i = y; i < y + height; i++) {
+        for (int j = x; j < x + width; j++) {
+            set_pixel(val, j, i);
+        }
+    }
+}
+
 void kernel_main(unsigned long magic, unsigned long addr) {
   unsigned size = *(unsigned *) addr;
 
@@ -43,6 +66,15 @@ void kernel_main(unsigned long magic, unsigned long addr) {
              (unsigned) (map.size & 0xffffffff),
              e820names[(unsigned) map.type]);
   }
-  
+
+  if (bfb_addr != 0) {
+      screen = (uint32_t*)bfb_addr;
+      //set_pixel(0xffffff, 10, 10);
+      draw_rect(0xff0000, 20, 20, 20, 20);
+      draw_rect(0x00ff00, 20+25, 20, 20, 20);
+      draw_rect(0x0000ff, 20+50, 20, 20, 20);
+      for(;;);
+  }
+    
   exit(0);
 }
