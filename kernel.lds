@@ -6,7 +6,8 @@ SECTIONS {
   . = 0x100000;
   .text : {
     PROVIDE(code = .);
-    *(.multiboot .text* .gnu.linkonce.t.*)
+    KEEP(*(.multiboot))
+    *(.text* .gnu.linkonce.t.*)
   }
   .rodata : {
     PROVIDE(rodata = .);
