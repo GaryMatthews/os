@@ -2,7 +2,6 @@ TARGET ?= i386
 
 CC=gcc
 LD=ld
-AS=gcc
 
 SRCS = $(wildcard *.[cS])
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
@@ -10,7 +9,7 @@ KERNEL = kernel.elf
 
 ASFLAGS += -m32 -I.
 
-CFLAGS += -O3
+CFLAGS += -O2 -g
 CFLAGS += -m32 -std=gnu17 -pipe -Wall -Wextra -Wunused -fno-stack-protector
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -I. -Iinclude
@@ -47,12 +46,14 @@ qemu-nox: iso
 
 $(KERNEL): $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
+	grub-file --is-x86-multiboot $(KERNEL)
+	grub-file --is-x86-multiboot2 $(KERNEL)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+.c.o:
+	$(CC) -MD $(CFLAGS) -o $@ -c $<
 
-%.o: %.S
-	$(AS) $(ASFLAGS) -c -o $@ $^
+.S.o:
+	$(CC) -MD $(ASFLAGS) -o $@ -c $<
 
 kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
@@ -61,3 +62,5 @@ clean:
 	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *~ os.iso iso
 
 .PHONY: all iso qemu-kernel qemu-iso qemu-nox clean
+
+-include $(OBJS:.o=.d)
