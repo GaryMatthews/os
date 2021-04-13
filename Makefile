@@ -1,7 +1,7 @@
 TARGET ?= i386
 
-CC=gcc
-LD=ld
+CC=i686-elf-gcc
+LD=i686-elf-ld
 
 SRCS = $(wildcard *.[cS])
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
@@ -10,7 +10,7 @@ KERNEL = kernel.elf
 ASFLAGS += -m32 -I.
 
 CFLAGS += -O2 -g
-CFLAGS += -m32 -std=gnu17 -pipe -Wall -Wextra -Wunused -fno-stack-protector
+CFLAGS += -m32 -std=gnu11 -pipe -Wall -Wextra -Wunused -fno-stack-protector
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
