@@ -3,6 +3,7 @@
 #include <multiboot2.h>
 #include <printf.h>
 #include <io.h>
+#include <font.h>
 
 static const char *e820names[] = {
     "invalid",
@@ -73,6 +74,8 @@ void kernel_main(unsigned long magic, unsigned long addr) {
       draw_rect(0xff0000, 20, 20, 20, 20);
       draw_rect(0x00ff00, 20+25, 20, 20, 20);
       draw_rect(0x0000ff, 20+50, 20, 20, 20);
+
+      draw_text("Hello, world!", 0, 0, 0xffffff);
       for(;;);
   }
     

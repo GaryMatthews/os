@@ -23,7 +23,6 @@ void uart_init(void) {
   outportb(UART_PORT + 1, 0);
   outportb(UART_PORT + 3, 0x03);    // Lock divisor, 8 data bits.
   outportb(UART_PORT + 4, 0);
-  outportb(UART_PORT + 1, 0x01);    // Enable receive interrupts.
 
   // If status is 0xFF, no serial port.
   if (inportb(UART_PORT + 5) == 0xFF)
@@ -40,6 +39,8 @@ void uart_rx_ir(void) {
 
   //idt_set_entry(32+4, &uart_int, 0x8, IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING0 | IDT_FLAG_PRESENT);
   //XXXinstall_ir(32 + 4, 0x80 | 0x0E, 0x8, &uart_int);
+
+  outportb(UART_PORT + 1, 0x01);    // Enable receive interrupts.
 }
 
 int uart_getc(void) {
