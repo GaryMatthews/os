@@ -14,6 +14,7 @@
 #include <mouse.h>
 
 #include <syscall.h>
+#include <tss.h>
 
 static const char *e820names[] = {
     "invalid",
@@ -98,6 +99,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   mouse_init();
 
   syscall_init();
+  install_tss();
 
   enable_int();
   
