@@ -88,7 +88,8 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
         bfb_blue_pos = fbinfo->rgb.blue_pos;
         bfb_blue_size = fbinfo->rgb.blue_size;
 
-        printf("fb at 0x%x %dx%d %d bpp\n", bfb_addr, bfb_width, bfb_height, bfb_bpp);
+        printf("fb at 0x%x %dx%d %d bpp\n",
+               bfb_addr, bfb_width, bfb_height, bfb_bpp);
     }
 }
 
@@ -97,7 +98,8 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 
 	while (tag->type != MULTIBOOT2_TAG_TERMINATOR) {
-        printf("   tag: 0x%x name: %s ", tag->type, tag_names[tag->type - 1]);
+        printf("   tag: 0x%x name: %s ",
+               tag->type, tag_names[tag->type - 1]);
 		switch (tag->type) {
 		case MULTIBOOT2_TAG_CMDLINE:
 			multiboot2_cmdline(&tag->cmdline);
@@ -109,10 +111,14 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
 			break;
 		case MULTIBOOT2_TAG_MEMMAP:
 			multiboot2_memmap(tag->size, &tag->memmap);
-            printf( "%x %x\n", tag->memmap.entry_size, tag->memmap.entry_version);
+            printf( "%x %x\n",
+                    tag->memmap.entry_size,
+                    tag->memmap.entry_version);
             break;
         case MULTIBOOT2_TAG_BASIC_MEMINFO:
-            printf("%x %x\n", tag->basic_meminfo.mem_lower, tag->basic_meminfo.mem_upper);
+            printf("%x %x\n",
+                   tag->basic_meminfo.mem_lower,
+                   tag->basic_meminfo.mem_upper);
             break;
         case MULTIBOOT2_TAG_FBINFO:
             multiboot2_fbinfo(&tag->fbinfo);

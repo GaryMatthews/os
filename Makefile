@@ -3,7 +3,7 @@ TARGET ?= i386
 CC=i686-elf-gcc
 LD=i686-elf-ld
 
-SRCS = $(wildcard *.[cS]) $(wildcard lib/string/*.c)
+SRCS = $(wildcard *.[cS] *.asm) $(wildcard lib/string/*.c)
 OBJS = $(addsuffix .o,$(basename $(SRCS)))
 KERNEL = kernel.elf
 
@@ -56,6 +56,9 @@ $(KERNEL): $(OBJS)
 
 .S.o:
 	@$(CC) -MD $(ASFLAGS) -o $@ -c $<
+
+%.o: %.asm
+	@nasm -f elf -o $@ $^
 
 kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst

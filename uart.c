@@ -44,7 +44,8 @@ void uart_rx_ir(void) {
 }
 
 int uart_getc(void) {
-    while ((inportb(UART_PORT + 5) & 1) == 0); // rx empty?
+    while ((inportb(UART_PORT + 5) & 1) == 0)
+        __builtin_ia32_pause(); // rx empty?
     return inportb(UART_PORT + 0);
 }
 
@@ -61,7 +62,8 @@ uint8_t uart_tx_empty(void) {
 }
 
 void _putchar(char c) {
-    if (!uart_initialized) uart_init();;
-    while (!uart_tx_empty());
+    if (!uart_initialized) uart_init();
+    while (!uart_tx_empty())
+        __builtin_ia32_pause();
     outportb(UART_PORT, c);
 }

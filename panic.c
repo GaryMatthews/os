@@ -4,7 +4,7 @@
  */
 #include <printf.h>
 
-void panic(const char * s) {
-	printf("Kernel panic: %s\n\r",s);
+void panic() {
+	//printf("Kernel panic: %s\n\r",s);
 	for(;;);
 }

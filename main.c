@@ -5,6 +5,16 @@
 #include <io.h>
 #include <font.h>
 
+#include <gdt.h>
+#include <idt.h>
+#include <pic.h>
+#include <pit.h>
+
+#include <keyboard.h>
+#include <mouse.h>
+
+#include <syscall.h>
+
 static const char *e820names[] = {
     "invalid",
     "available",
@@ -68,6 +78,19 @@ void kernel_main(unsigned long magic, unsigned long addr) {
              e820names[(unsigned) map.type]);
   }
 
+  disable_int();
+  gdt_init();
+  idt_init(0x8);
+  pic_init(0x20, 0x28);
+  pit_init();
+  pit_start_counter(100, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
+  enable_int();
+
+  keyboard_init();
+  mouse_init();
+
+  //XXXsyscall_init();
+
   if (bfb_addr != 0) {
       screen = (uint32_t*)bfb_addr;
       //set_pixel(0xffffff, 10, 10);
@@ -78,6 +101,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
       draw_text("Hello, world!", 0, 0, 0xffffff);
       for(;;);
   }
-    
+
   exit(0);
 }

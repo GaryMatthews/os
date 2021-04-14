@@ -112,7 +112,10 @@ _start:
     /* Disable interrupts. */
     cli
     
-	movl $stack_top, %esp
+    movl $stack_top, %esp
+
+    /* Make sure our stack is 16-byte aligned */
+    and $-16, %esp
 
     /* Call global constructors. */
     call _init
