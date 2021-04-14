@@ -78,27 +78,30 @@ void kernel_main(unsigned long magic, unsigned long addr) {
              e820names[(unsigned) map.type]);
   }
 
+  if (bfb_addr != 0) {
+      screen = (uint32_t*)bfb_addr;
+      draw_rect(0xff0000, 20, 20, 20, 20);
+      draw_rect(0x00ff00, 20+25, 20, 20, 20);
+      draw_rect(0x0000ff, 20+50, 20, 20, 20);
+
+      draw_text("Hello, world!", 0, 0, 0xffffff);
+  }
+
   disable_int();
   gdt_init();
   idt_init(0x8);
   pic_init(0x20, 0x28);
   pit_init();
   pit_start_counter(100, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
-  enable_int();
 
   keyboard_init();
   mouse_init();
 
-  //XXXsyscall_init();
+  syscall_init();
 
+  enable_int();
+  
   if (bfb_addr != 0) {
-      screen = (uint32_t*)bfb_addr;
-      //set_pixel(0xffffff, 10, 10);
-      draw_rect(0xff0000, 20, 20, 20, 20);
-      draw_rect(0x00ff00, 20+25, 20, 20, 20);
-      draw_rect(0x0000ff, 20+50, 20, 20, 20);
-
-      draw_text("Hello, world!", 0, 0, 0xffffff);
       for(;;);
   }
 
