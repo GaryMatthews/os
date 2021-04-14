@@ -12,7 +12,7 @@
     .set VIDINFO,  1 << 2
     
     .set FLAGS,    ALIGN | MEMINFO | VIDINFO
-    .set MAGIC,    0x1BADB002
+    .set MAGIC,    MULTIBOOT_HEADER_MAGIC
     .set CHECKSUM, -(MAGIC + FLAGS)
 
     /* Declare Multiboot 1 header. */
