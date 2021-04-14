@@ -53,6 +53,8 @@ mouse_info_t *get_mouse_info() {
     return &info;
 }
 
+extern void set_pixel(uint32_t val, int x, int y);
+
 void mouse_handler() {
     uint8_t status = inportb(MOUSE_STATUS);
     while(status & MOUSE_BBIT) {
@@ -85,7 +87,8 @@ void mouse_handler() {
                         info.button = MIDDLE_CLICK;
                     mouse_cycle = 0;
 
-                    printf("mouse_handler x %d y %d\n", info.x, info.y);
+                    //printf("mouse_handler x %d y %d\n", info.x, info.y);
+                    set_pixel(0xffffff, info.x, info.y);
                     
                     break;
             }
@@ -96,12 +99,12 @@ read_next:
 }
 
 void mouse_check_bounds() {
-    if(info.x > 640)
-        info.x = 640;
+    if(info.x > 640-1)
+        info.x = 640-1;
     else if(info.x < 0)
         info.x = 0;
-    if(info.y > 480)
-        info.y = 480;
+    if(info.y > 480-1)
+        info.y = 480-1;
     else if(info.y < 0)
         info.y = 0;
 }
@@ -110,7 +113,7 @@ void mouse_init() {
     info.x = 0;
     info.y = 0;
     uint8_t status;
-    disable_int();
+    //disable_int();
     mouse_wait(1);
     outportb(MOUSE_STATUS, 0xA8);
     mouse_wait(1);
@@ -126,5 +129,5 @@ void mouse_init() {
     mouse_write(0xF4);
     mouse_read();
     install_ir(44, 0x80 | 0x0E, 0x8, &mouse_int);
-    enable_int();
+    //enable_int();
 }
