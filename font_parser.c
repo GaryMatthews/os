@@ -58,6 +58,8 @@ void draw_text(char * text, int start_x, int start_y, uint32_t color) {
                     if(fnt[text[i] * FNT_FONTHEIGHT + y] >> (7 - x) & 1) {
                         //screen[((col - 1) * FNT_FONTWIDTH) + x + (y + row * FNT_FONTHEIGHT) * bfb_width] = 0xffffff00;
                         set_pixel(color, ((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT));
+                    } else {
+                        set_pixel(0x0, ((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT));
                     }
                 }
             }
