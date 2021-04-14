@@ -81,25 +81,32 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
   if (bfb_addr != 0) {
       screen = (uint32_t*)bfb_addr;
-      draw_rect(0xff0000, 20, 20, 20, 20);
-      draw_rect(0x00ff00, 20+25, 20, 20, 20);
-      draw_rect(0x0000ff, 20+50, 20, 20, 20);
-
-      draw_text("Hello, world!", 0, 0, 0xffffff);
+      draw_rect(0xff0000, 120, 20, 20, 20);
+      draw_rect(0x00ff00, 120+25, 20, 20, 20);
+      draw_rect(0x0000ff, 120+50, 20, 20, 20);
   }
 
   disable_int();
+  draw_text("gdt       ", 0, 0, 0xffffff);
   gdt_init();
+  draw_text("idt       ", 1, 0, 0xffffff);
   idt_init(0x8);
+  draw_text("pic       ", 2, 0, 0xffffff);
   pic_init(0x20, 0x28);
+  draw_text("pit       ", 3, 0, 0xffffff);
   pit_init();
   pit_start_counter(100, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
 
+  draw_text("keyboard  ", 4, 0, 0xffffff);
   keyboard_init();
+  draw_text("mouse     ", 5, 0, 0xffffff);
   mouse_init();
 
+  draw_text("syscalls  ", 6, 0, 0xffffff);
   syscall_init();
+  draw_text("tss       ", 7, 0, 0xffffff);
   install_tss();
+  draw_text("ready!    ", 8, 0, 0xffffff);
 
   enable_int();
   
