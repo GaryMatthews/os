@@ -3,9 +3,43 @@
 #include <video.h>
 #include <mouse.h>
 
+short mouse_icon[] =  {
+        1,0,0,0,0,0,0,0,0,0,0,
+        1,1,0,0,0,0,0,0,0,0,0,
+        1,2,1,0,0,0,0,0,0,0,0,
+        1,2,2,1,0,0,0,0,0,0,0,
+        1,2,2,2,1,0,0,0,0,0,0,
+        1,2,2,2,2,1,0,0,0,0,0,
+        1,2,2,2,2,2,1,0,0,0,0,
+        1,2,2,2,2,2,2,1,0,0,0,
+        1,2,2,2,2,2,2,2,1,0,0,
+        1,2,2,2,2,2,2,2,2,1,0,
+        1,2,2,2,2,1,1,1,1,1,1,
+        1,2,2,2,1,0,0,0,0,0,0,
+        1,2,2,1,0,0,0,0,0,0,0,
+        1,2,1,0,0,0,0,0,0,0,0,
+        1,1,0,0,0,0,0,0,0,0,0,
+        1,0,0,0,0,0,0,0,0,0,0,
+};
+
+uint32_t mouse_color_mapping[] = {0, 0xFFFFFFFF, 0};
+
 void paint_mouse() {
-    draw_rect(get_mouse_info()->x, get_mouse_info()->y, 5, 5, 0xff0000);
-    draw_pixel(get_mouse_info()->x, get_mouse_info()->y, 0xffffff);
+    short* buf = mouse_icon;
+    int mouse_x = get_mouse_info()->x;
+    int mouse_y = get_mouse_info()->y;
+    for (int i=0; i<16; i++) {
+        for (int j=0; j<11; j++) {
+            if (*buf) {
+                uint32_t color = mouse_color_mapping[*buf];
+                if (mouse_x + j >= 0 && mouse_x + j < 640 &&
+                    mouse_y + i >= 0 && mouse_y + i < 480) {
+                    draw_pixel(mouse_x + j, mouse_y + i, color);
+                }
+            }
+            buf++;
+        }
+    }
 }
 
 void paint_desktop() {
