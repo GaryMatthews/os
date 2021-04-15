@@ -19,12 +19,10 @@
 #include <io.h>
 #include <panic.h>
 #include <printf.h>
-//#include <drivers/video.h>
 #include <proc.h>
+#include <mm.h>
+#include <paging.h>
 //#include <proc/thread.h>
-
-//from proc.h
-#define RETURN_ADDR 0x400000
 
 void (*return_error)() = (void *) RETURN_ADDR;
 
@@ -110,7 +108,7 @@ void ex_stack_fault() {
 void ex_gpf(struct regs_error *re) {
     printf("\nGeneral protection fault\nError code: %b\n", re->error);
     printf("eip: %x cs: %x\neax: %d ebx: %d ecx: %d edx: %d\nesp: %x ebp: %x esi: %d edi: %d\nds: %x es: %x fs: %x gs: %x\n", re->eip, re->cs, re->eax, re->ebx, re->ecx, re->edx, re->esp, re->ebp, re->esi, re->edi, re->ds, re->es, re->fs, re->gs);
-    //XXXprintf("cr2: %x cr3: %x\n", get_cr2(), get_pdbr());
+    printf("cr2: %x cr3: %x\n", get_cr2(), get_pdbr());
     
     // If a GPF occurs in kernel mode, we don't really want to continue
     if(re->es == 0x10) {
@@ -122,12 +120,11 @@ void ex_gpf(struct regs_error *re) {
 }
 
 void ex_page_fault(struct regs_error *re) {
-    //int virt_addr = get_cr2();
-    //XXXmm_addr_t phys_addr = (mm_addr_t) get_phys_addr(get_page_directory(), virt_addr);
+    int virt_addr = get_cr2();
+    mm_addr_t phys_addr = (mm_addr_t) get_phys_addr(get_page_directory(), virt_addr);
     
-    printf("\nPage fault\n");
-    //XXXprintf("\nPage fault at addr: 0x%x\n", virt_addr);
-    //XXXprintf("Phys addr: 0x%x\n", phys_addr);
+    printf("\nPage fault at addr: 0x%x\n", (unsigned)virt_addr);
+    printf("Phys addr: 0x%x\n", phys_addr);
     // If a Page Fault occurs in kernel mode, we don't really want to continue
     if(re->es == 0x10) {
         panic();

@@ -16,7 +16,7 @@ CFLAGS += -finline-functions
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
-CFLAGS += -Wno-type-limits
+CFLAGS += -Wno-type-limits -Wno-array-bounds
 CFLAGS += -Wno-int-conversion
 #CFLAGS += -nostdinc
 
@@ -27,7 +27,7 @@ QEMUFLAGS += -vga std -m 256M -no-reboot
 QEMUFLAGS += -device isa-debug-exit,iobase=0xf4,iosize=0x04
 QEMUFLAGS += -enable-kvm
 QEMUFLAGS += -soundhw pcspk -soundhw sb16
-#QEMUFLAGS += -d in_asm
+QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 
 all: qemu-kernel
 

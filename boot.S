@@ -17,22 +17,20 @@
 
     /* Declare Multiboot 1 header. */
     .section .multiboot
-    .code32
     .align 4
 multiboot_header:
     .long MAGIC
     .long FLAGS
     .long CHECKSUM
 
-    .long 0, 0, 0, 0, 0
+    .long multiboot_header, _start, stack_bottom, stack_bottom, _start
 
     .long 0 # 0 = set graphics mode
     .long CONFIG_BFB_WIDTH, CONFIG_BFB_HEIGHT, CONFIG_BFB_BPP /* Width, height, depth */
 multiboot_header_end:
 
     /*  Align 64 bits boundary. */
-    .section .multiboot
-    .code32
+    .section .multiboot2
     .align  8
         
     /*  Declare Multiboot2 header. */
@@ -135,8 +133,8 @@ _start:
 
     /* Reserve a stack for the initial thread. */
     .section .bss, "aw", @nobits
-    .align 16
+    .align 4
 stack_bottom:
-    .skip 32768
+    .skip 0x4000
 stack_top:
 

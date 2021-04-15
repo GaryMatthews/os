@@ -3,7 +3,7 @@
 #include <uart.h>
 
 #include <io.h>
-//XXX#include <intr.h>
+#include <idt.h>
 
 #include <printf.h>
 
@@ -37,8 +37,7 @@ void uart_rx_ir(void) {
   inportb(UART_PORT + 2);
   inportb(UART_PORT + 0);
 
-  //idt_set_entry(32+4, &uart_int, 0x8, IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING0 | IDT_FLAG_PRESENT);
-  //XXXinstall_ir(32 + 4, 0x80 | 0x0E, 0x8, &uart_int);
+  install_ir(32 + 4, 0x80 | 0x0E, 0x8, &uart_int);
 
   outportb(UART_PORT + 1, 0x01);    // Enable receive interrupts.
 }
@@ -49,12 +48,13 @@ int uart_getc(void) {
     return inportb(UART_PORT + 0);
 }
 
-void uart_int(void) {
+void uart_handler(void) {
     char c = uart_getc();
-    printf("%d %c\n", c, c);
-    outportb(0xa0, 0x20); // EOI an Slave-PIC
-    //outportb(0x20, 0x20); // EOI an Master-PIC
+    //printf("%d %c\n", c, c);
     //XXX consoleintr(uartgetc, 0);     // Minor device 0
+    if (c == 27) {
+        exit(0);
+    }
 }
 
 uint8_t uart_tx_empty(void) {

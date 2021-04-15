@@ -1,39 +1,37 @@
-OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
-OUTPUT_ARCH(i386)
 ENTRY(_start)
 
-phys = 0x00100000;
-
 SECTIONS {
-  /* Multiboot header plus code. */
-  .text phys : AT(phys) ALIGN(4K) {
-    PROVIDE(code = .);
-    KEEP(*(.multiboot))
-    *(.text* .stub .gnu.linkonce.t.*)
-  }
+  . = 0x100000;
+    
+  kernel_start = .;
 
-  /* Read-only data. */
-  .rodata : AT(phys + (rodata - code)) ALIGN(4K) {
-    PROVIDE(rodata = .);
-    *(.rodata* .gnu.linkonce.r.*)
+  /* Multiboot header plus code. */
+  .text : {
+    *(.multiboot)
+    *(.multiboot2)
+    code = .;
+    *(.text)
   }
 
   /* Read-write data (initialized). */
-  .data : AT(phys + (data - code)) ALIGN(4K) {
-    PROVIDE(data = .);
+  .data ALIGN(0x1000) : {
+    data = .;
     *(.data)
   }
 
+  /* Read-only data. */
+  .rodata ALIGN(0x1000) : {
+    rodata = .;
+    *(.rodata)
+  }
+
   /* Read-write data (uninitialized) and stack. */
-  .bss : AT(phys + (bss - code)) ALIGN(4K) {
-    PROVIDE(bss = .);
+  .bss ALIGN(0x1000) : {
+    bss = .;
     *(COMMON)
     *(.bss)
   }
 
-  PROVIDE(end = .);
-
-  /DISCARD/ : {
-    *(.comment .eh_frame .rel.eh_frame .note.gnu.build-id .note.GNU-stack)
-  }
+  end = .;
+  kernel_end = .;
 }

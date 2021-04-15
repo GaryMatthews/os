@@ -12,6 +12,8 @@ void draw_text(char * text, int start_x, int start_y, uint32_t color) {
     uint32_t x, y, col, row, stop;
     uint8_t *fnt, chr;
 
+    printf("%s\n", text);
+
     len = strlen(text);
 
     fnt = get_font_array();

@@ -53,6 +53,7 @@ mouse_info_t *get_mouse_info() {
 }
 
 extern void set_pixel(uint32_t val, int x, int y);
+extern void draw_rect(uint32_t val, int x, int y, int width, int height);
 
 void mouse_handler() {
     uint8_t status = inportb(MOUSE_STATUS);
@@ -87,7 +88,8 @@ void mouse_handler() {
                     mouse_cycle = 0;
 
                     //printf("mouse_handler x %d y %d\n", info.x, info.y);
-                    set_pixel(0xffffff, info.x, info.y);
+                    //set_pixel(0xffffff, info.x, info.y);
+                    draw_rect(0x00ff00, info.x, info.y, 5, 5);
                     
                     break;
             }
@@ -112,7 +114,6 @@ void mouse_init() {
     info.x = 0;
     info.y = 0;
     uint8_t status;
-    //disable_int();
     mouse_wait(1);
     outportb(MOUSE_STATUS, 0xA8);
     mouse_wait(1);
@@ -128,5 +129,4 @@ void mouse_init() {
     mouse_write(0xF4);
     mouse_read();
     install_ir(44, 0x80 | 0x0E, 0x8, &mouse_int);
-    //enable_int();
 }
