@@ -14,11 +14,10 @@
  *  limitations under the License.
  */
 
-//#include <hal/hal.h>
 #include <heap.h>
 #include <mm.h>
 #include <paging.h>
-//XXX#include <sched.h>
+#include <sched.h>
 #include <proc.h>
 #include <printf.h>
 
@@ -83,7 +82,6 @@ void ufree(void *ptr, vmm_addr_t *heap) {
     }
 }
 
-/*
 void *umalloc_sys(size_t len) {
     process_t *cur = get_cur_proc();
     if(cur && cur->thread_list) {
@@ -98,4 +96,3 @@ void ufree_sys(void *ptr) {
         ufree(ptr, (vmm_addr_t *) cur->thread_list->heap);
     }
 }
-*/

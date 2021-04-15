@@ -14,14 +14,11 @@
  *  limitations under the License.
  */
 
-//XXX#include <hal/hal.h>
 #include <keyboard.h>
-//#include <drivers/video.h>
 #include <io.h>
 #include <idt.h>
 #include <pit.h>
 #include <printf.h>
-//#include <console.h>
 
 enum KBD_PORTS {
 	KBD_CHECK = 0x64,

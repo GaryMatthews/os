@@ -1,11 +1,7 @@
 #include <font.h>
 #include <string.h>
 #include <printf.h>
-
-extern uint32_t * screen;
-extern uint32_t bfb_width;
-
-extern void set_pixel(uint32_t val, int x, int y);
+#include <video.h>
 
 void draw_text(char * text, int start_x, int start_y, uint32_t color) {
     unsigned i, len;
@@ -59,9 +55,9 @@ void draw_text(char * text, int start_x, int start_y, uint32_t color) {
                 for(x = 0; x < FNT_FONTWIDTH; x++){
                     if(fnt[text[i] * FNT_FONTHEIGHT + y] >> (7 - x) & 1) {
                         //screen[((col - 1) * FNT_FONTWIDTH) + x + (y + row * FNT_FONTHEIGHT) * bfb_width] = 0xffffff00;
-                        set_pixel(color, ((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT));
+                        draw_pixel(((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT), color);
                     } else {
-                        set_pixel(0x0, ((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT));
+                        draw_pixel(((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT), 0x0);
                     }
                 }
             }

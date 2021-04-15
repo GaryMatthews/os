@@ -159,3 +159,12 @@ int memcmp( const void *s1, const void *s2, size_t len ){
 
 	return ret;
 }
+
+char *strchr(char *str, int c) {
+    while(*str) {
+        if(*str == c)
+            return str;
+        str++;
+    }
+    return NULL;
+}

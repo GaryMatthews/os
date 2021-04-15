@@ -17,7 +17,6 @@
 #include <pit.h>
 #include <io.h>
 #include <idt.h>
-//XXX#include <proc/sched.h>
 
 uint8_t sched_on = 0;
 uint8_t pit_ticks;

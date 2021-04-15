@@ -1,5 +1,9 @@
 #pragma once
 
+#include <types.h>
+#include <thread.h>
+#include <paging.h>
+
 #define PROC_NULL       -1
 
 #define PROC_STOPPED    0
@@ -43,3 +47,24 @@ struct regs_error {
     uint32_t cs;
 };
 
+typedef struct proc {
+    char name[16];
+    int state;
+    page_dir_t *pdir;
+    int threads;
+    thread_t *thread_list;
+    struct proc *next;
+    struct proc *prec;
+} process_t;
+
+extern void end_process();
+
+int start_proc(char *name, char *arguments);
+int build_stack(thread_t *thread, page_dir_t *pdir, int nthreads);
+int heap_fill(thread_t *thread, char *name, char *arguments, uint32_t *argc, uint32_t *argv1);
+int stack_fill(thread_t *thread, uint32_t argc, uint32_t argv);
+int build_heap(thread_t *thread, page_dir_t *pdir, int nthreads);
+void end_proc(int ret);
+void remove_proc(int pid);
+int start_kernel_proc(char *name, void *addr);
+int proc_state(int id);

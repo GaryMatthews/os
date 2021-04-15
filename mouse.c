@@ -52,9 +52,6 @@ mouse_info_t *get_mouse_info() {
     return &info;
 }
 
-extern void set_pixel(uint32_t val, int x, int y);
-extern void draw_rect(uint32_t val, int x, int y, int width, int height);
-
 void mouse_handler() {
     uint8_t status = inportb(MOUSE_STATUS);
     while(status & MOUSE_BBIT) {
@@ -88,9 +85,6 @@ void mouse_handler() {
                     mouse_cycle = 0;
 
                     //printf("mouse_handler x %d y %d\n", info.x, info.y);
-                    //set_pixel(0xffffff, info.x, info.y);
-                    draw_rect(0x00ff00, info.x, info.y, 5, 5);
-                    
                     break;
             }
         }
