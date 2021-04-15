@@ -22,6 +22,8 @@
 
 #include <sched.h>
 
+#include <rtc.h>
+
 static const char *e820names[] = {
     "invalid",
     "available",
@@ -32,6 +34,7 @@ static const char *e820names[] = {
 };
 
 extern uint32_t multiboot2_mem_size;
+extern datetime_t current_datetime;
 
 void kernel_main(unsigned long magic, unsigned long addr) {
   unsigned size = *(unsigned *) addr;
@@ -57,8 +60,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
              (uintptr_t)addr, (unsigned) magic, size);
 
       multiboot2_info_parse(magic, (const multiboot2_info_t *)addr);
-
-      multiboot2_mem_size = 261631; //XXX
 
       printf("multiboot2_mem_size = %d\n", multiboot2_mem_size);
 
@@ -103,9 +104,13 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
   syscall_init();
   install_tss();
+
+  rtc_init();
+  printf("time: %s\n", datetime_to_str(&current_datetime));
+  
   sched_init();
 
-  //enable_int();
+  enable_int();
 
   while(1) halt();
   

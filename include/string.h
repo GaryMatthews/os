@@ -6,7 +6,7 @@ void *memchr(const void *cs, int c, size_t count);
 void *memmove(void *dest, const void *src, size_t n);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(void *s, int c, size_t count);
-char *_strcat(char * dest, const char * src);
+char *strcat(char * dest, const char * src);
 char *strchr(char *s, int c);
 int strcmp(const char *cs, const char *ct);
 char *strcpy(char * dest, const char * src);
@@ -19,3 +19,5 @@ char *strrchr(const char *s, int c);
 int strtoint(char *s);
 int strtoint_oct(char *s);
 int memcmp(const void * mem1, const void * mem2, const size_t count);
+
+void itoa(char *buf, unsigned long int n, int base);
