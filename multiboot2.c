@@ -3,6 +3,7 @@
 #include <multiboot2.h>
 #include <align.h>
 
+#include <log.h>
 #include <printf.h>
 
 #define MULTIBOOT2_TAG_ALIGN  8
@@ -100,8 +101,8 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 
 	while (tag->type != MULTIBOOT2_TAG_TERMINATOR) {
-        printf("   tag: 0x%x name: %s ",
-               tag->type, tag_names[tag->type - 1]);
+        klogf(LOG_INFO, "   tag: 0x%x name: %s ",
+              tag->type, tag_names[tag->type - 1]);
 		switch (tag->type) {
 		case MULTIBOOT2_TAG_CMDLINE:
 			multiboot2_cmdline(&tag->cmdline);

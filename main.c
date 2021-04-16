@@ -1,4 +1,5 @@
 #include <kconsole.h>
+#include <log.h>
 #include <uart.h>
 #include <multiboot.h>
 #include <multiboot2.h>
@@ -46,20 +47,20 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   disable_int();
 
   if (magic == MULTIBOOT_LOADER_MAGIC) {
-      printf("MultiBoot 1 addr: 0x%x magic: 0x%x size: 0x%x\n",
-             (uintptr_t)addr, (unsigned) magic, size);
+      klogf(LOG_INFO, "MultiBoot 1 addr: 0x%x magic: 0x%x size: 0x%x\n",
+            (uintptr_t)addr, (unsigned) magic, size);
 
       multiboot_info_parse(magic, (const multiboot_info_t *)addr);
 
       multiboot_info_t *info = (multiboot_info_t *)addr;
 
-      printf("multiboot1_mem_size = %d\n", info->mem_upper + info->mem_lower);
+      klogf(LOG_INFO, "multiboot1_mem_size = %d\n", info->mem_upper + info->mem_lower);
       
       pmm_init(info->mem_upper + info->mem_lower);
       
   } else if (magic == MULTIBOOT2_LOADER_MAGIC) {
-      printf("MultiBoot 2 addr: 0x%x magic: 0x%x size: 0x%x\n",
-             (uintptr_t)addr, (unsigned) magic, size);
+      klogf(LOG_INFO, "MultiBoot 2 addr: 0x%x magic: 0x%x size: 0x%x\n",
+            (uintptr_t)addr, (unsigned) magic, size);
 
       multiboot2_info_parse(magic, (const multiboot2_info_t *)addr);
 
@@ -67,7 +68,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
       pmm_init(multiboot2_mem_size);
 } else {
-      printf("Error: no multiboot, magic: 0x%x. Exiting.", magic);
+      klogf(LOG_EMERG, "Error: no multiboot, magic: 0x%x. Exiting.", magic);
       exit(1);
   }
 
@@ -76,7 +77,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
       // Check if the memory region is available
       if (map.type == 1) {
-          printf(" BIOS-e820 [addr: 0x%x%x, size: 0x%x%x] %s\n",
+          klogf(LOG_INFO, " BIOS-e820 [addr: 0x%x%x, size: 0x%x%x] %s\n",
                  (unsigned) (map.base_address >> 32),
                  (unsigned) (map.base_address & 0xffffffff),
                  (unsigned) (map.size >> 32),
@@ -115,7 +116,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   enable_int();
 
   while(1) halt();
-  
-  printf("Exiting.\n");
+
+  klogf(LOG_INFO, "Exiting.\n");
   exit(0);
 }
