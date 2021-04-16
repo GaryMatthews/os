@@ -8,8 +8,6 @@ void draw_text(char * text, int start_x, int start_y, uint32_t color) {
     uint32_t x, y, col, row, stop;
     uint8_t *fnt, chr;
 
-    printf("%s\n", text);
-
     len = strlen(text);
 
     fnt = get_font_array();
@@ -54,7 +52,6 @@ void draw_text(char * text, int start_x, int start_y, uint32_t color) {
             for(y = 0; y < FNT_FONTHEIGHT; y++){
                 for(x = 0; x < FNT_FONTWIDTH; x++){
                     if(fnt[text[i] * FNT_FONTHEIGHT + y] >> (7 - x) & 1) {
-                        //screen[((col - 1) * FNT_FONTWIDTH) + x + (y + row * FNT_FONTHEIGHT) * bfb_width] = 0xffffff00;
                         draw_pixel(((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT), color);
                     } else {
                         draw_pixel(((col - 1) * FNT_FONTWIDTH) + x, (y + row * FNT_FONTHEIGHT), 0x0);
