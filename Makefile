@@ -12,7 +12,7 @@ ASFLAGS += -m32 -I.
 CFLAGS += -O2 -g
 CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
-CFLAGS += -finline-functions
+CFLAGS += -finline-functions -Wno-missing-field-initializers
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function

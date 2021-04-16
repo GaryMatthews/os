@@ -11,6 +11,10 @@ static uint8_t uart_initialized = 0;
 static const uint16_t UART_PORT = 0x3f8;
 static const uint16_t UART_PORT_CONTROL = 0x3f8 + 5;
 
+static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte);
+
+chardev_t uartdev = { NULL, uart_write };
+
 extern void uart_int();
 
 void uart_init(void) {
@@ -61,9 +65,19 @@ uint8_t uart_tx_empty(void) {
   return inportb(UART_PORT_CONTROL) & 0x20;
 }
 
-void _putchar(char c) {
+void uart_putc(char c) {
     if (!uart_initialized) uart_init();
     while (!uart_tx_empty())
         __builtin_ia32_pause();
     outportb(UART_PORT, c);
+}
+
+static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte) {
+    size_t i;
+    
+    for (i=0; i < nbyte; i++) {
+        uart_putc(buf[i]);
+    }
+    
+    return i;
 }

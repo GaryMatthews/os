@@ -1,3 +1,4 @@
+#include <kconsole.h>
 #include <uart.h>
 #include <multiboot.h>
 #include <multiboot2.h>
@@ -40,6 +41,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   unsigned size = *(unsigned *) addr;
 
   uart_init();
+  kconsole = &uartdev;
 
   disable_int();
 
