@@ -119,7 +119,7 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
             break;
         case MULTIBOOT2_TAG_BASIC_MEMINFO:
             multiboot2_mem_size =
-                (tag->basic_meminfo.mem_lower + tag->basic_meminfo.mem_upper) * 1024 * 10.21; //XXX
+                (tag->basic_meminfo.mem_lower + tag->basic_meminfo.mem_upper) * 1024; //XXX
             printf("%d %d\n",
                    tag->basic_meminfo.mem_lower,
                    tag->basic_meminfo.mem_upper);
