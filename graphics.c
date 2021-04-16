@@ -2,6 +2,7 @@
 
 #include <video.h>
 #include <mouse.h>
+#include <font.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -61,6 +62,8 @@ void paint_desktop() {
             draw_pixel(i, j, RGB(noise, noise, noise));
         }
     }
+
+    draw_text("Hello, world!", 0, 0, 0xff0000);
     
     paint_mouse();
 }
