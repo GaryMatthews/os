@@ -1,5 +1,7 @@
 #pragma once
 
+#include <printf.h>
+
 /* Use as as defined in RFC5424:
 
            Numerical         Severity

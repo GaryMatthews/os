@@ -110,12 +110,13 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
   rtc_init();
   printf("time: %s\n", datetime_to_str(&current_datetime));
-  
-  sched_init();
 
+  sched_init();
+  
+  klogf(LOG_INFO, "Enable int.\n");
   enable_int();
 
-  while(1) halt();
+  //while(1) halt();
 
   klogf(LOG_INFO, "Exiting.\n");
   exit(0);

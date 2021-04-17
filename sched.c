@@ -11,6 +11,7 @@
 
 #include <video.h>
 #include <printf.h>
+#include <kconsole.h>
 
 process_t *list;
 static int n_proc = 1;
@@ -34,13 +35,23 @@ process_t *get_proc_by_id(int id) {
     return NULL;
 }
 
+void uart_read() {
+    while(1){
+        asm volatile("hlt");
+        char ch;
+        kconsole->read(kconsole, &ch, 1);
+        printf("%c", ch);
+    }
+}
+
 void main_proc() {
     //start_kernel_proc("draw_thread", &refresh_screen);
-    //print_procs();
+    start_kernel_proc("uart_read", &uart_read);
+    print_procs();
 
     while(1){
         refresh_screen();
-        //halt();
+        halt();
     }
 }
 

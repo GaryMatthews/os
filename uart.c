@@ -4,16 +4,21 @@
 
 #include <io.h>
 #include <idt.h>
-
-#include <printf.h>
+#include <string.h>
+#include <log.h>
 
 static uint8_t uart_initialized = 0;
 static const uint16_t UART_PORT = 0x3f8;
 static const uint16_t UART_PORT_CONTROL = 0x3f8 + 5;
 
+static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte);
 static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte);
 
-chardev_t uartdev = { NULL, uart_write };
+#define RECVBUF_LEN 64
+static char recvbuf[RECVBUF_LEN];
+static int rbpos = 0;
+
+chardev_t uartdev = { uart_read, uart_write };
 
 extern void uart_int();
 
@@ -56,6 +61,12 @@ void uart_handler(void) {
     char c = uart_getc();
     //printf("%d %c\n", c, c);
     //XXX consoleintr(uartgetc, 0);     // Minor device 0
+
+    if (rbpos < RECVBUF_LEN)
+        recvbuf[rbpos++] = c;
+    else
+        klogf(LOG_EMERG, "uart overrun\n");
+    
     if (c == 27) {
         exit(0);
     }
@@ -70,6 +81,34 @@ void uart_putc(char c) {
     while (!uart_tx_empty())
         __builtin_ia32_pause();
     outportb(UART_PORT, c);
+}
+
+static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
+    size_t read = 0, rs;
+    
+    while (1) {
+        if (rbpos > 0) {
+            if (rbpos <= (nbyte - read)) {
+                rs = rbpos;
+            } else {
+                rs = nbyte - read;
+            }
+            memcpy(buf, recvbuf, rs);
+            read += rbpos;
+            buf += rbpos;
+            if (rbpos - rs > 0)
+                memmove(recvbuf, recvbuf + rs, rbpos - rs);
+            rbpos -= rs;
+        }
+        
+        if (read >= nbyte)
+            break;
+        
+        /* Wait for an interrupt */
+        asm volatile("hlt":::"memory");
+    }
+
+    return read;
 }
 
 static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte) {
