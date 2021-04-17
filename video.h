@@ -6,6 +6,8 @@ void vbe_init();
 void refresh_screen();
 void draw_pixel(int x, int y, uint32_t color);
 void draw_rect(int x, int y, int w, int h, uint32_t color);
+void draw_text(uint32_t y, uint32_t x, char *text);
+void draw_string(uint32_t x, uint32_t y, char *text);
 
 struct vbe_mem {
     uint32_t buffer_size;

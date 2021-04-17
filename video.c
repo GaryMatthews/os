@@ -1,5 +1,7 @@
 #include <video.h>
 
+#include <window.h>
+
 #include <graphics.h>
 #include <memory.h>
 #include <string.h>
@@ -11,6 +13,12 @@ extern uint32_t bfb_width;
 extern uint32_t bfb_height;
 extern uint16_t bfb_bpp;
 extern uint32_t bfb_scanline;
+
+#define SSFN_NOIMPLEMENTATION
+#define SSFN_CONSOLEBITMAP_TRUECOLOR
+#include "ssfn.h"
+
+extern ssfn_font_t _binary_unifont_sfn_start;
 
 void vbe_init() {
     vbemem.buffer_size = bfb_width * bfb_height * (bfb_bpp / 8);
@@ -36,6 +44,15 @@ void vbe_init() {
         vmm_map_phys(get_kern_directory(), addr, addr,
                      PAGE_PRESENT | PAGE_RW);
     }
+
+    ssfn_font = &_binary_unifont_sfn_start;
+    ssfn_dst_ptr = (uint8_t *)vbemem.buffer;
+    ssfn_dst_pitch = vbemem.pitch;
+    ssfn_fg = 0xFFFFFF;
+    ssfn_x = 0;
+    ssfn_y = 0;
+
+    windows_list_init();
 }
 
 void refresh_screen() {
@@ -73,5 +90,23 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
             where[j * 4 + 2] = b;
         }
         where += row;
+    }
+}
+
+void draw_text(uint32_t y, uint32_t x, char *text) {
+    ssfn_y = x*16; ssfn_x = y*8;
+    uint32_t len = strlen(text);
+    
+    for (uint32_t i = 0; i < len; i++) {
+        ssfn_putc(text[i]);
+    }
+}
+
+void draw_string(uint32_t x, uint32_t y, char *text) {
+    ssfn_y = y; ssfn_x = x;
+    uint32_t len = strlen(text);
+    
+    for (uint32_t i = 0; i < len; i++) {
+        ssfn_putc(text[i]);
     }
 }

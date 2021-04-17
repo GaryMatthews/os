@@ -1,14 +1,9 @@
 #include <console.h>
 #include <video.h>
+#include <window.h>
 
 #include <stddef.h>
 #include <string.h>
-
-#define SSFN_NOIMPLEMENTATION
-#define SSFN_CONSOLEBITMAP_TRUECOLOR
-#include "ssfn.h"
-
-extern ssfn_font_t _binary_unifont_sfn_start;
 
 static size_t rows  = 0;
 static size_t cols  = 0;
@@ -21,6 +16,9 @@ static size_t fb_width;
 
 uint8_t console_initialized = 0;
 
+window_t *window;
+text_area_t *text_area;
+
 void console_init() {
     fb = (size_t *) vbemem.buffer;
     fb_height = vbemem.yres;
@@ -28,12 +26,10 @@ void console_init() {
     rows = fb_height / 16;
     cols = fb_width  / 8;
 
-    ssfn_font = &_binary_unifont_sfn_start;
-    ssfn_dst_ptr = (uint8_t *)vbemem.buffer;
-    ssfn_dst_pitch = vbemem.pitch;
-    ssfn_fg = 0xFFFFFF;
-    ssfn_x = 0;
-    ssfn_y = 0;
+    window = window_create("Console", 0, 16, 640, 460);
+    text_area = create_text_area(0, 0, 624, 428);
+    add_component(window, text_area);
+    text_area_set_text(text_area, "$ ");
 
     console_initialized = 1;
 }
@@ -72,17 +68,8 @@ void console_putc(char ch) {
         }
         return;
     }
-    ssfn_y = cur_x*16;
-    ssfn_x = cur_y*8;
+    char buf[2];
+    buf[0] = ch; buf[1] = 0;
+    draw_string(cur_x*16, cur_y*8, buf);
     cur_y++;
-    ssfn_putc(ch);
-}
-
-void console_text(uint32_t x, uint32_t y, char *text) {
-    ssfn_y = x*16; ssfn_x = y*8;
-    uint32_t len = strlen(text);
-    
-    for (uint32_t i = 0; i < len; i++) {
-        ssfn_putc(text[i]);
-    }
 }

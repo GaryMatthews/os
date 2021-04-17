@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include <kconsole.h>
 #include <console.h>
 #include <log.h>

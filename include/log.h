@@ -1,6 +1,7 @@
 #pragma once
 
 #include <printf.h>
+#include <io.h>
 
 /* Use as as defined in RFC5424:
 
@@ -37,6 +38,7 @@ do { \
 do { \
 	if (!(x)) { \
 		klogf(LOG_CRIT, "Assertion failed: " #x "\n"); \
+        halt(); \
 	} \
 } while (0) \
 

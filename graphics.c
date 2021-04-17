@@ -5,6 +5,7 @@
 #include <mouse.h>
 #include <kheap.h>
 #include <rtc.h>
+#include <window.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -16,8 +17,8 @@ short mouse_icon[] =  {
         1,2,2,2,2,2,1,0,0,0,0,
         1,2,2,2,2,2,2,1,0,0,0,
         1,2,2,2,2,2,2,2,1,0,0,
-        1,2,2,2,2,2,2,2,2,1,0,
-        1,2,2,2,2,2,1,1,1,1,1,
+        1,2,2,2,2,2,1,1,1,1,0,
+        1,2,2,2,2,2,2,1,0,0,0,
         1,2,2,1,2,2,2,1,0,0,0,
         1,2,1,0,1,2,2,2,1,0,0,
         1,1,0,0,0,1,2,2,2,1,0,
@@ -66,12 +67,14 @@ void paint_desktop() {
         }
         }*/
 
-    console_text(0, 0, "Hello, world!");
+    draw_text(0, 0, "Hello, world!");
 
     rtc_read_datetime();
     char* dt = get_current_datetime_str();
-    console_text(0, 65, dt);
+    draw_text(65, 0, dt);
     kfree(dt);
+
+    paint_windows();
     
     paint_mouse();
 }
