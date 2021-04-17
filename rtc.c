@@ -80,25 +80,30 @@ void rtc_write_datetime(datetime_t * dt) {
  * For example, "Sat 6:32"
  * */
 char * datetime_to_str(datetime_t * dt) {
-    char * ret = kmalloc(15);
+    char * ret = kmalloc(19);
     char day[4];
     char hour[3];
     char min[3];
+    char sec[3];
 
     memset(&day, 0x0, 4);
     memset(&hour, 0x0, 3);
     memset(&min, 0x0, 3);
+    memset(&sec, 0x0, 3);
 
     const char * weekday = weekday_map[get_weekday_from_date(dt)];
     strcpy(day, weekday);
     itoa(hour, dt->hour, 10);
     itoa(min, dt->minute, 10);
+    itoa(sec, dt->second, 10);
 
     strcpy(ret, day);
     strcat(ret, " ");
     strcat(ret, hour);
     strcat(ret, ":");
     strcat(ret, min);
+    strcat(ret, ":");
+    strcat(ret, sec);
     strcat(ret, " PM");
     return ret;
 }

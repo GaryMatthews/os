@@ -3,6 +3,8 @@
 #include <video.h>
 #include <console.h>
 #include <mouse.h>
+#include <kheap.h>
+#include <rtc.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -15,15 +17,15 @@ short mouse_icon[] =  {
         1,2,2,2,2,2,2,1,0,0,0,
         1,2,2,2,2,2,2,2,1,0,0,
         1,2,2,2,2,2,2,2,2,1,0,
-        1,2,2,2,2,1,1,1,1,1,1,
-        1,2,2,2,1,0,0,0,0,0,0,
-        1,2,2,1,0,0,0,0,0,0,0,
-        1,2,1,0,0,0,0,0,0,0,0,
-        1,1,0,0,0,0,0,0,0,0,0,
-        1,0,0,0,0,0,0,0,0,0,0,
+        1,2,2,2,2,2,1,1,1,1,1,
+        1,2,2,1,2,2,2,1,0,0,0,
+        1,2,1,0,1,2,2,2,1,0,0,
+        1,1,0,0,0,1,2,2,2,1,0,
+        0,0,0,0,0,0,1,2,2,1,0,
+        0,0,0,0,0,0,0,1,1,0,0,
 };
 
-uint32_t mouse_color_mapping[] = {0, 0xFFFFFFFF, 0};
+uint32_t mouse_color_mapping[] = {0, 0, 0xFFFFFFFF};
 
 void paint_mouse() {
     short* buf = mouse_icon;
@@ -65,6 +67,11 @@ void paint_desktop() {
         }*/
 
     console_text(0, 0, "Hello, world!");
+
+    rtc_read_datetime();
+    char* dt = get_current_datetime_str();
+    console_text(0, 65, dt);
+    kfree(dt);
     
     paint_mouse();
 }
