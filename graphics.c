@@ -46,7 +46,7 @@ void paint_mouse() {
 void paint_desktop() {
     static uint32_t i, j, noise, carry, seed = 0xbeef;
     
-    //draw_rect(0, 0, 640, 480, 0x2C2C2C);
+    draw_rect(0, 0, 640, 480, 0x2C2C2C);
 
     /*
 #define RGB(r, g, b) (((uint32_t) r) << 16) | (((uint32_t) g) << 8) | ((uint32_t) b)
@@ -64,10 +64,9 @@ void paint_desktop() {
         }
         }*/
 
-    //draw_text("Hello, world!", 0, 0, 0xff0000);
-    //console_paint();
+    console_text(0, 0, "Hello, world!");
     
-    // paint_mouse();
+    paint_mouse();
 }
 
 

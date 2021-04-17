@@ -2,6 +2,7 @@
 #include <video.h>
 
 #include <stddef.h>
+#include <string.h>
 
 #define SSFN_NOIMPLEMENTATION
 #define SSFN_CONSOLEBITMAP_TRUECOLOR
@@ -75,4 +76,13 @@ void console_putc(char ch) {
     ssfn_x = cur_y*8;
     cur_y++;
     ssfn_putc(ch);
+}
+
+void console_text(uint32_t x, uint32_t y, char *text) {
+    ssfn_y = x*16; ssfn_x = y*8;
+    uint32_t len = strlen(text);
+    
+    for (uint32_t i = 0; i < len; i++) {
+        ssfn_putc(text[i]);
+    }
 }

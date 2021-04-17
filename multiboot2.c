@@ -89,8 +89,8 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
         bfb_blue_pos = fbinfo->rgb.blue_pos;
         bfb_blue_size = fbinfo->rgb.blue_size;
 
-        printf("fb at 0x%x %dx%d %d bpp scanline %d\n",
-               bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);
+        /*printf("fb at 0x%x %dx%d %d bpp scanline %d\n",
+          bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);*/
     }
 }
 
@@ -101,27 +101,27 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 
 	while (tag->type != MULTIBOOT2_TAG_TERMINATOR) {
-        klogf(LOG_INFO, "   tag: 0x%x name: %s ",
-              tag->type, tag_names[tag->type - 1]);
+        /*klogf(LOG_INFO, "   tag: 0x%x name: %s ",
+          tag->type, tag_names[tag->type - 1]);*/
 		switch (tag->type) {
 		case MULTIBOOT2_TAG_CMDLINE:
 			multiboot2_cmdline(&tag->cmdline);
-            printf("%s\n", tag->cmdline.string);
+            //printf("%s\n", tag->cmdline.string);
 			break;
 		case MULTIBOOT2_TAG_MODULE:
 			multiboot2_module(&tag->module);
-            printf("%x %x\n", tag->module.start, tag->module.end);
+            //printf("%x %x\n", tag->module.start, tag->module.end);
 			break;
 		case MULTIBOOT2_TAG_MEMMAP:
 			multiboot2_memmap(tag->size, &tag->memmap);
-            printf( "%d %d\n",
+            /*printf( "%d %d\n",
                     tag->memmap.entry_size,
-                    tag->memmap.entry_version);
+                    tag->memmap.entry_version);*/
             break;
         case MULTIBOOT2_TAG_BASIC_MEMINFO:
-            printf ("mem_lower = %uKB, mem_upper = %uKB\n",
+            /*printf ("mem_lower = %uKB, mem_upper = %uKB\n",
                     ((struct multiboot_tag_basic_meminfo *) tag)->mem_lower,
-                    ((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);
+                    ((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);*/
             multiboot2_mem_size =
                 (uint32_t)(((struct multiboot_tag_basic_meminfo *) tag)->mem_lower) +
                 (uint32_t)(((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);
@@ -130,7 +130,7 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
             multiboot2_fbinfo(&tag->fbinfo);
             break;
         default:
-            printf("\n");
+            //printf("\n");
             break;
 		}
 

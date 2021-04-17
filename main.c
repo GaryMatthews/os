@@ -47,24 +47,24 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   disable_int();
 
   if (magic == MULTIBOOT_LOADER_MAGIC) {
-      klogf(LOG_INFO, "MultiBoot 1 addr: 0x%x magic: 0x%x size: 0x%x\n",
-            (uintptr_t)addr, (unsigned) magic, size);
+      /*klogf(LOG_INFO, "MultiBoot 1 addr: 0x%x magic: 0x%x size: 0x%x\n",
+        (uintptr_t)addr, (unsigned) magic, size);*/
 
       multiboot_info_parse(magic, (const multiboot_info_t *)addr);
 
       multiboot_info_t *info = (multiboot_info_t *)addr;
 
-      klogf(LOG_INFO, "multiboot1_mem_size = %d\n", info->mem_upper + info->mem_lower);
+      //klogf(LOG_INFO, "multiboot1_mem_size = %d\n", info->mem_upper + info->mem_lower);
       
       pmm_init(info->mem_upper + info->mem_lower);
       
   } else if (magic == MULTIBOOT2_LOADER_MAGIC) {
-      klogf(LOG_INFO, "MultiBoot 2 addr: 0x%x magic: 0x%x size: 0x%x\n",
-            (uintptr_t)addr, (unsigned) magic, size);
+      /*klogf(LOG_INFO, "MultiBoot 2 addr: 0x%x magic: 0x%x size: 0x%x\n",
+        (uintptr_t)addr, (unsigned) magic, size);*/
 
       multiboot2_info_parse(magic, (const multiboot2_info_t *)addr);
 
-      klogf(LOG_INFO, "multiboot2_mem_size = %d\n", multiboot2_mem_size);
+      //klogf(LOG_INFO, "multiboot2_mem_size = %d\n", multiboot2_mem_size);
 
       pmm_init(multiboot2_mem_size);
 } else {
@@ -77,12 +77,12 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
       // Check if the memory region is available
       if (map.type == 1) {
-          klogf(LOG_INFO, " BIOS-e820 [addr: 0x%x%x, size: 0x%x%x] %s\n",
+          /*klogf(LOG_INFO, " BIOS-e820 [addr: 0x%x%x, size: 0x%x%x] %s\n",
                  (unsigned) (map.base_address >> 32),
                  (unsigned) (map.base_address & 0xffffffff),
                  (unsigned) (map.size >> 32),
                  (unsigned) (map.size & 0xffffffff),
-                 e820names[(unsigned) map.type]);
+                 e820names[(unsigned) map.type]);*/
 
           pmm_init_reg(map.base_address & 0xffffffff, map.size & 0xffffffff);
       }
