@@ -31,7 +31,7 @@ void uart_init(void) {
   outportb(UART_PORT + 0, 115200/9600);
   outportb(UART_PORT + 1, 0);
   outportb(UART_PORT + 3, 0x03);    // Lock divisor, 8 data bits.
-  outportb(UART_PORT + 4, 0);
+  outportb(UART_PORT + 4, 0x0B); // Interrupt enable and DTR,RTS high
 
   // If status is 0xFF, no serial port.
   if (inportb(UART_PORT + 5) == 0xFF)

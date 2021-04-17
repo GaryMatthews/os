@@ -36,9 +36,8 @@ process_t *get_proc_by_id(int id) {
 }
 
 void uart_read() {
+    char ch;
     while(1){
-        asm volatile("hlt");
-        char ch;
         kconsole->read(kconsole, &ch, 1);
         printf("%c", ch);
     }
