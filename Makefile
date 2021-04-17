@@ -29,6 +29,7 @@ QEMUFLAGS += -device isa-debug-exit,iobase=0xf4,iosize=0x04
 QEMUFLAGS += -enable-kvm
 QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
+QEMUFLAGS += -rtc base=localtime,clock=vm
 
 all: qemu-kernel
 
