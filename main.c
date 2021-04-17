@@ -64,7 +64,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
       multiboot2_info_parse(magic, (const multiboot2_info_t *)addr);
 
-      printf("multiboot2_mem_size = %d\n", multiboot2_mem_size);
+      klogf(LOG_INFO, "multiboot2_mem_size = %d\n", multiboot2_mem_size);
 
       pmm_init(multiboot2_mem_size);
 } else {

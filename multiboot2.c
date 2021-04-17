@@ -119,11 +119,12 @@ void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
                     tag->memmap.entry_version);
             break;
         case MULTIBOOT2_TAG_BASIC_MEMINFO:
+            printf ("mem_lower = %uKB, mem_upper = %uKB\n",
+                    ((struct multiboot_tag_basic_meminfo *) tag)->mem_lower,
+                    ((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);
             multiboot2_mem_size =
-                (tag->basic_meminfo.mem_lower + tag->basic_meminfo.mem_upper) * 1024; //XXX
-            printf("%d %d\n",
-                   tag->basic_meminfo.mem_lower,
-                   tag->basic_meminfo.mem_upper);
+                (uint32_t)(((struct multiboot_tag_basic_meminfo *) tag)->mem_lower) +
+                (uint32_t)(((struct multiboot_tag_basic_meminfo *) tag)->mem_upper);
             break;
         case MULTIBOOT2_TAG_FBINFO:
             multiboot2_fbinfo(&tag->fbinfo);
