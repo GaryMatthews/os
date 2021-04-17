@@ -35,7 +35,7 @@ process_t *get_proc_by_id(int id) {
     return NULL;
 }
 
-void uart_read() {
+void uart_read_proc() {
     char ch;
     while(1){
         kconsole->read(kconsole, &ch, 1);
@@ -45,7 +45,7 @@ void uart_read() {
 
 void main_proc() {
     //start_kernel_proc("draw_thread", &refresh_screen);
-    start_kernel_proc("uart_read", &uart_read);
+    start_kernel_proc("uart_read", &uart_read_proc);
     print_procs();
 
     while(1){
