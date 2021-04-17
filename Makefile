@@ -2,9 +2,10 @@ TARGET ?= i386
 
 CC=i686-elf-gcc
 LD=i686-elf-ld
+OBJCOPY=i686-elf-objcopy
 
 SRCS = $(wildcard *.[cS] *.asm) $(wildcard lib/string/*.c)
-OBJS = $(addsuffix .o,$(basename $(SRCS)))
+OBJS = $(addsuffix .o,$(basename $(SRCS))) font.o
 KERNEL = kernel.elf
 
 ASFLAGS += -m32 -I.
@@ -59,6 +60,9 @@ $(KERNEL): $(OBJS)
 
 %.o: %.asm
 	@nasm -f elf -o $@ $^
+
+font.o:
+	$(OBJCOPY) -O elf32-i386 -B i386 -I binary unifont.sfn font.o
 
 kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst

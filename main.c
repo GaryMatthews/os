@@ -1,11 +1,11 @@
 #include <kconsole.h>
+#include <console.h>
 #include <log.h>
 #include <uart.h>
 #include <multiboot.h>
 #include <multiboot2.h>
 #include <printf.h>
 #include <io.h>
-#include <font.h>
 
 #include <memory.h>
 
@@ -94,6 +94,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   kheap_init();
 
   vbe_init();
+  console_init();
 
   gdt_init();
   idt_init(0x8);

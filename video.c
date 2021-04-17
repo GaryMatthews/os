@@ -6,8 +6,6 @@
 
 #include <printf.h>
 
-struct vbe_mem vbemem;
-
 extern uintptr_t bfb_addr;
 extern uint32_t bfb_width;
 extern uint32_t bfb_height;
