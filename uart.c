@@ -59,8 +59,6 @@ int uart_getc(void) {
 
 void uart_handler(void) {
     char c = uart_getc();
-    //printf("%d %c\n", c, c);
-    //XXX consoleintr(uartgetc, 0);     // Minor device 0
 
     if (rbpos < RECVBUF_LEN)
         recvbuf[rbpos++] = c;
