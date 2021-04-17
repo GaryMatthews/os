@@ -31,7 +31,7 @@ QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 
-all: qemu-kernel
+all: qemu-iso
 
 iso: $(KERNEL)
 	@mkdir -p iso/boot/grub
