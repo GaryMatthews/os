@@ -113,6 +113,12 @@ void *memsetw( void *dest, unsigned char value, size_t count ){
 }
 
 void *memcpy( void *dest, const void *src, size_t count ){
+	asm volatile("cld; rep movsb"
+	            : "=c"((int){0})
+	            : "D"(dest), "S"(src), "c"(count)
+	            : "flags", "memory");
+	return dest;
+/*
 	uint8_t *byte_ret;
 	const uint8_t *byte_src;
 
@@ -133,6 +139,7 @@ void *memcpy( void *dest, const void *src, size_t count ){
 	}
 
 	return dest;
+*/
 }
 
 void *memmove( void *dest, const void *src, size_t count ){
