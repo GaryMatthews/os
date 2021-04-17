@@ -25,6 +25,7 @@
 #include <sched.h>
 
 #include <rtc.h>
+#include <pcspk.h>
 
 static const char *e820names[] = {
     "invalid",
@@ -111,6 +112,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
   rtc_init();
   printf("time: %s\n", datetime_to_str(&current_datetime));
+  //beep(400);
 
   sched_init();
   
