@@ -11,6 +11,7 @@
 #include <renderer.h>
 #include <printf.h>
 #include <string.h>
+#include <keyboard.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -73,16 +74,16 @@ static void write_log(const char *text) {
 
 void mu_2() {
     mu_begin(&ctx);
-    if (mu_begin_window(&ctx, "Hello, world!", mu_rect(10, 10, 240, 56))) {
+    if (mu_begin_window(&ctx, "hello, world", mu_rect(10, 10, 240, 56))) {
         mu_layout_row(&ctx, 2, (int[]) { 72, -1 }, 0);
-        mu_label(&ctx,"Position:");
-        if (mu_button(&ctx, "Submit")) {
-            printf("Submit was pressed.\n");
+        mu_label(&ctx,"X:");
+        if (mu_button(&ctx, "submit")) {
+            //printf("Submit was pressed.\n");
         }
         mu_end_window(&ctx);
     }
 
-    if (mu_begin_window(&ctx, "Log Window", mu_rect(300, 40, 300, 200))) {
+    if (mu_begin_window(&ctx, "console", mu_rect(300, 40, 300, 200))) {
         mu_layout_row(&ctx, 1, (int[]) { -1 }, -25);
         mu_begin_panel(&ctx, "Log Output");
         mu_Container *panel = mu_get_current_container(&ctx);
@@ -116,8 +117,6 @@ void mu() {
     mu_init(&ctx);
     ctx.text_width = text_width;
     ctx.text_height = text_height;
-
-    mu_2();
 }
 
 void paint_desktop() {
@@ -146,6 +145,15 @@ void paint_desktop() {
     
     mu_input_mousemove(&ctx, get_mouse_info()->x, get_mouse_info()->y);
 
+    char c = keyboard_get_lastkey();
+    if (c != 0) {
+        char buf[2];
+        buf[0] = c;
+        buf[1] = 0;
+        keyboard_invalidate_lastkey();
+        mu_input_text(&ctx, buf);
+    }
+        
     mu_2();
 
     mu_Command *cmd = NULL;

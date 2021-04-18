@@ -55,7 +55,8 @@ void main_proc() {
 
     mu();
 
-    console_run_gui();
+    //console_run_gui();
+    while(1) halt();
 }
 
 void sched_add_proc(process_t *proc) {
