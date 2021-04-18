@@ -63,7 +63,7 @@ $(KERNEL): $(OBJS)
 	@nasm -f elf -o $@ $^
 
 font.o:
-	$(OBJCOPY) -O elf32-i386 -B i386 -I binary unifont.sfn font.o
+	@$(OBJCOPY) -O elf32-i386 -B i386 -I binary unifont.sfn font.o
 
 kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
