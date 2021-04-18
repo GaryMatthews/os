@@ -12,7 +12,7 @@
 #include <video.h>
 #include <printf.h>
 #include <kconsole.h>
-
+#include <commands.h>
 #include <graphics.h>
 
 process_t *list;
@@ -46,15 +46,13 @@ void uart_read_proc() {
 }
 
 void main_proc() {
-    //start_kernel_proc("uart_read", &uart_read_proc);
-    start_kernel_proc("draw_thread", &refresh_screen);
-    //
-    //start_kernel_proc("console_run_gui", &console_run_gui);
-    //print_procs();
-
     mu();
 
-    //console_run_gui();
+    //start_kernel_proc("uart_read", &uart_read_proc);
+    start_kernel_proc("draw_thread", &refresh_screen);
+
+    console_exec("help");
+    
     while(1) halt();
 }
 

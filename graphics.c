@@ -11,6 +11,7 @@
 #include <string.h>
 #include <keyboard.h>
 #include <pcspk.h>
+#include <commands.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -65,10 +66,9 @@ static int text_height(mu_Font font) {
 static  char logbuf[64000];
 static   int logbuf_updated = 0;
 
-static void write_log(const char *text) {
-  if (logbuf[0]) { strcat(logbuf, "\n"); }
-  strcat(logbuf, text);
-  logbuf_updated = 1;
+void write_log(const char *text) {
+    strcat(logbuf, text);
+    logbuf_updated = 1;
 }
 
 void mu_2() {
@@ -84,7 +84,7 @@ void mu_2() {
         mu_end_window(&ctx);
     }
 
-    if (mu_begin_window(&ctx, "console", mu_rect(300, 40, 300, 200))) {
+    if (mu_begin_window(&ctx, "console", mu_rect(50, 100, 500, 300))) {
         mu_layout_row(&ctx, 1, (int[]) { -1 }, -25);
         mu_begin_panel(&ctx, "Log Output");
         mu_Container *panel = mu_get_current_container(&ctx);
@@ -105,7 +105,8 @@ void mu_2() {
         }
         if (mu_button(&ctx, "Submit")) { submitted = 1; }
         if (submitted) {
-            write_log(buf);
+            printf("%s\n", buf);
+            console_exec(buf);
             buf[0] = '\0';
         }
         mu_end_window(&ctx);
@@ -147,14 +148,23 @@ void paint_desktop() {
     mu_input_mousemove(&ctx, get_mouse_info()->x, get_mouse_info()->y);
 
     char c = keyboard_get_lastkey();
-    if (c != 0) {
+    if (c == 10) {
+        mu_input_keydown(&ctx, MU_KEY_RETURN);
+        mu_input_keyup(&ctx, MU_KEY_RETURN);
+        keyboard_invalidate_lastkey();
+    } else if (c == 8) {
+        mu_input_keydown(&ctx, MU_KEY_BACKSPACE);
+        mu_input_keyup(&ctx, MU_KEY_BACKSPACE);
+        keyboard_invalidate_lastkey();
+    } else if (c != 0) {
         char buf[2];
         buf[0] = c;
         buf[1] = 0;
         keyboard_invalidate_lastkey();
         mu_input_text(&ctx, buf);
+        // printf("key: %d\n", c);
     }
-        
+
     mu_2();
 
     mu_Command *cmd = NULL;

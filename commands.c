@@ -2,6 +2,7 @@
 #include <mm.h>
 #include <kheap.h>
 #include <printf.h>
+#include <sched.h>
 
 void print_meminfo() {
     printf("Total mem: %d MB\nFree mem: %d MB\n",
@@ -13,9 +14,11 @@ void print_meminfo() {
 
 void console_exec(char *buf) {
     if (strcmp(buf, "help") == 0) {
-        printf("Help:\n\nhelp - shows help\nmem - prints RAM info\n");
+        printf("Help:\n\nhelp - shows help\nmem - prints RAM info\nps - print procs\n");
     } else if(strcmp(buf, "mem") == 0) {
         print_meminfo();
+    } else if(strcmp(buf, "ps") == 0) {
+        print_procs();
     } else {
         printf("Command not found\n");
     }
