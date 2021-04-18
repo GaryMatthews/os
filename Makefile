@@ -18,7 +18,7 @@ CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
 CFLAGS += -Wno-type-limits -Wno-array-bounds
-CFLAGS += -Wno-int-conversion -Wno-sign-compare
+CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
 #CFLAGS += -nostdinc
 
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map

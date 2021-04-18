@@ -20,5 +20,6 @@ char *strrchr(const char *s, int c);
 int strtoint(char *s);
 int strtoint_oct(char *s);
 int memcmp(const void * mem1, const void * mem2, const size_t count);
+double strtod(const char *nptr, char ** endptr);
 
 void itoa(char *buf, unsigned long int n, int base);
