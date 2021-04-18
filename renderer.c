@@ -21,7 +21,21 @@ void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
 
 
 void r_draw_icon(int id, mu_Rect rect, mu_Color color) {
-    draw_rect(rect.x, rect.y, rect.w, rect.h, RGB(color.r, color.g, color.b));
+    int c, w, h;
+    mu_Vec2 pos;
+    char buf[2];
+    switch (id) {
+    case MU_ICON_CLOSE: c = 'x'; break;
+    case MU_ICON_CHECK: c = 'X'; break;
+    case MU_ICON_COLLAPSED: c = '>'; break;
+    case MU_ICON_EXPANDED: c = 'v'; break;
+    }
+    buf[0] = c; buf[1] = 0;
+    w = r_get_text_width(buf, 1);
+    h = r_get_text_height();
+    pos.x = rect.x + (rect.w - w) / 2;
+    pos.y = rect.y + (rect.h - h) / 2;
+    r_draw_text(buf, pos, color);
 }
 
 
