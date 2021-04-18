@@ -156,11 +156,9 @@ void paint_desktop() {
     char c = keyboard_get_lastkey();
     if (c == 10) {
         mu_input_keydown(&ctx, MU_KEY_RETURN);
-        mu_input_keyup(&ctx, MU_KEY_RETURN);
         keyboard_invalidate_lastkey();
     } else if (c == 8) {
         mu_input_keydown(&ctx, MU_KEY_BACKSPACE);
-        mu_input_keyup(&ctx, MU_KEY_BACKSPACE);
         keyboard_invalidate_lastkey();
     } else if (c != 0) {
         char buf[2];
