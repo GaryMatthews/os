@@ -1,7 +1,5 @@
 #include <video.h>
 
-#include <window.h>
-
 #include <graphics.h>
 #include <memory.h>
 #include <string.h>
@@ -51,8 +49,6 @@ void vbe_init() {
     ssfn_fg = 0xFFFF00;
     ssfn_x = 0;
     ssfn_y = 0;
-
-    windows_list_init();
 }
 
 void refresh_screen() {

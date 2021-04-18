@@ -3,7 +3,6 @@
 #include <assert.h>
 
 #include <kconsole.h>
-#include <console.h>
 #include <multiboot.h>
 #include <multiboot2.h>
 #include <io.h>
@@ -96,7 +95,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   kheap_init();
 
   vbe_init();
-  console_init();
 
   gdt_init();
   idt_init(0x8);

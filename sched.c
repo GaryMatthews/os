@@ -12,7 +12,6 @@
 #include <video.h>
 #include <printf.h>
 #include <kconsole.h>
-#include <console.h>
 
 #include <graphics.h>
 

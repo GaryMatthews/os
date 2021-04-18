@@ -1,17 +1,16 @@
 #include <graphics.h>
 
 #include <video.h>
-#include <console.h>
 #include <mouse.h>
 #include <kheap.h>
 #include <rtc.h>
-#include <window.h>
 
 #include <microui.h>
 #include <renderer.h>
 #include <printf.h>
 #include <string.h>
 #include <keyboard.h>
+#include <pcspk.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -75,10 +74,12 @@ static void write_log(const char *text) {
 void mu_2() {
     mu_begin(&ctx);
     if (mu_begin_window(&ctx, "hello, world", mu_rect(10, 10, 240, 56))) {
-        mu_layout_row(&ctx, 2, (int[]) { 72, -1 }, 0);
-        mu_label(&ctx,"X:");
-        if (mu_button(&ctx, "submit")) {
-            //printf("Submit was pressed.\n");
+        mu_layout_row(&ctx, 2, (int[]) { 100, 100 }, 0);
+        if (mu_button(&ctx, "beep on")) {
+            beep(400);
+        }
+        if (mu_button(&ctx, "beep off")) {
+            beep_off();
         }
         mu_end_window(&ctx);
     }
