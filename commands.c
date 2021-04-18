@@ -14,12 +14,12 @@ void print_meminfo() {
 
 void console_exec(char *buf) {
     if (strcmp(buf, "help") == 0) {
-        printf("Help:\n\nhelp - shows help\nmem - prints RAM info\nps - print procs\n");
+        printf("help - shows help\nmem  - prints RAM info\nps   - prints process information\n");
     } else if(strcmp(buf, "mem") == 0) {
         print_meminfo();
     } else if(strcmp(buf, "ps") == 0) {
         print_procs();
     } else {
-        printf("Command not found\n");
+        printf("Command '%s' not found.\n", buf);
     }
 }

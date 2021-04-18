@@ -73,18 +73,24 @@ void write_log(const char *text) {
 
 void mu_2() {
     mu_begin(&ctx);
-    if (mu_begin_window(&ctx, "hello, world", mu_rect(10, 10, 240, 56))) {
-        mu_layout_row(&ctx, 2, (int[]) { 100, 100 }, 0);
+    if (mu_begin_window(&ctx, "system",
+                        mu_rect(10, 10, 90, 114))) {
+        //mu_layout_row(&ctx, 3, (int[]) { 100, 100, 100 }, 0);
+        mu_layout_begin_column(&ctx);
         if (mu_button(&ctx, "beep on")) {
             beep(400);
         }
         if (mu_button(&ctx, "beep off")) {
             beep_off();
         }
+        if (mu_button(&ctx, "shutdown")) {
+            exit(0);
+        }
+        mu_layout_end_column(&ctx);
         mu_end_window(&ctx);
     }
 
-    if (mu_begin_window(&ctx, "console", mu_rect(50, 100, 500, 300))) {
+    if (mu_begin_window(&ctx, "console", mu_rect(50, 130, 500, 320))) {
         mu_layout_row(&ctx, 1, (int[]) { -1 }, -25);
         mu_begin_panel(&ctx, "Log Output");
         mu_Container *panel = mu_get_current_container(&ctx);
