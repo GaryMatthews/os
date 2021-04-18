@@ -6,6 +6,7 @@
 #include <printf.h>
 
 void panic() {
-	//printf("Kernel panic: %s\n\r",s);
-	exit(1);
+	printf("Kernel panic. Halting the system.\n\r");
+    halt();
+	//exit(1);
 }
