@@ -5,5 +5,5 @@
 
 void _putchar(char c) {
     kconsole->write(kconsole, &c, 1);
-    //console_putc(c);
+    console_print("%c", c);
 }

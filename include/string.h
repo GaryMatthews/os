@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdarg.h>
 
 void *memchr(const void *cs, int c, size_t count);
 void *memmove(void *dest, const void *src, size_t n);

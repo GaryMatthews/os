@@ -12,6 +12,7 @@
 #include <video.h>
 #include <printf.h>
 #include <kconsole.h>
+#include <console.h>
 
 process_t *list;
 static int n_proc = 1;
@@ -44,14 +45,13 @@ void uart_read_proc() {
 }
 
 void main_proc() {
-    //start_kernel_proc("draw_thread", &refresh_screen);
-    start_kernel_proc("uart_read", &uart_read_proc);
+    //start_kernel_proc("uart_read", &uart_read_proc);
+    start_kernel_proc("draw_thread", &refresh_screen);
+    //
+    //start_kernel_proc("console_run_gui", &console_run_gui);
     //print_procs();
 
-    while(1){
-        refresh_screen();
-        //halt();
-    }
+    console_run_gui();
 }
 
 void sched_add_proc(process_t *proc) {

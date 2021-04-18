@@ -56,8 +56,10 @@ void vbe_init() {
 }
 
 void refresh_screen() {
-    paint_desktop();
-    memcpy(vbemem.mem, vbemem.buffer, vbemem.buffer_size);
+    for (;;) {
+        paint_desktop();
+        memcpy(vbemem.mem, vbemem.buffer, vbemem.buffer_size);
+    }
 }
 
 void draw_pixel(int x, int y, uint32_t color) {
@@ -80,7 +82,10 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
     uint8_t g = (color >> 8) & 0xFF;
     uint8_t b = (color >> 16) & 0xFF;
 
-    uint8_t *where = (uint8_t *) (((uint32_t) vbemem.buffer) + (x * (vbemem.bpp / 8)) + (y * vbemem.pitch));
+    uint8_t *where = (uint8_t *)
+        (((uint32_t) vbemem.buffer) +
+         (x * (vbemem.bpp / 8)) +
+         (y * vbemem.pitch));
     uint32_t row = vbemem.xres * (vbemem.bpp / 8);
 
     for(int i = 0; i < h; i++) {
@@ -93,20 +98,33 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
     }
 }
 
-void draw_text(uint32_t y, uint32_t x, char *text) {
-    ssfn_y = x*16; ssfn_x = y*8;
-    uint32_t len = strlen(text);
-    
-    for (uint32_t i = 0; i < len; i++) {
-        ssfn_putc(text[i]);
-    }
-}
-
 void draw_string(uint32_t x, uint32_t y, char *text) {
+    int startx = x;
     ssfn_y = y; ssfn_x = x;
-    uint32_t len = strlen(text);
-    
-    for (uint32_t i = 0; i < len; i++) {
-        ssfn_putc(text[i]);
+
+    while(*text) {
+        switch(*text) {
+            case '\0':
+                return;
+            case '\b':
+                // TODO
+                break;
+            case '\r':
+                // TODO
+                break;
+            case '\n':
+                y += 16;
+                x = startx;
+                break;
+            case ' ':
+                x += 8;
+                break;
+            default:
+                ssfn_y = y; ssfn_x = x;
+                ssfn_putc(*text);
+                x += 8;
+                break;
+        }
+        text++;
     }
 }

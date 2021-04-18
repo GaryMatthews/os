@@ -111,8 +111,8 @@ void text_area_append(text_area_t *text_area, char *text) {
 void draw_text_area(window_t *window, text_area_t *text_area) {
     draw_rect(window->x + 8 + text_area->x, window->y + 16 + text_area->y,
               text_area->w, text_area->h, TEXT_AREA_COLOR);
-    draw_string(window->x + 10 + text_area->x + text_area->cursorx,
-                window->y + 20 + text_area->y + text_area->cursory,
+    draw_string(window->x + 8  + text_area->x + text_area->cursorx,
+                window->y + 16 + text_area->y + text_area->cursory,
                 text_area->content);
 }
 

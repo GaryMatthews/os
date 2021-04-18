@@ -67,16 +67,14 @@ void paint_desktop() {
         }
         }*/
 
-    draw_text(0, 0, "Hello, world!");
+    //draw_string(0, 0, "Hello, world!");
 
     rtc_read_datetime();
     char* dt = get_current_datetime_str();
-    draw_text(65, 0, dt);
+    draw_string(8*65, 0, dt);
     kfree(dt);
 
     paint_windows();
     
     paint_mouse();
 }
-
-
