@@ -1,5 +1,4 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include "microui.h"
 
@@ -12,6 +11,4 @@ void r_draw_icon(int id, mu_Rect rect, mu_Color color);
 void r_set_clip_rect(mu_Rect rect);
 void r_clear(mu_Color color);
 void r_present(void);
-
-#endif
 

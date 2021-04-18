@@ -1,5 +1,5 @@
 /*
- * This function is used through-out the kernel (includeinh mm and fs)
+ * This function is used through-out the kernel (included in mm and fs)
  * to indicate a major problem.
  */
 #include <io.h>

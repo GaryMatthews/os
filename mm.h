@@ -1,21 +1,4 @@
-/*
- *  Copyright 2016 Davide Pianca
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
-#ifndef MM_H
-#define MM_H
+#pragma once
 
 #include <stdint.h>
 
@@ -48,7 +31,6 @@ typedef struct memory_region {
 
 void pmm_init(uint32_t mem_size);
 void pmm_init2();
-//void pmm_init(uint32_t mem_size, mm_addr_t *mmap_addr, uint32_t mmap_len);
 void pmm_set_bit(int bit);
 void pmm_unset_bit(int bit);
 int pmm_first_free();
@@ -68,6 +50,4 @@ mm_addr_t get_pdbr();
 void flush_tlb(vmm_addr_t addr);
 int get_cr0();
 int get_cr2();
-
-#endif
 

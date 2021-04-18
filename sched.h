@@ -1,6 +1,5 @@
 #pragma once
 
-//#include <stdint.h>
 #include <proc.h>
 
 process_t *get_cur_proc();
