@@ -73,10 +73,9 @@ static void write_log(const char *text) {
 
 void mu_2() {
     mu_begin(&ctx);
-    if (mu_begin_window(&ctx, "Hello, world!", mu_rect(10, 10, 240, 86))) {
-        mu_layout_row(&ctx, 3, (int[]) { 72, 30, -1 }, 0);
+    if (mu_begin_window(&ctx, "Hello, world!", mu_rect(10, 10, 240, 56))) {
+        mu_layout_row(&ctx, 2, (int[]) { 72, -1 }, 0);
         mu_label(&ctx,"Position:");
-        mu_button(&ctx, "B2");
         if (mu_button(&ctx, "Submit")) {
             printf("Submit was pressed.\n");
         }
@@ -122,30 +121,31 @@ void mu() {
 }
 
 void paint_desktop() {
-    static uint32_t i, j, noise, carry, seed = 0xbeef;
-    
-    draw_rect(0, 0, 640, 480, 0x2C2C2C);
+    draw_rect(0, 0, 640, 480, 0x2D);
 
     rtc_read_datetime();
     char* dt = get_current_datetime_str();
     draw_string(8*65, 0, dt);
     kfree(dt);
 
-    mu_input_mousemove(&ctx, get_mouse_info()->x, get_mouse_info()->y);
-
-    if (get_mouse_info()->button & LEFT_CLICK) {
+    if (mouse_left_button_down()) {
         mu_input_mousedown(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_LEFT);
-    } else {
+    }
+    if (mouse_left_button_up()) {
         mu_input_mouseup(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_LEFT);
     }
 
-    if (get_mouse_info()->button & RIGHT_CLICK) {
+    if (mouse_right_button_down()) {
         mu_input_mousedown(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_RIGHT);
-    } else {
+    }
+    if (mouse_right_button_up()) {
         mu_input_mouseup(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_RIGHT);
     }
 
-    //paint_windows();
+    mouse_info.prev_button = mouse_info.curr_button;
+    
+    mu_input_mousemove(&ctx, get_mouse_info()->x, get_mouse_info()->y);
+
     mu_2();
 
     mu_Command *cmd = NULL;

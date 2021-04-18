@@ -31,10 +31,15 @@
 #define RIGHT_CLICK     0x2
 #define MIDDLE_CLICK    0x4
 
+#define MOUSE_LEFT_BUTTON(flag) (flag & 0x1)
+#define MOUSE_RIGHT_BUTTON(flag) (flag & 0x2)
+#define MOUSE_MIDDLE_BUTTON(flag) (flag & 0x4)
+
 typedef struct mouse_info {
     int x;
     int y;
-    uint32_t button;
+    volatile uint32_t prev_button;
+    volatile uint32_t curr_button;
 } mouse_info_t;
 
 void mouse_wait(uint8_t type);
@@ -44,5 +49,12 @@ mouse_info_t *get_mouse_info();
 void mouse_handler();
 void mouse_check_bounds();
 void mouse_init();
+
+int mouse_left_button_down();
+int mouse_left_button_up();
+int mouse_right_button_down();
+int mouse_right_button_up();
+
+mouse_info_t mouse_info;
 
 #endif

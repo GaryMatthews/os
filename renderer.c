@@ -1,8 +1,6 @@
-#include <assert.h>
-#include "renderer.h"
+#include <renderer.h>
 
 #include <video.h>
-#include <printf.h>
 
 void r_init(void) {
 }
@@ -38,6 +36,7 @@ int r_get_text_height(void) {
 
 
 void r_set_clip_rect(mu_Rect rect) {
+    //draw_rect(rect.x, rect.y, rect.w, rect.h, 0xffffff);
 }
 
 

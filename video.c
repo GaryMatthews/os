@@ -48,7 +48,7 @@ void vbe_init() {
     ssfn_font = &_binary_unifont_sfn_start;
     ssfn_dst_ptr = (uint8_t *)vbemem.buffer;
     ssfn_dst_pitch = vbemem.pitch;
-    ssfn_fg = 0xFFFFFF;
+    ssfn_fg = 0xFFFF00;
     ssfn_x = 0;
     ssfn_y = 0;
 
