@@ -14,6 +14,8 @@
 #include <kconsole.h>
 #include <console.h>
 
+#include <graphics.h>
+
 process_t *list;
 static int n_proc = 1;
 
@@ -50,6 +52,8 @@ void main_proc() {
     //
     //start_kernel_proc("console_run_gui", &console_run_gui);
     //print_procs();
+
+    mu();
 
     console_run_gui();
 }

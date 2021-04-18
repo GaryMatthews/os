@@ -29,8 +29,8 @@ void console_init() {
     rows = fb_height / 16;
     cols = fb_width  / 8;
 
-    window = window_create("Console", 0, 16, 640, 460);
-    text_area = create_text_area(0, 0, 624, 428);
+    window = window_create("Console", 0, 16, 640, 464);
+    text_area = create_text_area(0, 0, 624, 432);
     add_component(window, text_area);
 
     console_initialized = 1;

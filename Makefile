@@ -24,7 +24,7 @@ CFLAGS += -Wno-int-conversion -Wno-sign-compare
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map
 
 QEMU ?= qemu-system-$(TARGET)
-QEMUFLAGS += -vga std -m 256M -no-reboot
+QEMUFLAGS += -vga std -m 512M -no-reboot
 QEMUFLAGS += -device isa-debug-exit,iobase=0xf4,iosize=0x04
 QEMUFLAGS += -enable-kvm
 QEMUFLAGS += -soundhw pcspk -soundhw sb16

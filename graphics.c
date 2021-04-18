@@ -7,6 +7,11 @@
 #include <rtc.h>
 #include <window.h>
 
+#include <microui.h>
+#include <renderer.h>
+#include <printf.h>
+#include <string.h>
+
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
         1,1,0,0,0,0,0,0,0,0,0,
@@ -46,35 +51,118 @@ void paint_mouse() {
     }
 }
 
+mu_Context ctx;
+
+static int text_width(mu_Font font, const char *text, int len) {
+  if (len == -1) { len = strlen(text); }
+  return r_get_text_width(text, len);
+}
+
+static int text_height(mu_Font font) {
+  return r_get_text_height();
+}
+
+static  char logbuf[64000];
+static   int logbuf_updated = 0;
+
+static void write_log(const char *text) {
+  if (logbuf[0]) { strcat(logbuf, "\n"); }
+  strcat(logbuf, text);
+  logbuf_updated = 1;
+}
+
+void mu_2() {
+    mu_begin(&ctx);
+    if (mu_begin_window(&ctx, "Hello, world!", mu_rect(10, 10, 240, 86))) {
+        mu_layout_row(&ctx, 3, (int[]) { 72, 30, -1 }, 0);
+        mu_label(&ctx,"Position:");
+        mu_button(&ctx, "B2");
+        if (mu_button(&ctx, "Submit")) {
+            printf("Submit was pressed.\n");
+        }
+        mu_end_window(&ctx);
+    }
+
+    if (mu_begin_window(&ctx, "Log Window", mu_rect(300, 40, 300, 200))) {
+        mu_layout_row(&ctx, 1, (int[]) { -1 }, -25);
+        mu_begin_panel(&ctx, "Log Output");
+        mu_Container *panel = mu_get_current_container(&ctx);
+        mu_layout_row(&ctx, 1, (int[]) { -1 }, -1);
+        mu_text(&ctx, logbuf);
+        mu_end_panel(&ctx);
+        if (logbuf_updated) {
+            panel->scroll.y = panel->content_size.y;
+            logbuf_updated = 0;
+        }
+        /* input textbox + submit button */
+        static char buf[128];
+        int submitted = 0;
+        mu_layout_row(&ctx, 2, (int[]) { -70, -1 }, 0);
+        if (mu_textbox(&ctx, buf, sizeof(buf)) & MU_RES_SUBMIT) {
+            mu_set_focus(&ctx, ctx.last_id);
+            submitted = 1;
+        }
+        if (mu_button(&ctx, "Submit")) { submitted = 1; }
+        if (submitted) {
+            write_log(buf);
+            buf[0] = '\0';
+        }
+        mu_end_window(&ctx);
+    }
+
+    mu_end(&ctx);
+}
+
+void mu() {
+    mu_init(&ctx);
+    ctx.text_width = text_width;
+    ctx.text_height = text_height;
+
+    mu_2();
+}
+
 void paint_desktop() {
     static uint32_t i, j, noise, carry, seed = 0xbeef;
     
     draw_rect(0, 0, 640, 480, 0x2C2C2C);
-
-    /*
-#define RGB(r, g, b) (((uint32_t) r) << 16) | (((uint32_t) g) << 8) | ((uint32_t) b)
-    for (i = 0; i < 640; ++i) {
-        for (j = 0; j < 480; ++j) {
-            noise = seed;
-            noise >>= 3;
-            noise ^= seed;
-            carry = noise & 1;
-            noise >>= 1;
-            seed >>= 1;
-            seed |= (carry << 30);
-            noise &= 0xFF;
-            draw_pixel(i, j, RGB(noise, noise, noise));
-        }
-        }*/
-
-    //draw_string(0, 0, "Hello, world!");
 
     rtc_read_datetime();
     char* dt = get_current_datetime_str();
     draw_string(8*65, 0, dt);
     kfree(dt);
 
-    paint_windows();
+    mu_input_mousemove(&ctx, get_mouse_info()->x, get_mouse_info()->y);
+
+    if (get_mouse_info()->button & LEFT_CLICK) {
+        mu_input_mousedown(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_LEFT);
+    } else {
+        mu_input_mouseup(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_LEFT);
+    }
+
+    if (get_mouse_info()->button & RIGHT_CLICK) {
+        mu_input_mousedown(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_RIGHT);
+    } else {
+        mu_input_mouseup(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_RIGHT);
+    }
+
+    //paint_windows();
+    mu_2();
+
+    mu_Command *cmd = NULL;
+    while (mu_next_command(&ctx, &cmd)) {
+        if (cmd->type == MU_COMMAND_TEXT) {
+            r_draw_text(cmd->text.str, cmd->text.pos, cmd->text.color);
+        }
+        if (cmd->type == MU_COMMAND_RECT) {
+            r_draw_rect(cmd->rect.rect, cmd->rect.color);
+        }
+        if (cmd->type == MU_COMMAND_ICON) {
+            r_draw_icon(cmd->icon.id, cmd->icon.rect, cmd->icon.color);
+        }
+        if (cmd->type == MU_COMMAND_CLIP) {
+            r_set_clip_rect(cmd->clip.rect);
+        }
+    }
     
     paint_mouse();
 }

@@ -1,12 +1,11 @@
+#include <log.h>
+#include <uart.h>
 #include <assert.h>
 
 #include <kconsole.h>
 #include <console.h>
-#include <log.h>
-#include <uart.h>
 #include <multiboot.h>
 #include <multiboot2.h>
-#include <printf.h>
 #include <io.h>
 
 #include <memory.h>
@@ -58,7 +57,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
       multiboot_info_t *info = (multiboot_info_t *)addr;
 
       //klogf(LOG_INFO, "multiboot1_mem_size = %d\n", info->mem_upper + info->mem_lower);
-      
       pmm_init(info->mem_upper + info->mem_lower);
       
   } else if (magic == MULTIBOOT2_LOADER_MAGIC) {
@@ -68,7 +66,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
       multiboot2_info_parse(magic, (const multiboot2_info_t *)addr);
 
       //klogf(LOG_INFO, "multiboot2_mem_size = %d\n", multiboot2_mem_size);
-
       pmm_init(multiboot2_mem_size);
 } else {
       klogf(LOG_EMERG, "Error: no multiboot, magic: 0x%x. Exiting.", magic);
@@ -93,7 +90,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
   pmm_init2();
 
-  beep(400);
+  //beep(400);
 
   vmm_init();
   kheap_init();
@@ -117,7 +114,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
   rtc_init();
   //printf("time: %s\n", datetime_to_str(&current_datetime));
 
-  beep_off();
+  //beep_off();
 
   sched_init();
   
