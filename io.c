@@ -1,4 +1,5 @@
 #include <io.h>
+#include <pit.h> // for get_tick_count()
 
 uint8_t inportb(uint16_t port) {
     uint8_t ret;
@@ -37,4 +38,11 @@ void enable_int() {
 
 void disable_int() {
     __asm__ volatile("cli");
+}
+
+void sleep(int s) {
+    // TODO better solution
+    int ticks = get_tick_count() + s;
+    int passed = 0;
+    while((passed += get_tick_count()) < ticks);
 }

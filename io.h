@@ -9,3 +9,4 @@ extern void halt();
 void exit_qemu(const int exit_status);
 void enable_int();
 void disable_int();
+void sleep(int s);

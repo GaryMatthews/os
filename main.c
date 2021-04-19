@@ -27,6 +27,12 @@
 #include <rtc.h>
 #include <pcspk.h>
 
+#include <vfs.h>
+#include <fat.h>
+
+#include <ata.h>
+#include <floppy.h>
+
 static const char *e820names[] = {
     "invalid",
     "available",
@@ -109,6 +115,10 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     
     syscall_init();
     install_tss();
+
+    vfs_init();
+    //floppy_init();
+    ata_init();
     
     rtc_init();
     //printf("time: %s\n", datetime_to_str(&current_datetime));

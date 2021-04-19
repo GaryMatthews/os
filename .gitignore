@@ -5,4 +5,5 @@
 *.iso
 iso/
 hda.img
+apps/hello/hello
 apps/example/example

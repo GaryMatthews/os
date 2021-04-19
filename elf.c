@@ -1,10 +1,8 @@
-//#include <console.h>
 #include <proc.h>
 #include <memory.h>
-//XXX#include <fs/vfs.h>
+#include <vfs.h>
 #include <lib/string.h>
 #include <elf.h>
-  //#include <drivers/video.h>
 #include <printf.h>
 
 #define MEMORY_LOAD_ADDRESS 0x700000
@@ -15,6 +13,8 @@
 int elf_validate(elf_header_t *eh) {
     if(eh == 0)
         return 0;
+
+    printf("ELF magic: %c%c%c%c\n", eh->magic[0], eh->magic[1], eh->magic[2], eh->magic[3]);
     
     if(!((eh->magic[0] == 0x7F) && (eh->magic[1] == 'E') && (eh->magic[2] == 'L') && (eh->magic[3] == 'F'))) {
         printf("Magic number wrong\n");
@@ -80,7 +80,6 @@ int load_elf(char *name, thread_t *thread, page_dir_t *pdir) {
  */
 int load_elf_file(char *name) {
     (void)name;
-    /*XXX
     // Open the executable
     file *f = vfs_file_open(name, "r");
     if((f->type == FS_NULL) || (f->type == FS_DIR)) {
@@ -106,8 +105,6 @@ int load_elf_file(char *name) {
     }
     vfs_file_close(f);
     return file_size;
-    */
-    return 0;
 }
 
 /**
@@ -117,7 +114,6 @@ int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
     (void)thread;
     (void)pdir;
     (void)eh;
-    /*XXX
     // Get the program header
     program_header_t *ph = (program_header_t *) ((uint32_t) eh + eh->program_header);
     // Get the entry point of the program
@@ -158,7 +154,5 @@ int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
     while((thread->image_size % PAGE_SIZE) != 0) {
         thread->image_size++;
     }
-    return 1;
-    */
     return 1;
 }

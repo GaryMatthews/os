@@ -20,6 +20,7 @@ CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
 CFLAGS += -Wno-type-limits -Wno-array-bounds -Wno-discarded-qualifiers
 CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
+CFLAGS += -Wno-strict-aliasing
 
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map
 

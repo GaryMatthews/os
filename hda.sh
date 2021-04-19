@@ -10,7 +10,7 @@ mkfs.fat $IMG
 
 sudo mkdir -p $MNT
 sudo losetup $LO $IMG
-sudo mount $LO $MNT -t msdos -o "fat=32"
+sudo mount $LO $MNT -t msdos
 sudo rm -f $MNT/hello
 sudo cp apps/hello/hello $MNT/hello
 sudo umount $MNT
