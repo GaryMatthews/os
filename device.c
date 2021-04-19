@@ -1,17 +1,14 @@
 #include <device.h>
 #include <lib/string.h>
 #include <vfs.h>
-#include <printf.h>
 
 static device_t *devices[8];
 
 void device_register(device_t *dev) {
-    printf("device_register()\n");
     if(dev->id < 8) {
         devices[dev->id] = dev;
         vfs_mount(dev->mount);
     }
-    printf("device_register() ok\n");
 }
 
 device_t *get_dev_by_name(char *name) {

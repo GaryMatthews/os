@@ -52,6 +52,10 @@ void main_proc() {
     start_kernel_proc("draw_thread", &refresh_screen);
 
     console_exec("help");
+    console_exec("ls");
+    console_exec("cd hda");
+    console_exec("ls");
+    console_exec("start hello");
     
     while(1) halt();
 }
