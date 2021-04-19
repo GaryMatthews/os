@@ -74,6 +74,12 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
     if(x < 0 || x > vbemem.xres || y < 0 || y > vbemem.yres)
         return;
 
+    if (x + w > vbemem.xres)
+        w = vbemem.xres - x;
+
+    if (y + h > vbemem.yres)
+        h = vbemem.yres - y;
+
     uint8_t r = color & 0xFF;
     uint8_t g = (color >> 8) & 0xFF;
     uint8_t b = (color >> 16) & 0xFF;
@@ -116,6 +122,15 @@ void draw_string(uint32_t x, uint32_t y, const char *text) {
                 x += 8;
                 break;
             default:
+                if(x < 0 || x > vbemem.xres || y < 0 || y > vbemem.yres)
+                    return;
+
+                if (x + 8 > vbemem.xres)
+                    break;
+
+                if (y + 16 > vbemem.yres)
+                    break;
+                
                 ssfn_y = y; ssfn_x = x;
                 ssfn_putc(*text);
                 x += 8;
