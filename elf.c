@@ -123,7 +123,7 @@ int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
     thread->image_base = ph[0].p_vaddr;
     
     // Relocate the executable program parts into the correct memory locations
-    uint32_t i, last;
+    uint32_t i, last = 0;
     for(i = 0; i < eh->entry_number_prog_header; i++) {
         // If the part is executable
         if(ph[i].p_type == 1) {
@@ -149,7 +149,8 @@ int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
             last = i;
         }
     }
-    // The size of the executable in memory is equal to the virtual address of the last section + the offset - the start
+    // The size of the executable in memory is equal to the virtual address
+    // of the last section + the offset - the start
     thread->image_size = ph[last].p_vaddr + ph[last].p_mem_size - thread->eip;
     // Round up the image size
     while((thread->image_size % PAGE_SIZE) != 0) {
