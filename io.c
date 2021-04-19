@@ -20,7 +20,7 @@ void halt() {
     __asm__ volatile("hlt");
 }
 
-void exit(const int status_code) {
+void exit_qemu(const int status_code) {
   if (status_code) {
     outportb(0xf4, status_code); // qemu isa-debug-exit port
   }

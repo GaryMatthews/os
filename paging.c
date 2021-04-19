@@ -1,4 +1,4 @@
-#include <string.h>
+#include <lib/string.h>
 #include <memory.h>
 
 #define MAX_BLOCKS 512
@@ -14,7 +14,7 @@ static int used_blocks = 0;
 void *page_table_malloc() {
     int p = paging_first_free();
     if(p == -1)
-        return NULL;
+        return 0;
     paging_set_bit(p);
     used_blocks++;
     void *addr = (void *) ((BLOCKS_LEN * p) + PAGE_START);

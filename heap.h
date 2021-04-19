@@ -2,8 +2,7 @@
 
 #define HEAP_MAGIC      0xA0B0C0
 
-#include <stddef.h>
-#include <stdint.h>
+#include <types.h>
 #include <paging.h>
 
 typedef struct heap_header {

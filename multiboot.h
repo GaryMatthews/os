@@ -18,8 +18,8 @@
 
 #ifndef __ASSEMBLER__
 
-#include <stddef.h>
-#include <stdint.h>
+//#include <stddef.h>
+#include <types.h>
 #include <memmap.h>
 
 /** Convert 32-bit multiboot address to a pointer. */

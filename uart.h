@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chardev.h>
-#include <stdint.h>
+#include <types.h>
 
 void uart_init(void);
 void uart_rx_ir(void);

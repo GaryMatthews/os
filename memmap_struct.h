@@ -9,7 +9,7 @@
 
 #ifndef __ASSEMBLER__
 
-#include <stdint.h>
+#include <types.h>
 
 typedef struct e820memmap {
 	uint64_t base_address;

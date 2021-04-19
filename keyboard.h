@@ -1,7 +1,7 @@
 #pragma once
 
 #include <io.h>
-#include <stdint.h>
+#include <types.h>
 
 enum KEYCODE {
 	NULL_KEY = 0,

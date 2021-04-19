@@ -1,6 +1,6 @@
 #include <io.h>
 #include <memory.h>
-#include <string.h>
+#include <lib/string.h>
 #include <printf.h>
 #include <proc.h>
 
@@ -136,7 +136,7 @@ int vmm_map_phys(page_dir_t *pdir, vmm_addr_t virt, mm_addr_t phys, uint32_t fla
  */
 void *get_phys_addr(page_dir_t *pdir, vmm_addr_t virt) {
     if(pdir[virt >> 22] == 0)
-        return NULL;
+        return 0;
     return (void *) (((uint32_t *) (pdir[virt >> 22] & ~0xFFF))[virt << 10 >> 10 >> 12] >> 12 << 12);
 }
 
@@ -147,14 +147,14 @@ page_dir_t *create_address_space() {
     // Allocate space for a page directory
     page_dir_t *pdir = (page_dir_t *) page_table_malloc();
     if(!pdir)
-        return NULL;
+        return 0;
     // Clone page directory
     int i;
     vmm_addr_t addr = 0;
     for(i = 0; i < PAGEDIR_SIZE; i++, addr += KERNEL_SPACE_END) {
         if(kern_dir[i] & PAGE_PRESENT) {
             if(!vmm_create_page_table(pdir, addr, kern_dir[i] << 20 >> 20)) {
-                return NULL;
+                return 0;
             }
             memcpy((void *) (pdir[i] >> 12 << 12), (void *) (kern_dir[i] >> 12 << 12), PAGE_SIZE);
         }

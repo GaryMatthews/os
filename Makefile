@@ -4,7 +4,7 @@ CC=i686-elf-gcc
 LD=i686-elf-ld
 OBJCOPY=i686-elf-objcopy
 
-SRCS = $(wildcard *.[cS] *.asm) $(wildcard lib/string/*.c)
+SRCS = $(wildcard *.[cS] *.asm) $(wildcard lib/*.c)
 OBJS = $(addsuffix .o,$(basename $(SRCS))) font.o
 KERNEL = kernel.elf
 
@@ -15,9 +15,10 @@ CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
 CFLAGS += -finline-functions -Wno-missing-field-initializers
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
+CFLAGS += -nodefaultlibs
 CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
-CFLAGS += -Wno-type-limits -Wno-array-bounds
+CFLAGS += -Wno-type-limits -Wno-array-bounds -Wno-discarded-qualifiers
 CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
 
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map
@@ -31,6 +32,7 @@ QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 
 all: qemu-iso
+	cd lib; make
 
 iso: $(KERNEL)
 	@mkdir -p iso/boot/grub
@@ -68,7 +70,7 @@ kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
 
 clean:
-	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *.d lib/string/*.d *~ os.iso iso
+	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *.d lib/*.d *~ os.iso iso
 
 .PHONY: all iso qemu-kernel qemu-iso qemu-nox clean
 

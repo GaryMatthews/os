@@ -1,6 +1,6 @@
 #include <io.h>
 #include <tss.h>
-#include <string.h>
+#include <lib/string.h>
 #include <gdt.h>
 
 static tss_t tss;

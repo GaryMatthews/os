@@ -27,7 +27,7 @@
 
 #ifndef __ASSEMBLER__
 
-#include <stdint.h>
+#include <types.h>
 
 extern e820memmap_t e820table[MEMMAP_E820_MAX_RECORDS];
 extern uint8_t e820counter;

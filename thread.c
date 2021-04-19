@@ -2,7 +2,7 @@
 #include <thread.h>
 #include <io.h>
 #include <sched.h>
-#include <string.h>
+#include <lib/string.h>
 #include <kheap.h>
 #include <pit.h>
 #include <printf.h>
@@ -14,8 +14,8 @@ static int pid = 2;
 /* Allocates space for a new thread */
 thread_t *create_thread() {
     thread_t *thread = (thread_t *) kmalloc(sizeof(thread_t));
-    if(thread == NULL)
-        return NULL;
+    if(thread == 0)
+        return 0;
     thread->pid = pid++;
     thread->main = 0;
     thread->time = 10;
@@ -89,7 +89,7 @@ void stop_thread(int code) {
     sched_state(0);
 
     process_t *cur = get_cur_proc();
-    if(cur == NULL) {
+    if(cur == 0) {
         printf("Process not found\n");
         sched_state(1);
         enable_int();

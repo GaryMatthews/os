@@ -1,18 +1,18 @@
-#include <stdint.h>
+#include <types.h>
 
 #include <uart.h>
 
 #include <io.h>
 #include <idt.h>
-#include <string.h>
+#include <lib/string.h>
 #include <log.h>
 
 static uint8_t uart_initialized = 0;
 static const uint16_t UART_PORT = 0x3f8;
 static const uint16_t UART_PORT_CONTROL = 0x3f8 + 5;
 
-static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte);
-static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte);
+static int uart_read(struct chardev_struct *dev, char *buf, size_t nbyte);
+static int uart_write(chardev_t *dev, const char *buf, size_t nbyte);
 
 #define RECVBUF_LEN 64
 static char recvbuf[RECVBUF_LEN];
@@ -66,7 +66,7 @@ void uart_handler(void) {
         klogf(LOG_EMERG, "uart overrun\n");
     
     if (c == 27) {
-        exit(0);
+        exit_qemu(0);
     }
 }
 
@@ -81,14 +81,14 @@ void uart_putc(char c) {
     outportb(UART_PORT, c);
 }
 
-static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
+static int uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
     (void)dev;
     
     size_t read = 0, rs;
     
     while (1) {
         if (rbpos > 0) {
-            if (rbpos <= (ssize_t)(nbyte - read)) {
+            if (rbpos <= (int)(nbyte - read)) {
                 rs = rbpos;
             } else {
                 rs = nbyte - read;
@@ -111,7 +111,7 @@ static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
     return read;
 }
 
-static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte) {
+static int uart_write(chardev_t *dev, const char *buf, size_t nbyte) {
     (void)dev;
     
     size_t i;

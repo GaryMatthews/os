@@ -1,7 +1,8 @@
 #include <rtc.h>
-#include <string.h>
+#include <lib/string.h>
 #include <kheap.h>
 #include <io.h>
+#include <printf.h>
 
 // Global var, store current date and time
 datetime_t current_datetime;
@@ -81,30 +82,8 @@ void rtc_write_datetime(datetime_t * dt) {
  * */
 char * datetime_to_str(datetime_t * dt) {
     char * ret = kmalloc(19);
-    char day[4];
-    char hour[3];
-    char min[3];
-    char sec[3];
-
-    memset(&day, 0x0, 4);
-    memset(&hour, 0x0, 3);
-    memset(&min, 0x0, 3);
-    memset(&sec, 0x0, 3);
-
-    const char * weekday = weekday_map[get_weekday_from_date(dt)];
-    strcpy(day, weekday);
-    itoa(hour, dt->hour, 10);
-    itoa(min, dt->minute, 10);
-    itoa(sec, dt->second, 10);
-
-    strcpy(ret, day);
-    strcat(ret, " ");
-    strcat(ret, hour);
-    strcat(ret, ":");
-    strcat(ret, min);
-    strcat(ret, ":");
-    strcat(ret, sec);
-    strcat(ret, " PM");
+    char * weekday = weekday_map[get_weekday_from_date(dt)];
+    snprintf(ret, 19, "%s %02d:%02d:%02d PM", weekday, dt->hour, dt->minute, dt->second);
     return ret;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <types.h>
 
 struct gdt_info {
     uint16_t limit_low;

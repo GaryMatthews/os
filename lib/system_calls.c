@@ -1,5 +1,5 @@
-#include <string.h>
-#include <system_calls.h>
+#include <lib/string.h>
+#include <lib/system_calls.h>
 
 void system(char *arg) {
     if(strcmp(arg, "clear") == 0) {

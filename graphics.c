@@ -8,7 +8,7 @@
 #include <microui.h>
 #include <renderer.h>
 #include <printf.h>
-#include <string.h>
+#include <lib/string.h>
 #include <keyboard.h>
 #include <pcspk.h>
 #include <commands.h>
@@ -68,7 +68,7 @@ static int text_height(mu_Font font) {
 static  char logbuf[64000];
 static   int logbuf_updated = 0;
 
-void write_log(const char *text) {
+void write_log(char *text) {
     strcat(logbuf, text);
     logbuf_updated = 1;
 }
@@ -86,7 +86,7 @@ void mu_2() {
             beep_off();
         }
         if (mu_button(&ctx, "shutdown")) {
-            exit(0);
+            exit_qemu(0);
         }
         mu_layout_end_column(&ctx);
         mu_end_window(&ctx);
@@ -173,7 +173,7 @@ void paint_desktop() {
 
     mu_2();
 
-    mu_Command *cmd = NULL;
+    mu_Command *cmd = 0;
     while (mu_next_command(&ctx, &cmd)) {
         if (cmd->type == MU_COMMAND_TEXT) {
             r_draw_text(cmd->text.str, cmd->text.pos, cmd->text.color);

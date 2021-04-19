@@ -17,7 +17,7 @@ void heap_init(vmm_addr_t *addr) {
     heap_info->first_header->magic = HEAP_MAGIC;
     heap_info->first_header->size = heap_info->size - heap_info->used;
     heap_info->first_header->is_free = 1;
-    heap_info->first_header->next = NULL;
+    heap_info->first_header->next = 0;
 }
 
 void *umalloc(size_t len, vmm_addr_t *heap) {
@@ -26,17 +26,17 @@ void *umalloc(size_t len, vmm_addr_t *heap) {
     
     if(heap_info->used >= heap_info->size) {
         printf("\nOut of memory\n");
-        return NULL;
+        return 0;
     }
     
-    while((head != NULL) && ((vmm_addr_t *) head < heap + (PAGE_SIZE * 4))) {
+    while((head != 0) && ((vmm_addr_t *) head < heap + (PAGE_SIZE * 4))) {
         if((head->size >= len) && (head->is_free == 1) && (head->magic == HEAP_MAGIC)) {
             head->is_free = 0;
             heap_header_t *head2 = (heap_header_t *) head + len + sizeof(heap_header_t);
             head2->size = head->size - len - sizeof(heap_header_t);
             head2->magic = HEAP_MAGIC;
             head2->is_free = 1;
-            head2->next = NULL;
+            head2->next = 0;
             head->next = head2;
             head->size = len;
             heap_info->used += len + sizeof(heap_header_t);
@@ -45,7 +45,7 @@ void *umalloc(size_t len, vmm_addr_t *heap) {
         head = head->next;
     }
     printf("\nOut of memory\n");
-    return NULL;
+    return 0;
 }
 
 void ufree(void *ptr, vmm_addr_t *heap) {
@@ -57,7 +57,7 @@ void ufree(void *ptr, vmm_addr_t *heap) {
         
         // Merge contiguous free sections
         heap_header_t *app = head->next;
-        while((app != NULL) && (app->is_free == 1)) {
+        while((app != 0) && (app->is_free == 1)) {
             head->size += app->size + sizeof(heap_header_t);
             head->next = app->next;
             
@@ -71,7 +71,7 @@ void *umalloc_sys(size_t len) {
     if(cur && cur->thread_list) {
         return umalloc(len, (vmm_addr_t *) cur->thread_list->heap);
     }
-    return NULL;
+    return 0;
 }
 
 void ufree_sys(void *ptr) {

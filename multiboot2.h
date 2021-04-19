@@ -33,7 +33,7 @@
 
 #ifndef __ASSEMBLER__
 
-#include <stddef.h>
+#include <types.h>
 #include <memmap.h>
 
 /** Multiboot2 32-bit address. */

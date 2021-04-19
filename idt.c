@@ -1,6 +1,6 @@
 #include <idt.h>
 #include <exception.h>
-#include <string.h> // for memset
+#include <lib/string.h> // for memset
 #include <printf.h>
 
 struct idt_ptr idtr;

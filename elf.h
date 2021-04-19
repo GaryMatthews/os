@@ -2,7 +2,7 @@
 
 #include <proc.h>
 //XXX#include <fs/vfs.h>
-#include <stdint.h>
+#include <types.h>
 
 #define EXE_MAX_SEGMENTS    9
 

@@ -1,8 +1,8 @@
 #include <sched.h>
 
-#include <string.h>
+#include <lib/string.h>
 #include <proc.h>
-#include <system_calls.h>
+#include <lib/system_calls.h>
 #include <paging.h>
 #include <kheap.h>
 #include <io.h>
@@ -34,7 +34,7 @@ process_t *get_proc_by_id(int id) {
         }
         app = app->next;
     }
-    return NULL;
+    return 0;
 }
 
 void uart_read_proc() {
@@ -68,7 +68,7 @@ void sched_add_proc(process_t *proc) {
 
 void sched_remove_proc(int id) {
     process_t *app = get_proc_by_id(id);
-    if(app != NULL) {
+    if(app != 0) {
         app->prec->next = app->next;
         app->next->prec = app->prec;
         n_proc--;

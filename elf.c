@@ -2,7 +2,7 @@
 #include <proc.h>
 #include <memory.h>
 //XXX#include <fs/vfs.h>
-#include <string.h>
+#include <lib/string.h>
 #include <elf.h>
   //#include <drivers/video.h>
 #include <printf.h>
@@ -13,7 +13,7 @@
  * Checks if the file can be executed in this OS
  */
 int elf_validate(elf_header_t *eh) {
-    if(eh == NULL)
+    if(eh == 0)
         return 0;
     
     if(!((eh->magic[0] == 0x7F) && (eh->magic[1] == 'E') && (eh->magic[2] == 'L') && (eh->magic[3] == 'F'))) {

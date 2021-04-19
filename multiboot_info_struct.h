@@ -14,7 +14,7 @@
 
 #ifndef __ASSEMBLER__
 
-#include <stdint.h>
+#include <types.h>
 
 typedef struct multiboot_info {
 	uint32_t flags;

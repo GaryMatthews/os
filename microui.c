@@ -21,7 +21,7 @@
 */
 
 #include <stdio.h>
-#include <string.h>
+#include <lib/string.h>
 #include <stdlib.h>
 #include <printf.h>
 #include <io.h>
@@ -53,7 +53,7 @@ static mu_Rect unclipped_rect = { 0, 0, 0x1000000, 0x1000000 };
 
 static mu_Style default_style = {
   /* font | size | padding | spacing | indent */
-  NULL, { 68, 10 }, 5, 4, 24,
+  0, { 68, 10 }, 5, 4, 24,
   /* title_height | scrollbar_size | thumb_size */
   24, 12, 8,
   {
@@ -141,9 +141,9 @@ void mu_begin(mu_Context *ctx) {
   expect(ctx->text_width && ctx->text_height);
   ctx->command_list.idx = 0;
   ctx->root_list.idx = 0;
-  ctx->scroll_target = NULL;
+  ctx->scroll_target = 0;
   ctx->hover_root = ctx->next_hover_root;
-  ctx->next_hover_root = NULL;
+  ctx->next_hover_root = 0;
   ctx->mouse_delta.x = ctx->mouse_pos.x - ctx->last_mouse_pos.x;
   ctx->mouse_delta.y = ctx->mouse_pos.y - ctx->last_mouse_pos.y;
   ctx->frame++;
@@ -319,7 +319,7 @@ static mu_Container* get_container(mu_Context *ctx, mu_Id id, int opt) {
     }
     return &ctx->containers[idx];
   }
-  if (opt & MU_OPT_CLOSED) { return NULL; }
+  if (opt & MU_OPT_CLOSED) { return 0; }
   /* container not found in pool: init new container */
   idx = mu_pool_init(ctx, ctx->container_pool, MU_CONTAINERPOOL_SIZE, id);
   cnt = &ctx->containers[idx];
@@ -418,7 +418,7 @@ void mu_input_text(mu_Context *ctx, const char *text) {
   int len = strlen(ctx->input_text);
   int size = strlen(text) + 1;
   expect(len + size <= (int) sizeof(ctx->input_text));
-  memcpy(ctx->input_text + len, text, size);
+  memcpy(ctx->input_text + len, (char *)text, size);
 }
 
 
@@ -592,7 +592,7 @@ mu_Rect mu_layout_next(mu_Context *ctx) {
   } else {
     /* handle next row */
     if (layout->item_index == layout->items) {
-      mu_layout_row(ctx, layout->items, NULL, layout->size.y);
+      mu_layout_row(ctx, layout->items, 0, layout->size.y);
     }
 
     /* position */
@@ -834,7 +834,7 @@ static int number_textbox(mu_Context *ctx, mu_Real *value, mu_Rect r, mu_Id id) 
     int res = mu_textbox_raw(
       ctx, ctx->number_edit_buf, sizeof(ctx->number_edit_buf), id, r, 0);
     if (res & MU_RES_SUBMIT || ctx->focus != id) {
-      *value = strtod(ctx->number_edit_buf, NULL);
+      *value = strtod(ctx->number_edit_buf, 0);
       ctx->number_edit = 0;
     } else {
       return 1;
@@ -1055,7 +1055,7 @@ static void begin_root_container(mu_Context *ctx, mu_Container *cnt) {
   push(ctx->container_stack, cnt);
   /* push container to roots list and push head command */
   push(ctx->root_list, cnt);
-  cnt->head = push_jump(ctx, NULL);
+  cnt->head = push_jump(ctx, 0);
   /* set as hover root if the mouse is overlapping this container and it has a
   ** higher zindex than the current hover root */
   if (rect_overlaps_vec2(cnt->rect, ctx->mouse_pos) &&
@@ -1074,7 +1074,7 @@ static void end_root_container(mu_Context *ctx) {
   /* push tail 'goto' jump command and set head 'skip' command. the final steps
   ** on initing these are done in mu_end() */
   mu_Container *cnt = mu_get_current_container(ctx);
-  cnt->tail = push_jump(ctx, NULL);
+  cnt->tail = push_jump(ctx, 0);
   cnt->head->jump.dst = ctx->command_list.items + ctx->command_list.idx;
   /* pop base clip rect and container */
   mu_pop_clip_rect(ctx);

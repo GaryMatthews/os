@@ -1,4 +1,4 @@
-#include <string.h>
+#include <lib/string.h>
 #include <mm.h>
 
 mem_info_t pmm;
@@ -96,7 +96,7 @@ void pmm_deinit_reg(mm_addr_t addr, uint32_t size) {
 void *pmm_malloc() {
     int p = pmm_first_free();
     if(!p)
-        return NULL;
+        return 0;
     pmm_set_bit(p);
     pmm.used_blocks++;
     return (void *) (BLOCKS_LEN * p);

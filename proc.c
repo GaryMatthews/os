@@ -3,13 +3,11 @@
 #include <tss.h>
 #include <elf.h>
 #include <sched.h>
-#include <string.h>
+#include <lib/string.h>
 #include <kheap.h>
-#include <string.h>
 #include <printf.h>
 #include <sched.h>
 #include <pit.h>
-#include <string.h>
 
 /*
  * Process in memory
@@ -42,7 +40,7 @@ int start_proc(char *name, char *arguments) {
     }
     
     proc->thread_list = create_thread();
-    if(proc->thread_list == NULL)
+    if(proc->thread_list == 0)
         return PROC_STOPPED;
     proc->thread_list->main = 1;
     proc->thread_list->parent = (void *) proc;
@@ -141,7 +139,7 @@ int heap_fill(thread_t *thread, char *name, char *arguments, uint32_t *argc, uin
     
     while(*arguments) {
         char *p = strchr(arguments, ' ');
-        if(p == NULL) {
+        if(p == 0) {
             argv[*argc] = (char *) umalloc(strlen(arguments) + 1, (vmm_addr_t *) thread->heap);
             strcpy(argv[*argc], arguments);
             (*argc)++;
@@ -205,7 +203,7 @@ void end_proc(int ret) {
     sched_state(0);
 
     process_t *cur = get_cur_proc();
-    if(cur == NULL) {
+    if(cur == 0) {
         printf("Process not found\n");
         sched_state(1);
         enable_int();
@@ -262,7 +260,7 @@ int start_kernel_proc(char *name, void *addr) {
     proc->state = PROC_NEW;
     proc->pdir = get_kern_directory();
     proc->thread_list = create_thread();
-    if(proc->thread_list == NULL)
+    if(proc->thread_list == 0)
         return PROC_STOPPED;
     proc->thread_list->main = 1;
     proc->thread_list->parent = (void *) proc;

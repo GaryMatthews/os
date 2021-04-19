@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <types.h>
 
 #define BLOCKS_PER_BYTE 8
 #define BLOCKS_LEN 4096

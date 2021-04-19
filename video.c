@@ -2,7 +2,7 @@
 
 #include <graphics.h>
 #include <memory.h>
-#include <string.h>
+#include <lib/string.h>
 
 #include <printf.h>
 

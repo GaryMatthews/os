@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <types.h>
 #include <syscall.h>
 #include <idt.h>
 #include <exception.h>
@@ -7,7 +7,7 @@
 #include <printf.h>
 #include <keyboard.h>
 
-#define MAX_SYSCALL 1
+#define MAX_SYSCALL 2
 
 typedef uint32_t (*syscall_call_func)(uint32_t, ...);
 

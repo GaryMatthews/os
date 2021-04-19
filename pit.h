@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <types.h>
 
 #define PIT_BINCOUNT_MASK       0x1
 #define PIT_MODE_MASK           0xE

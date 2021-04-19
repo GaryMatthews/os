@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <types.h>
 
 typedef struct tss {
     uint32_t prev_tss;

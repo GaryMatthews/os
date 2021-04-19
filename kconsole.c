@@ -1,5 +1,3 @@
-#include <stdint.h>
-
 #include <kconsole.h>
 #include <graphics.h>
 

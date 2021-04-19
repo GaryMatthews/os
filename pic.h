@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <types.h>
 
 // PIC 1
 #define PIC_IRQ_TIMER           0

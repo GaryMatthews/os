@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
+#include <types.h>
 
 /***** file format *****/
 

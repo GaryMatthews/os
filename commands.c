@@ -1,4 +1,4 @@
-#include <string.h>
+#include <lib/string.h>
 #include <mm.h>
 #include <kheap.h>
 #include <printf.h>

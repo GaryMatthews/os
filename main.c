@@ -69,7 +69,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
         pmm_init(multiboot2_mem_size);
     } else {
         klogf(LOG_EMERG, "Error: no multiboot, magic: 0x%x. Exiting.", magic);
-        exit(1);
+        exit_qemu(1);
     }
     
     for (int i = 0; i < e820counter; i++) {

@@ -21,7 +21,7 @@ void kheap_init() {
     heap_info.first_header->magic = HEAP_MAGIC;
     heap_info.first_header->size = heap_info.size - heap_info.used;
     heap_info.first_header->is_free = 1;
-    heap_info.first_header->next = NULL;
+    heap_info.first_header->next = 0;
 }
 
 void *kmalloc(size_t len) {
@@ -36,7 +36,7 @@ void kfree(void *ptr) {
         
         // Merge contiguous free sections
         heap_header_t *app = head->next;
-        while((app != NULL) && (app->is_free == 1)) {
+        while((app != 0) && (app->is_free == 1)) {
             head->size += app->size + sizeof(heap_header_t);
             head->next = app->next;
             
@@ -49,16 +49,16 @@ void *first_free(size_t len) {
     heap_header_t *head = (heap_header_t *) heap_info.first_header;
     
     if(heap_info.used >= heap_info.size)
-        return NULL;
+        return 0;
     
-    while(head != NULL) {
+    while(head != 0) {
         if((head->size >= len) && (head->is_free == 1) && (head->magic == HEAP_MAGIC)) {
             head->is_free = 0;
             heap_header_t *head2 = (heap_header_t *) head + len + sizeof(heap_header_t);
             head2->size = head->size - len - sizeof(heap_header_t);
             head2->magic = HEAP_MAGIC;
             head2->is_free = 1;
-            head2->next = NULL;
+            head2->next = 0;
             head->next = head2;
             head->size = len;
             heap_info.used += len + sizeof(heap_header_t);
@@ -66,7 +66,7 @@ void *first_free(size_t len) {
         }
         head = head->next;
     }
-    return NULL;
+    return 0;
 }
 
 int get_heap_size() {
