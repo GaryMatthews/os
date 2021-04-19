@@ -43,7 +43,9 @@ void ata_wait_for_irq() {
     ata_irq_done = 0;
 }
 
-void ata_info_fill(drive_t *drive, int type, uint32_t data, uint32_t err, uint32_t sect, uint32_t lba_low, uint32_t lba_mid, uint32_t lba_high, uint32_t sel, uint32_t status, uint32_t irq) {
+void ata_info_fill(drive_t *drive, int type, uint32_t data, uint32_t err,
+                   uint32_t sect, uint32_t lba_low, uint32_t lba_mid,
+                   uint32_t lba_high, uint32_t sel, uint32_t status, uint32_t irq) {
     drive->type = type;
     drive->data_reg = data;
     drive->err_reg = err;
@@ -62,20 +64,21 @@ void identify(drive_t *drive) {
         outportb(drive->sel_reg, 0xA0);
     else
         outportb(drive->sel_reg, 0xB0);
+    outportb(drive->sectors_reg, 0); // koppi
     outportb(drive->lba_low_reg, 0);
     outportb(drive->lba_mid_reg, 0);
     outportb(drive->lba_high_reg, 0);
     outportb(drive->status_reg, ATA_IDENTIFY);
     if(inportb(drive->status_reg) == 0) {
-        drive->present = NULL;
+        drive->present = 0;
     } else {
         if((inportb(drive->lba_mid_reg) != 0) || (inportb(drive->lba_high_reg) != 0)) {
-            drive->present = NULL;
+            drive->present = 0;
         } else {
             while((inportb(drive->status_reg) & 0x80) != 0);
             while(((inportb(drive->status_reg) & 0x8) != 8) && ((inportb(drive->status_reg) & 0x0) == 0));
             if((inportb(drive->status_reg) & 0x0) == 1) {
-                drive->present = NULL;
+                drive->present = 0;
             } else {
                 drive->present = 1;
                 for(int i = 0; i < 256; i++) {
@@ -125,9 +128,9 @@ char *ata_read_sector(int lba) {
     outportb(ata_info.cur_hdd.sel_reg, 0xE0 | ((lba >> 24) & 0x0F)); // maybe or with (ata_info.cur_hdd.type << 4)
     outportb(ata_info.cur_hdd.err_reg, 0x00);
     outportb(ata_info.cur_hdd.sectors_reg, (uint8_t) 1);
-    outportb(ata_info.cur_hdd.lba_low_reg, (uint8_t) lba);
-    outportb(ata_info.cur_hdd.lba_mid_reg, (uint8_t) (lba >> 8));
-    outportb(ata_info.cur_hdd.lba_high_reg, (uint8_t) (lba >> 16));
+    outportb(ata_info.cur_hdd.lba_low_reg, lba & 0x000000ff);
+    outportb(ata_info.cur_hdd.lba_mid_reg, (lba & 0x0000ff00) >> 8);
+    outportb(ata_info.cur_hdd.lba_high_reg, (lba & 0x00ff0000) >> 16);
     outportb(ata_info.cur_hdd.status_reg, 0x20);
     //ata_wait_for_irq();
     delay_400ns();

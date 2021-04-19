@@ -110,7 +110,7 @@ file *vfs_file_open_user(char *name, char *mode) {
 }
 
 void vfs_file_read(file *f, char *str) {
-    if(f) {
+    if (f) {
         if(devs[f->dev]) {
             devs[f->dev]->read(f, str);
         }

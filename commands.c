@@ -50,7 +50,7 @@ void console_start(char *dir, char *command) {
     strcpy(senddir, dir);
     strcat(senddir, "/");
     strcat(senddir, get_argument(command, 1));
-    // Cut the arguments from the path                                                              
+    // Cut the arguments from the path
     if(get_argument(senddir, 1)) {
         strncpy(senddir, senddir, strlen(senddir) - strlen(get_argument(senddir, 1)) - 1);
     }
@@ -65,6 +65,42 @@ void console_start(char *dir, char *command) {
         remove_proc(procn);
         printf("\n");
     }
+}
+
+void print_file(file *f) {
+    if(f->type == FS_NULL) {
+        printf("Cannot open file\n");
+        return;
+    }
+
+    if((f->type & FS_DIR) == FS_DIR) {
+        printf("Cannot display content of directory.\n");
+        return;
+    }
+
+    while(f->eof != 1) {
+        char buf[512];
+        vfs_file_read(f, buf);
+
+        for(int i = 0; i < 512; i++) {
+            printf("%02d", buf[i]);
+            if (i % 28 == 0) printf("\n");
+        }
+    }
+}
+
+void console_read(char *dir, char *command) {
+    memset(senddir, 0, 64);
+    strcpy(senddir, dir);
+    strcat(senddir, "/");
+    strcat(senddir, get_argument(command, 1));
+    file *f = vfs_file_open(senddir, "r");
+    if(f->type != FS_FILE) {
+        printf("read: file %s not found\n", senddir);
+    } else {
+        print_file(f);
+    }
+    vfs_file_close(f);
 }
 
 void console_exec(char *buf) {
@@ -86,7 +122,9 @@ void console_exec(char *buf) {
         console_cd(dir, buf);
     } else if(strncmp(buf, "start", 5) == 0) {
         console_start(dir, buf);
-    }else {
+    } else if(strncmp(buf, "read", 4) == 0) {
+        console_read(dir, buf);
+    } else {
         printf("Command '%s' not found.\n", buf);
     }
 }

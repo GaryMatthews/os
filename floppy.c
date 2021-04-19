@@ -330,7 +330,7 @@ void floppy_lba_to_chs(int lba, int *head, int *track, int *sector) {
 int floppy_detect_drives() {
     printf("floppy_detect_drives()\n");
     outportb(0x70, 0x10);
-    //XXXsleep(100);
+    sleep(100);
     uint8_t drives = inportb(0x71);
     printf("drives: %d\n", drives);
     

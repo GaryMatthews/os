@@ -50,9 +50,9 @@ void memset(void *start, uint32_t val, size_t len) {
 
 void memcpy(void *dest, void *src, int size) {
     asm volatile("rep movsb"
-	            : "=c"((int){0})
-	            : "D"(dest), "S"(src), "c"(size)
-	            : "flags", "memory");
+                 : "=c"((int){0})
+                 : "D"(dest), "S"(src), "c"(size)
+                 : "flags", "memory");
 }
 
 void * memmove(void *dest, const void *src, size_t len) {

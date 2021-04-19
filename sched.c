@@ -38,24 +38,27 @@ process_t *get_proc_by_id(int id) {
 }
 
 void uart_read_proc() {
-    char ch;
+    char ch[2];
+
     while(1){
-        kconsole->read(kconsole, &ch, 1);
-        printf("%c", ch);
+        ch[0] = 0; ch[1] = 0;
+        kconsole->read(kconsole, &ch[0], 1);
+        printf("%d", ch[0]);
     }
 }
 
 void main_proc() {
     mu();
 
-    //start_kernel_proc("uart_read", &uart_read_proc);
     start_kernel_proc("draw_thread", &refresh_screen);
+    //start_kernel_proc("uart_read", &uart_read_proc);
 
     console_exec("help");
+    /*
     console_exec("ls");
     console_exec("cd hda");
     console_exec("ls");
-    console_exec("start hello");
+    console_exec("start hello");*/
     
     while(1) halt();
 }

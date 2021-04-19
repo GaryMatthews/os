@@ -10,7 +10,7 @@ KERNEL = kernel.elf
 
 ASFLAGS += -m32 -I.
 
-CFLAGS += -O3 -g -DDEBUG
+CFLAGS += -O2 -g -DDEBUG
 CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
 CFLAGS += -finline-functions -Wno-missing-field-initializers
@@ -32,7 +32,8 @@ QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 QEMUFLAGS += -drive file=hda.img,format=raw,if=ide,index=0,media=disk
-QEMUFLAGS += -fda floppy.img
+QEMUFLAGS += -drive file=os.iso,if=ide,index=1,media=cdrom
+#QEMUFLAGS += -fda floppy.img
 
 all: lib apps $(KERNEL) qemu-iso
 
@@ -52,10 +53,10 @@ qemu-kernel: $(KERNEL)
 	$(QEMU) -kernel $(KERNEL) $(QEMUFLAGS) -display none -serial 'mon:stdio'
 
 qemu-iso: iso
-	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d,menu=off -serial 'mon:stdio'
+	$(QEMU) $(QEMUFLAGS) -boot d,menu=off -serial 'mon:stdio'
 
 qemu-nox: iso
-	$(QEMU) -cdrom os.iso $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
+	$(QEMU) $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
 
 $(KERNEL): $(OBJS)
 	@$(LD) $(LDFLAGS) -o $@ $^

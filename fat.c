@@ -1,9 +1,7 @@
-//#include <console.h>
-//#include <hal/hal.h>
+#include <lib/string.h>
 #include <fat.h>
 #include <fat_mount.h>
 #include <mbr.h>
-//#include <drivers/video.h>
 #include <kheap.h>
 #include <printf.h>
 

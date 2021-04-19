@@ -96,8 +96,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     
     pmm_init2();
     
-    //beep(400);
-    
     vmm_init();
     kheap_init();
     
@@ -121,10 +119,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     ata_init();
     
     rtc_init();
-    //printf("time: %s\n", datetime_to_str(&current_datetime));
-    
-    //beep_off();
-    
+        
     sched_init();
     
     while(1) halt();

@@ -1,5 +1,6 @@
 #include <io.h>
 #include <pit.h> // for get_tick_count()
+#include <printf.h>
 
 uint8_t inportb(uint16_t port) {
     uint8_t ret;
@@ -41,8 +42,12 @@ void disable_int() {
 }
 
 void sleep(int s) {
+    if (get_tick_count() == 0) return;
+    
     // TODO better solution
     int ticks = get_tick_count() + s;
     int passed = 0;
-    while((passed += get_tick_count()) < ticks);
+    while((passed += get_tick_count()) < ticks) {
+        printf("sleep %d ...\n", passed);
+    }
 }
