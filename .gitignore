@@ -4,4 +4,5 @@
 *.map
 *.iso
 iso/
+hda.img
 apps/example/example
