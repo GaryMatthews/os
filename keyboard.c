@@ -38,7 +38,7 @@ char keyboard_get_lastkey() {
 }
 
 void keyboard_invalidate_lastkey() {
-    lastkey = NULL;
+    lastkey = 0;
 }
 
 static char* qwertzuiop = "qwertzuiop"; // 0x10-0x1c

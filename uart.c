@@ -82,11 +82,13 @@ void uart_putc(char c) {
 }
 
 static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
+    (void)dev;
+    
     size_t read = 0, rs;
     
     while (1) {
         if (rbpos > 0) {
-            if (rbpos <= (nbyte - read)) {
+            if (rbpos <= (ssize_t)(nbyte - read)) {
                 rs = rbpos;
             } else {
                 rs = nbyte - read;
@@ -110,6 +112,8 @@ static ssize_t uart_read(struct chardev_struct *dev, char *buf, size_t nbyte) {
 }
 
 static ssize_t uart_write(chardev_t *dev, const char *buf, size_t nbyte) {
+    (void)dev;
+    
     size_t i;
     
     for (i=0; i < nbyte; i++) {

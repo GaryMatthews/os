@@ -85,7 +85,7 @@ page_dir_t *get_kern_directory() {
 int vmm_create_page_table(page_dir_t *pdir, vmm_addr_t virt, uint32_t flags) {
     void *pt = page_table_malloc();
     if(!pt)
-        return NULL;
+        return 0;
     pdir[virt >> 22] = ((uint32_t) pt) | flags;
     return 1;
 }
@@ -98,13 +98,13 @@ int vmm_map(page_dir_t *pdir, vmm_addr_t virt, uint32_t flags) {
     mm_addr_t phys = (mm_addr_t) pmm_malloc();
     if(!phys) {
         printf("VMM: Failed allocating memory %x\n", phys);
-        return NULL;
+        return 0;
     }
     
     // If the page table is not present, create it
     if(!pdir[virt >> 22]) {
         if(!vmm_create_page_table(pdir, virt, flags)) {
-            return NULL;
+            return 0;
         }
     }
     // Map the address to the page table
@@ -121,7 +121,7 @@ int vmm_map_phys(page_dir_t *pdir, vmm_addr_t virt, mm_addr_t phys, uint32_t fla
     // If the page table is not present, create it
     if(pdir[virt >> 22] == 0) {
         if(!vmm_create_page_table(pdir, virt, flags)) {
-            return NULL;
+            return 0;
         }
     }
     // Map the address to the page table
@@ -179,7 +179,7 @@ void delete_address_space(page_dir_t *pdir) {
 void vmm_unmap_page_table(page_dir_t *pdir, vmm_addr_t virt) {
     void *frame = (void *) (pdir[virt >> 22] & PAGE_FRAME_MASK);
     page_table_free(frame);
-    pdir[virt >> 22] = NULL;
+    pdir[virt >> 22] = 0;
     flush_tlb(virt);
 }
 

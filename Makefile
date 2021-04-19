@@ -10,7 +10,7 @@ KERNEL = kernel.elf
 
 ASFLAGS += -m32 -I.
 
-CFLAGS += -O2 -g -DDEBUG
+CFLAGS += -O3 -g -DDEBUG
 CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
 CFLAGS += -finline-functions -Wno-missing-field-initializers
@@ -19,7 +19,6 @@ CFLAGS += -I. -Iinclude
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
 CFLAGS += -Wno-type-limits -Wno-array-bounds
 CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
-#CFLAGS += -nostdinc
 
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map
 

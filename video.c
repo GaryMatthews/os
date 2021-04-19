@@ -122,7 +122,7 @@ void draw_string(uint32_t x, uint32_t y, const char *text) {
                 x += 8;
                 break;
             default:
-                if(x < 0 || x > vbemem.xres || y < 0 || y > vbemem.yres)
+                if(x > vbemem.xres || y > vbemem.yres)
                     return;
 
                 if (x + 8 > vbemem.xres)

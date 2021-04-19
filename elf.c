@@ -79,6 +79,7 @@ int load_elf(char *name, thread_t *thread, page_dir_t *pdir) {
  * Moves the file from the disk to RAM
  */
 int load_elf_file(char *name) {
+    (void)name;
     /*XXX
     // Open the executable
     file *f = vfs_file_open(name, "r");
@@ -113,6 +114,9 @@ int load_elf_file(char *name) {
  * Moves the executable parts to the correct virtual address for execution
  */
 int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
+    (void)thread;
+    (void)pdir;
+    (void)eh;
     /*XXX
     // Get the program header
     program_header_t *ph = (program_header_t *) ((uint32_t) eh + eh->program_header);

@@ -129,7 +129,7 @@ typedef struct {
 	};
 } __attribute__((packed)) multiboot2_tag_t;
 
-extern void multiboot2_info_parse(uint32_t, const multiboot2_info_t *);
+extern void multiboot2_info_parse(const multiboot2_info_t *);
 
 #endif /* __ASSEMBLER__ */
 

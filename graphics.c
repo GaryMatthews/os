@@ -55,12 +55,14 @@ void paint_mouse() {
 mu_Context ctx;
 
 static int text_width(mu_Font font, const char *text, int len) {
-  if (len == -1) { len = strlen(text); }
-  return r_get_text_width(text, len);
+    (void)font;
+    if (len == -1) { len = strlen(text); }
+    return r_get_text_width(text, len);
 }
 
 static int text_height(mu_Font font) {
-  return r_get_text_height();
+    (void)font;
+    return r_get_text_height();
 }
 
 static  char logbuf[64000];

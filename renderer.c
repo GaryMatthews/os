@@ -6,9 +6,6 @@ void r_init(void) {
 }
 
 
-static void flush(void) {
-}
-
 #define RGB(r, g, b) (((uint32_t) r) << 16) | (((uint32_t) g) << 8) | ((uint32_t) b)
 
 void r_draw_rect(mu_Rect rect, mu_Color color) {
@@ -16,12 +13,13 @@ void r_draw_rect(mu_Rect rect, mu_Color color) {
 }
 
 void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
+    (void)color;
     draw_string(pos.x, pos.y, text);
 }
 
 
 void r_draw_icon(int id, mu_Rect rect, mu_Color color) {
-    int c, w, h;
+    int c = 0, w = 0, h = 0;
     mu_Vec2 pos;
     char buf[2];
     switch (id) {
@@ -40,21 +38,24 @@ void r_draw_icon(int id, mu_Rect rect, mu_Color color) {
 
 
 int r_get_text_width(const char *text, int len) {
-  return 8*len;
+    (void)text;
+    return 8*len;
 }
 
 
 int r_get_text_height(void) {
-  return 16;
+    return 16;
 }
 
 
 void r_set_clip_rect(mu_Rect rect) {
+    (void)rect;
     //draw_rect(rect.x, rect.y, rect.w, rect.h, 0xffffff);
 }
 
 
 void r_clear(mu_Color clr) {
+    (void)clr;
 }
 
 

@@ -175,9 +175,9 @@ int get_nproc() {
 
 void print_procs() {
     process_t *app = list;
-    printf("\nn_proc = %d\n\n", n_proc);
+    printf("n_proc = %d\n", n_proc);
     for(int i = 0; i < n_proc; i++) {
-        printf("Name: %s id: %d page directory: 0x%x state: %d\n",
+        printf("%s id: %d page directory: 0x%x state: %d\n",
                app->name, app->thread_list->pid, app->pdir, app->state);
         printf("    eip: 0x%x esp: 0x%x stack limit: 0x%x\nimage base: 0x%x image size: %x\n\n",
                app->thread_list->eip, app->thread_list->esp, app->thread_list->stack_limit,

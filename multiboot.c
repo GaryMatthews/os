@@ -8,8 +8,10 @@
  * @param cmd_line Input string (the command line).
  *
  */
-void multiboot_extract_command(char *buf, size_t size, const char *cmd_line)
-{
+void multiboot_extract_command(char *buf, size_t size, const char *cmd_line) {
+    (void)buf;
+    (void)size;
+    (void)cmd_line;
 }
 
 /** Extract arguments from the multiboot module command line.
@@ -19,12 +21,15 @@ void multiboot_extract_command(char *buf, size_t size, const char *cmd_line)
  * @param cmd_line Input string (the command line).
  *
  */
-void multiboot_extract_argument(char *buf, size_t size, const char *cmd_line)
-{
+void multiboot_extract_argument(char *buf, size_t size, const char *cmd_line) {
+    (void)buf;
+    (void)size;
+    (void)cmd_line;
 }
 
-static void multiboot_modules(uint32_t count, multiboot_module_t *mods)
-{
+static void multiboot_modules(uint32_t count, multiboot_module_t *mods) {
+    (void)count;
+    (void)mods;
 }
 
 static void multiboot_memmap(uint32_t length, multiboot_memmap_t *memmap)
@@ -52,7 +57,7 @@ static void multiboot_memmap(uint32_t length, multiboot_memmap_t *memmap)
  * @param info      Multiboot information structure.
  *
  */
-void multiboot_info_parse(uint32_t signature, const multiboot_info_t *info) {
+void multiboot_info_parse(const multiboot_info_t *info) {
 	/* Copy command line. */
 	/*if ((info->flags & MULTIBOOT_INFO_FLAGS_CMDLINE) != 0)
       multiboot_cmdline((char *) MULTIBOOT_PTR(info->cmd_line));*/

@@ -40,6 +40,6 @@ extern void multiboot_cmdline(const char *);
 
 extern void multiboot_extract_command(char *, size_t, const char *);
 extern void multiboot_extract_argument(char *, size_t, const char *);
-extern void multiboot_info_parse(uint32_t, const multiboot_info_t *);
+extern void multiboot_info_parse(const multiboot_info_t *);
 
 #endif /* __ASSEMBLER__ */

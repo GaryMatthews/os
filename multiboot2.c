@@ -27,13 +27,13 @@ static char * tag_names[16] = {
     "network"
 };
 
-static void multiboot2_cmdline(const multiboot2_cmdline_t *module)
-{
+static void multiboot2_cmdline(const multiboot2_cmdline_t *module) {
+    (void)module;
 	//multiboot_cmdline(module->string);
 }
 
-static void multiboot2_module(const multiboot2_module_t *module)
-{
+static void multiboot2_module(const multiboot2_module_t *module) {
+    (void)module;
 }
 
 static void multiboot2_memmap(uint32_t length, const multiboot2_memmap_t *memmap)
@@ -96,7 +96,7 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
 
 uint32_t multiboot2_mem_size = 0;
 
-void multiboot2_info_parse(uint32_t signature, const multiboot2_info_t *info) {
+void multiboot2_info_parse(const multiboot2_info_t *info) {
 	const multiboot2_tag_t *tag = (const multiboot2_tag_t *)
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 
