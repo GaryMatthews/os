@@ -31,8 +31,13 @@ QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 
-all: qemu-iso
-	cd lib; make
+all: lib apps $(KERNEL) qemu-iso
+
+lib:
+	make -C lib
+
+apps:
+	make -C apps/example
 
 iso: $(KERNEL)
 	@mkdir -p iso/boot/grub
@@ -70,8 +75,10 @@ kernel.lst: $(KERNEL)
 	objdump -D $(KERNEL) > kernel.lst
 
 clean:
+	@make -C lib clean
+	@make -C apps/example clean
 	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *.d lib/*.d *~ os.iso iso
 
-.PHONY: all iso qemu-kernel qemu-iso qemu-nox clean
+.PHONY: all lib apps iso qemu-kernel qemu-iso qemu-nox clean
 
 -include $(OBJS:.o=.d)
