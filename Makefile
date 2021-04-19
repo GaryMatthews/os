@@ -59,17 +59,21 @@ qemu-nox: iso
 	$(QEMU) $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
 
 $(KERNEL): $(OBJS)
+	@echo "  LD $@"
 	@$(LD) $(LDFLAGS) -o $@ $^
 	@grub-file --is-x86-multiboot $(KERNEL)
 	@grub-file --is-x86-multiboot2 $(KERNEL)
 
 .c.o:
+	@echo "  CC $<"
 	@$(CC) -MD $(CFLAGS) -o $@ -c $<
 
 .S.o:
+	@echo "  CC $<"
 	@$(CC) -MD $(ASFLAGS) -o $@ -c $<
 
 %.o: %.asm
+	@echo "NASM $<"
 	@nasm -f elf -o $@ $^
 
 font.o:
