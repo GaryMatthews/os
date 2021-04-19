@@ -30,6 +30,7 @@ QEMUFLAGS += -enable-kvm
 QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
+QEMUFLAGS += -drive file=hda.img,format=raw,if=ide,index=0,media=disk
 
 all: lib apps $(KERNEL) qemu-iso
 
@@ -37,7 +38,7 @@ lib:
 	make -C lib
 
 apps:
-	make -C apps/example
+	make -C apps
 
 iso: $(KERNEL)
 	@mkdir -p iso/boot/grub
@@ -76,7 +77,7 @@ kernel.lst: $(KERNEL)
 
 clean:
 	@make -C lib clean
-	@make -C apps/example clean
+	@make -C apps clean
 	@rm -rf $(KERNEL) kernel.lst kernel.map $(OBJS) *.d lib/*.d *~ os.iso iso
 
 .PHONY: all lib apps iso qemu-kernel qemu-iso qemu-nox clean
