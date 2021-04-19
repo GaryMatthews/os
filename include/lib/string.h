@@ -38,6 +38,4 @@ int vsprintf(char *str, char *format, va_list args);
 char *strchr(char *str, int c);
 char *strcat(char *dest, char *src);
 
-double strtod(const char *nptr, char ** endptr);
-
 #endif

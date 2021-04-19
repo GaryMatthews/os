@@ -834,7 +834,7 @@ static int number_textbox(mu_Context *ctx, mu_Real *value, mu_Rect r, mu_Id id) 
     int res = mu_textbox_raw(
       ctx, ctx->number_edit_buf, sizeof(ctx->number_edit_buf), id, r, 0);
     if (res & MU_RES_SUBMIT || ctx->focus != id) {
-      *value = strtod(ctx->number_edit_buf, 0);
+        *value = 0; //XXX strtod(ctx->number_edit_buf, 0);
       ctx->number_edit = 0;
     } else {
       return 1;
