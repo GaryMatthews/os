@@ -57,13 +57,16 @@ iso: $(KERNEL)
 	@grub-mkrescue -o os.iso iso 1>&2 2>/dev/null
 
 qemu-kernel: $(KERNEL)
-	$(QEMU) -kernel $(KERNEL) $(QEMUFLAGS) -display none -serial 'mon:stdio'
+	@echo "QEMU .."
+	@$(QEMU) -kernel $(KERNEL) $(QEMUFLAGS) -display none -serial 'mon:stdio'
 
 qemu-iso: iso
-	$(QEMU) $(QEMUFLAGS) -boot d,menu=off -serial 'mon:stdio'
+	@echo "QEMU .."
+	@$(QEMU) $(QEMUFLAGS) -boot d,menu=off -serial 'mon:stdio'
 
 qemu-nox: iso
-	$(QEMU) $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
+	@echo "QEMU .."
+	@$(QEMU) $(QEMUFLAGS) -boot d,menu=off -display none -serial 'mon:stdio'
 
 $(KERNEL): $(OBJS)
 	@echo "  LD $@"
