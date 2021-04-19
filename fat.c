@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <lib/string.h>
 #include <fat.h>
 #include <fat_mount.h>
@@ -164,15 +165,18 @@ void fat_read(file *f, char *buf) {
     
     uint32_t fat_offset;
     switch(dev->minfo.type) {
-        case FAT12:
-            fat_offset = f->current_cluster + (f->current_cluster / 2);
-            break;
-        case FAT16:
-            fat_offset = f->current_cluster * 2;
-            break;
-        case FAT32:
-            fat_offset = f->current_cluster * 4;
-            break;
+    case FAT12:
+        fat_offset = f->current_cluster + (f->current_cluster / 2);
+        break;
+    case FAT16:
+        fat_offset = f->current_cluster * 2;
+        break;
+    case FAT32:
+        fat_offset = f->current_cluster * 4;
+        break;
+    default:
+        assert(0);
+        break;
     }
     uint32_t fat_sector = dev->minfo.fat_offset + (fat_offset / SECTOR_SIZE);
     uint32_t entry_offset = fat_offset % SECTOR_SIZE;

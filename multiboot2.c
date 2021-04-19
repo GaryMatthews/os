@@ -98,6 +98,8 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
 uint32_t multiboot2_mem_size = 0;
 
 void multiboot2_info_parse(const multiboot2_info_t *info) {
+    (void)tag_names;
+    
 	const multiboot2_tag_t *tag = (const multiboot2_tag_t *)
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 

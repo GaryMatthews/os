@@ -48,6 +48,7 @@ extern datetime_t current_datetime;
 void kernel_main(unsigned long magic, unsigned long addr) {
     unsigned size = *(unsigned *) addr;
     (void)size;
+    (void)e820names;
     
     uart_init();
     kconsole = &uartdev;

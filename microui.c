@@ -496,7 +496,7 @@ void mu_draw_text(mu_Context *ctx, mu_Font font, const char *str, int len,
   /* add command */
   if (len < 0) { len = strlen(str); }
   cmd = mu_push_command(ctx, MU_COMMAND_TEXT, sizeof(mu_TextCommand) + len);
-  memcpy(cmd->text.str, str, len);
+  memcpy(cmd->text.str, (void *)str, len);
   cmd->text.str[len] = '\0';
   cmd->text.pos = pos;
   cmd->text.color = color;
@@ -551,7 +551,7 @@ void mu_layout_row(mu_Context *ctx, int items, const int *widths, int height) {
   mu_Layout *layout = get_layout(ctx);
   if (widths) {
     expect(items <= MU_MAX_WIDTHS);
-    memcpy(layout->widths, widths, items * sizeof(widths[0]));
+    memcpy(layout->widths, (void *)widths, items * sizeof(widths[0]));
   }
   layout->items = items;
   layout->position = mu_vec2(layout->indent, layout->next_row);

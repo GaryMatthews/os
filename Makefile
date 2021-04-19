@@ -1,3 +1,9 @@
+# Avoid funny character set dependencies
+unexport LC_ALL
+LC_COLLATE=C
+LC_NUMERIC=C
+export LC_COLLATE LC_NUMERIC
+
 TARGET ?= i386
 
 CC=i686-elf-gcc
@@ -17,10 +23,11 @@ CFLAGS += -finline-functions -Wno-missing-field-initializers
 CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
 CFLAGS += -nodefaultlibs
 CFLAGS += -I. -Iinclude
-CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
-CFLAGS += -Wno-type-limits -Wno-array-bounds -Wno-discarded-qualifiers
-CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
-CFLAGS += -Wno-strict-aliasing
+#CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
+#CFLAGS += -Wno-type-limits -Wno-array-bounds -Wno-discarded-qualifiers
+#CFLAGS += -Wno-int-conversion -Wno-sign-compare -Wno-maybe-uninitialized
+#CFLAGS += -Wno-strict-aliasing
+#CFLAGS += -Werror
 
 LDFLAGS += -melf_i386 -T kernel.lds -Map kernel.map
 
