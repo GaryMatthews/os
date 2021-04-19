@@ -117,7 +117,9 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     install_tss();
 
     vfs_init();
+    printf("floppy_init()\n");
     //floppy_init();
+    printf("floppy_init() ok\n");
     ata_init();
     
     rtc_init();

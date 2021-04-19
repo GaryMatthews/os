@@ -16,11 +16,15 @@ uint8_t FAT[SECTOR_SIZE * 2];
 int offset;
 
 void fat_mount(device_t *dev) {
+    printf("fat_mount()\n");
     // Trying with bootsector
     bootsector_t *bs = (bootsector_t *) dev->read(0);
+    printf("fat_mount() 0\n");
     if((bs->ignore[0] != 0xEB) || (bs->ignore[2] != 0x90)) // Not a FAT fs
         return;
     
+    printf("fat_mount() 1\n");
+
     // Scan for partitions
     mbr_t *mbr = (mbr_t *) bs;
     for(int i = 0; i < 4; i++) {
@@ -36,6 +40,8 @@ void fat_mount(device_t *dev) {
         return;
     }
         
+    printf("fat_mount() 2\n");
+
     dev->minfo.n_sectors = (bs->bpb.n_sectors == 0) ? bs->bpb.long_sectors : bs->bpb.n_sectors;
     dev->minfo.fat_offset = bs->bpb.reserved_sectors;
     dev->minfo.fat_size = (bs->bpb.fat_sectors == 0) ? bs->bpb_ext.fat_sectors : bs->bpb.fat_sectors;
@@ -46,6 +52,8 @@ void fat_mount(device_t *dev) {
     dev->minfo.first_data_sector = dev->minfo.fat_offset + (bs->bpb.n_fats * dev->minfo.fat_size) + dev->minfo.root_size;
     dev->minfo.data_sectors = bs->bpb.n_sectors - (bs->bpb.reserved_sectors + (bs->bpb.n_fats * dev->minfo.fat_size) + dev->minfo.root_size);
     
+    printf("fat_mount() 3\n");
+
     uint32_t total_clusters = dev->minfo.data_sectors / bs->bpb.cluster_sectors;
     if(total_clusters < 4085)
         dev->minfo.type = FAT12;
@@ -55,6 +63,8 @@ void fat_mount(device_t *dev) {
         dev->minfo.type = FAT32;
     else
         dev->minfo.type = EXFAT;
+
+    printf("fat_mount() ok\n");
 }
 
 void to_dos_file_name(char *name, char *str) {
@@ -358,6 +368,7 @@ void fat_ls(char *dir) {
 }
 
 void fat_init(filesystem *fs_fat) {
+    printf("fat_init()\n");
     fs_fat->mount = &fat_mount;
     fs_fat->read = &fat_read;
     fs_fat->write = &fat_write;
@@ -367,5 +378,6 @@ void fat_init(filesystem *fs_fat) {
     fs_fat->cd = &fat_cd;
     fs_fat->touch = &fat_touch;
     fs_fat->delete = &fat_delete;
+    printf("fat_init() ok\n");
 }
 

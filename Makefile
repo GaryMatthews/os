@@ -32,6 +32,7 @@ QEMUFLAGS += -soundhw pcspk -soundhw sb16
 QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 QEMUFLAGS += -drive file=hda.img,format=raw,if=ide,index=0,media=disk
+QEMUFLAGS += -fda floppy.img
 
 all: lib apps $(KERNEL) qemu-iso
 

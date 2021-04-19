@@ -328,9 +328,12 @@ void floppy_lba_to_chs(int lba, int *head, int *track, int *sector) {
 }
 
 int floppy_detect_drives() {
+    printf("floppy_detect_drives()\n");
     outportb(0x70, 0x10);
-    sleep(100);
+    //XXXsleep(100);
     uint8_t drives = inportb(0x71);
+    printf("drives: %d\n", drives);
+    
     int ndrives = 0;
     
     if(strcmp(drive_types[drives >> 4], "1.44MB 3.5") == 0) {
@@ -360,6 +363,7 @@ int floppy_detect_drives() {
         ndrives++;
     }
 
+    printf("floppy_detect_drives() ok\n");
     return ndrives;
 }
 
