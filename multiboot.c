@@ -1,4 +1,5 @@
 #include <multiboot.h>
+#include <bfb.h>
 #include <stddef.h>
 
 /** Extract command name from the multiboot module command line.
@@ -71,4 +72,11 @@ void multiboot_info_parse(const multiboot_info_t *info) {
 	if ((info->flags & MULTIBOOT_INFO_FLAGS_MMAP) != 0)
 		multiboot_memmap(info->mmap_length,
 		    (multiboot_memmap_t *) MULTIBOOT_PTR(info->mmap_addr));
+
+    //XXX
+    bfb_addr = 0xfd000000;
+    bfb_width = 640;
+    bfb_height = 480;
+    bfb_bpp = 32;
+    bfb_scanline = 2560;
 }

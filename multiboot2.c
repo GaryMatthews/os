@@ -7,9 +7,12 @@
 #include <log.h>
 #include <printf.h>
 
+#include <bfb.h>
+
 #define MULTIBOOT2_TAG_ALIGN  8
 
-static char * tag_names[16] = {
+const char * tag_names[] = {
+    "end",
     "cmdline",
     "boot_loader_name",
     "module",
@@ -25,7 +28,12 @@ static char * tag_names[16] = {
     "smbios",
     "acpi_old",
     "acpi_new",
-    "network"
+    "network",
+    "EFI_MMAP",
+    "EFI_BS",
+    "EFI32_IH",
+    "EFI64_IH",
+    "LOAD_BASE_ADDR"
 };
 
 static void multiboot2_cmdline(const multiboot2_cmdline_t *module) {
@@ -57,21 +65,6 @@ static void multiboot2_memmap(uint32_t length, const multiboot2_memmap_t *memmap
     }
 }
 
-uintptr_t bfb_addr = 0;
-uint32_t bfb_width = 0;
-uint32_t bfb_height = 0;
-uint16_t bfb_bpp = 0;
-uint32_t bfb_scanline = 0;
-
-uint8_t bfb_red_pos = 0;
-uint8_t bfb_red_size = 0;
-
-uint8_t bfb_green_pos = 0;
-uint8_t bfb_green_size = 0;
-
-uint8_t bfb_blue_pos = 0;
-uint8_t bfb_blue_size = 0;
-
 static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
 {
     if (fbinfo->visual == MULTIBOOT2_VISUAL_RGB) {
@@ -90,8 +83,8 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
         bfb_blue_pos = fbinfo->rgb.blue_pos;
         bfb_blue_size = fbinfo->rgb.blue_size;
 
-        /*printf("fb at 0x%x %dx%d %d bpp scanline %d\n",
-          bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);*/
+        printf("fb at 0x%x %dx%d %d bpp scanline %d\n",
+          bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);
     }
 }
 
@@ -104,8 +97,8 @@ void multiboot2_info_parse(const multiboot2_info_t *info) {
 	    ALIGN_UP((uintptr_t) info + sizeof(*info), MULTIBOOT2_TAG_ALIGN);
 
 	while (tag->type != MULTIBOOT2_TAG_TERMINATOR) {
-        /*klogf(LOG_INFO, "   tag: 0x%x name: %s ",
-          tag->type, tag_names[tag->type - 1]);*/
+        /*klogf(LOG_INFO, "   tag: 0x%x name: %s \n",
+          tag->type, tag_names[tag->type]);*/
 		switch (tag->type) {
 		case MULTIBOOT2_TAG_CMDLINE:
 			multiboot2_cmdline(&tag->cmdline);
