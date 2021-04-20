@@ -74,7 +74,7 @@ void keyboard_set_leds(int num, int capslock, int scroll) {
 }
 
 char getchar() {
-    asm volatile("sti");
+    enable_int();
     char c = 0;
     while(1) {
         c = keyboard_get_lastkey();
@@ -88,8 +88,8 @@ char getchar() {
 void gets(char *str) {
     int count = 0;
     char c;
-    
-    asm volatile("sti");
+
+    enable_int();
     sched_state(0);
     while(1) {
         c = keyboard_get_lastkey();

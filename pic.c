@@ -26,23 +26,27 @@ uint8_t pic_read_data(uint8_t pic) {
 
 void pic_init(uint8_t base0, uint8_t base1) {
     uint8_t icw = 0;
-    
-    disable_int();
+
+    //disable_int();
     
     icw = (icw & ~PIC_INIT_MASK) | PIC_INIT_YES;
     icw = (icw & ~PIC_IC4_MASK) | PIC_IC4_EXPECT;
-    
+
+    // ICW1
     pic_send_command(icw, 0);
     pic_send_command(icw, 1);
     
+    // ICW2
     pic_send_data(base0, 0);
     pic_send_data(base1, 1);
     
+    // ICW3
     pic_send_data(0x04, 0);
     pic_send_data(0x02, 1);
     
     icw = (icw & ~PIC_UPM_MASK) | PIC_UPM_86MODE;
     
+    // ICW4
     pic_send_data(icw, 0);
     pic_send_data(icw, 1);
 }

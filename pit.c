@@ -1,9 +1,14 @@
 #include <pit.h>
 #include <io.h>
 #include <idt.h>
+#include <printf.h>
 
 uint8_t sched_on = 0;
-uint8_t pit_ticks;
+
+// Set alignment to 32-bit for ticks. See Intel® 64 and IA-32
+// Architectures Software Developer’s Manual, Vol 3A, 8.1.1 Guaranteed
+// Atomic Operations.
+uint8_t pit_ticks __attribute__ ((aligned (4)));
 
 extern void pit_int();
 
@@ -47,11 +52,11 @@ void pit_start_counter(uint32_t frequency, uint8_t counter, uint8_t mode) {
     if(frequency == 0)
         return;
     
-    uint16_t divisor = (uint16_t) 1193180 / (uint16_t) frequency;
-    
+    uint16_t divisor = (uint16_t) (1193180 / (uint16_t) frequency);
+
     uint8_t ocw = 0;
-    ocw = (ocw & ~PIT_MODE_MASK) | mode;
-    ocw = (ocw & ~PIT_RL_MASK) | PIT_RL_DATA;
+    ocw = (ocw & ~PIT_MODE_MASK)    | mode;
+    ocw = (ocw & ~PIT_RL_MASK)      | PIT_RL_DATA;
     ocw = (ocw & ~PIT_COUNTER_MASK) | counter;
     pit_send_command(ocw);
     pit_send_data(divisor & 0xFF, PIT_COUNTER_0);

@@ -83,8 +83,8 @@ void print_file(file *f) {
         vfs_file_read(f, buf);
 
         for(int i = 0; i < 512; i++) {
-            printf("%02d", buf[i]);
-            if (i % 28 == 0) printf("\n");
+            printf("%c", buf[i]);
+            if (i % 56 == 0) printf("\n");
         }
     }
 }

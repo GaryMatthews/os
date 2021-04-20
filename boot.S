@@ -107,9 +107,6 @@ multiboot2_header_end:
     .global _start
     .type _start, @function
 _start:
-    /* Disable interrupts. */
-    cli
-    
     movl $stack_top, %esp
 
     /* Make sure our stack is 16-byte aligned */

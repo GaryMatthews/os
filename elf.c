@@ -14,7 +14,7 @@ int elf_validate(elf_header_t *eh) {
     if(eh == 0)
         return 0;
 
-    printf("ELF magic: %d %d %d %d\n",
+    printf("ELF magic: %d %c %c %c\n",
            eh->magic[0], eh->magic[1], eh->magic[2], eh->magic[3]);
     
     if(!((eh->magic[0] == 0x7F) && (eh->magic[1] == 'E') && (eh->magic[2] == 'L') && (eh->magic[3] == 'F'))) {

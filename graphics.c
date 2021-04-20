@@ -4,6 +4,7 @@
 #include <mouse.h>
 #include <kheap.h>
 #include <rtc.h>
+#include <pit.h>
 
 #include <microui.h>
 #include <renderer.h>
@@ -136,6 +137,10 @@ void paint_desktop() {
     char* dt = get_current_datetime_str();
     draw_string(8*65, 0, dt);
     kfree(dt);
+
+    char buf[32];
+    snprintf(buf, 32, "tick: %03d", get_tick_count());
+    draw_string(8*65, 16, buf);
 
     if (mouse_left_button_down()) {
         mu_input_mousedown(&ctx, get_mouse_info()->x, get_mouse_info()->y, MU_MOUSE_LEFT);

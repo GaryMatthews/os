@@ -43,7 +43,7 @@ pit_int:
     mov fs, ax
     mov gs, ax
     
-    inc byte [pit_ticks]    ; increment PIT ticks
+    lock inc byte [pit_ticks]    ; increment PIT ticks
     
     mov eax, 0              ; check if scheduling is on
     cmp [sched_on], eax

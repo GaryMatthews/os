@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-LO=`losetup -f`
+LO=`sudo losetup -f`
 
 MNT=/mnt/floppy
 IMG=floppy.img
 
-qemu-img create $IMG 1.44M
+#qemu-img create $IMG 1.44M
 mkfs.fat $IMG
 
 sudo mkdir -p $MNT

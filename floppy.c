@@ -257,7 +257,7 @@ int floppy_seek(uint32_t cyl, uint32_t head) {
         floppy_check_int(&st0, &cyl0);
         
         if(st0 & 0xC0) {
-            printf("floppy_seek: status = %s\n", status[st0 >> 6]);
+            // printf("floppy_seek: status = %s\n", status[st0 >> 6]);
             continue;
         }
         
@@ -328,11 +328,10 @@ void floppy_lba_to_chs(int lba, int *head, int *track, int *sector) {
 }
 
 int floppy_detect_drives() {
-    printf("floppy_detect_drives()\n");
     outportb(0x70, 0x10);
     sleep(100);
     uint8_t drives = inportb(0x71);
-    printf("drives: %d\n", drives);
+    //printf("drives: %d\n", drives);
     
     int ndrives = 0;
     
@@ -363,7 +362,6 @@ int floppy_detect_drives() {
         ndrives++;
     }
 
-    printf("floppy_detect_drives() ok\n");
     return ndrives;
 }
 

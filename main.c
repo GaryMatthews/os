@@ -33,6 +33,26 @@
 #include <ata.h>
 #include <floppy.h>
 
+void floppy_detect() {
+    unsigned char a, b, c;
+    outportb(0x70, 0x10);
+    c = inportb(0x71);
+
+    a = c >> 4;  // Get high nibble
+    b = c & 0xF; // Get low nibble by ANDing out low nibble
+
+    static char *drive_type[6] = {
+        "no floppy drive", "360KB 5.25\" floppy drive", 
+        "1.2MB 5.25\" floppy drive", "720KB 3.5\"",
+        "1.44MB 3.5\"", "2.88MB 3.5\""};
+
+    printf("Floppy drive A is an: ");
+    printf("%s", drive_type[a]);
+    printf("\nFloppy drive B is an: ");
+    printf("%s", drive_type[b]);
+    printf("\n");
+}
+
 static const char *e820names[] = {
     "invalid",
     "available",
@@ -51,8 +71,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     
     uart_init();
     kconsole = &uartdev;
-    
-    disable_int();
     
     if (magic == MULTIBOOT_LOADER_MAGIC) {
         klogf(LOG_INFO, "MultiBoot 1 addr: 0x%x magic: 0x%x size: 0x%x\n",
@@ -99,7 +117,12 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     idt_init(0x8);
     pic_init(0x20, 0x28);
     pit_init();
-    pit_start_counter(100, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
+    pit_start_counter(500, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
+    
+    vfs_init();
+    //ata_init();
+    floppy_detect();
+    //floppy_init(); // requires irqs to be enabled
     
     keyboard_init();
     mouse_init();
@@ -108,10 +131,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     syscall_init();
     install_tss();
 
-    vfs_init();
-    //floppy_init();
-    ata_init();
-    
     rtc_init();
         
     sched_init();

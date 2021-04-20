@@ -1,19 +1,20 @@
 #include <idt.h>
 #include <exception.h>
 #include <lib/string.h> // for memset
-#include <printf.h>
+#include <log.h>
+#include <io.h>
 
 struct idt_ptr idtr;
 struct idt_info idt[MAX_INTERRUPTS];
 
 void idt_init(uint16_t code) {
     int i;
-    
+
     idtr.limit = sizeof(struct idt_info) * MAX_INTERRUPTS - 1;
     idtr.base = (uint32_t) &idt;
     
     memset(&idt, 0, idtr.limit);
-    
+
     for(i = 0; i < MAX_INTERRUPTS; i++)
       install_ir(i, 0x80 | 0x0E, code, &default_ir_handler);
     
@@ -26,16 +27,18 @@ void idt_init(uint16_t code) {
     install_ir(6, 0x80 | 0x0E, code, &invop_handle);
     install_ir(7, 0x80 | 0x0E, code, &ex_device_not_available);
     install_ir(8, 0x80 | 0x0E, code, &ex_double_fault);
+    
     install_ir(10, 0x80 | 0x0E, code, &ex_invalid_tss);
     install_ir(11, 0x80 | 0x0E, code, &ex_segment_not_present);
     install_ir(12, 0x80 | 0x0E, code, &ex_stack_fault);
     install_ir(13, 0x80 | 0x0E, code, &gpf_handle);
     install_ir(14, 0x80 | 0x0E, code, &pf_handle);
+    
     install_ir(16, 0x80 | 0x0E, code, &ex_fpu_error);
     install_ir(17, 0x80 | 0x0E, code, &ex_alignment_check);
     install_ir(18, 0x80 | 0x0E, code, &ex_machine_check);
     install_ir(19, 0x80 | 0x0E, code, &ex_simd_fpu);
-  
+    
     idt_set(&idtr);
 }
 
@@ -48,5 +51,5 @@ void install_ir(uint32_t i, uint16_t flags, uint16_t sel, void *irq) {
 	idt[i].flags = (uint8_t) flags;
 	idt[i].sel = sel;
 
-    //printf("install_ir irq %d\n", i);
+    //klogf(LOG_INFO, "install_ir addr 0x%x irq %d\n", ir_addr, i);
 }

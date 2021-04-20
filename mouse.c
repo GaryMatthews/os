@@ -25,7 +25,7 @@ void mouse_write(uint8_t write) {
 }
 
 uint8_t mouse_read() {
-    mouse_wait(2);
+    mouse_wait(0);
     return inportb(MOUSE_PORT);
 }
 

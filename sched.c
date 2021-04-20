@@ -15,6 +15,8 @@
 #include <commands.h>
 #include <graphics.h>
 
+#include <floppy.h>
+
 process_t *list;
 static int n_proc = 1;
 
@@ -48,17 +50,18 @@ void uart_read_proc() {
 }
 
 void main_proc() {
+    floppy_init(); // requires irqs to be enabled
+    
     mu();
 
     start_kernel_proc("draw_thread", &refresh_screen);
     //start_kernel_proc("uart_read", &uart_read_proc);
 
-    console_exec("help");
-    /*
+    //console_exec("help");
     console_exec("ls");
-    console_exec("cd hda");
+    console_exec("cd fda");
     console_exec("ls");
-    console_exec("start hello");*/
+    //console_exec("start hello");
     
     while(1) halt();
 }
@@ -137,6 +140,7 @@ void sched_init() {
     sched_state(1);
     change_page_directory(proc->pdir);
     set_esp0(main_thread->stack_kernel_limit);
+    //enable_int(); // XXX
     asm volatile("mov %%eax, %%esp" : : "a" (main_thread->esp_kernel));
     asm volatile("pop %gs;          \
                   pop %fs;          \
