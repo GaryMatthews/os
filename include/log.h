@@ -28,7 +28,7 @@
 
 #define klogf(prio, str, ...) \
 do { \
-	printf("%s:%d %s\t", __FILE__, __LINE__, #prio + 4); \
+	printf("%s:%d [%s] ", __FILE__, __LINE__, #prio + 4); \
 	printf(str, ##__VA_ARGS__); \
 } while (0)
 
