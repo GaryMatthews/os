@@ -73,10 +73,10 @@ void multiboot_info_parse(const multiboot_info_t *info) {
 		multiboot_memmap(info->mmap_length,
 		    (multiboot_memmap_t *) MULTIBOOT_PTR(info->mmap_addr));
 
-    //XXX
-    bfb_addr = 0xfd000000;
-    bfb_width = 640;
-    bfb_height = 480;
-    bfb_bpp = 32;
-    bfb_scanline = 2560;
+    /* Boot framebuffer. */
+    bfb_addr   = (uint32_t)MULTIBOOT_PTR(info->framebuffer_addr);
+    bfb_width  = (uint32_t)MULTIBOOT_PTR(info->framebuffer_width);
+    bfb_height = (uint32_t)MULTIBOOT_PTR(info->framebuffer_height);
+    bfb_bpp    = (uint32_t)MULTIBOOT_PTR(info->framebuffer_bpp);
+    bfb_scanline = (uint32_t)MULTIBOOT_PTR(info->framebuffer_pitch);
 }

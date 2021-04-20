@@ -3,14 +3,8 @@
 #include <graphics.h>
 #include <memory.h>
 #include <lib/string.h>
-
-#include <printf.h>
-
-extern uintptr_t bfb_addr;
-extern uint32_t bfb_width;
-extern uint32_t bfb_height;
-extern uint16_t bfb_bpp;
-extern uint32_t bfb_scanline;
+#include <bfb.h>
+#include <log.h>
 
 #define SSFN_NOIMPLEMENTATION
 #define SSFN_CONSOLEBITMAP_TRUECOLOR
@@ -19,6 +13,10 @@ extern uint32_t bfb_scanline;
 extern ssfn_font_t _binary_unifont_sfn_start;
 
 void vbe_init() {
+        
+    klogf(LOG_DEBUG, "vbe: framebuffer at 0x%x %dx%d %d bpp scanline %d.\n",
+          bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);
+
     vbemem.buffer_size = bfb_width * bfb_height * (bfb_bpp / 8);
     vbemem.mem = (uint32_t *) bfb_addr;
     vbemem.xres = bfb_width;
@@ -27,14 +25,13 @@ void vbe_init() {
     vbemem.pitch = bfb_scanline;
 
     /*
-    printf("vbe buffer_size %d, mem 0x%x, %dx%d %d bpp, pitch %d\n",
+    klogf(LOG_DEBUG, "vbe: buffer_size %d, mem 0x%x, %dx%d %d bpp, pitch %d\n",
            vbemem.buffer_size, vbemem.mem, vbemem.xres, vbemem.yres,
            vbemem.bpp, vbemem.pitch);*/
 
     uint32_t addr = (uint32_t) bfb_addr;
     uint32_t addr_buf = addr + vbemem.buffer_size;
     vbemem.buffer = (uint32_t *) addr_buf;
-    //printf("vbe buffer 0x%x\n", vbemem.buffer);
     
     for (int i = 0; i < (int) vbemem.buffer_size / PAGE_SIZE;
          i++, addr += PAGE_SIZE, addr_buf += PAGE_SIZE) {

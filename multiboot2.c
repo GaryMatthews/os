@@ -82,9 +82,6 @@ static void multiboot2_fbinfo(const multiboot2_fbinfo_t *fbinfo)
         
         bfb_blue_pos = fbinfo->rgb.blue_pos;
         bfb_blue_size = fbinfo->rgb.blue_size;
-
-        printf("fb at 0x%x %dx%d %d bpp scanline %d\n",
-          bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);
     }
 }
 
