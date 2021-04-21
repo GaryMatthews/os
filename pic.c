@@ -25,29 +25,38 @@ uint8_t pic_read_data(uint8_t pic) {
 }
 
 void pic_init(uint8_t base0, uint8_t base1) {
+
+    //Get current masks.
+    uint8_t mask1 = pic_read_data(0);
+    uint8_t mask2 = pic_read_data(1);
+    
     uint8_t icw = 0;
 
-    //disable_int();
+    disable_int();
     
     icw = (icw & ~PIC_INIT_MASK) | PIC_INIT_YES;
-    icw = (icw & ~PIC_IC4_MASK) | PIC_IC4_EXPECT;
+    icw = (icw & ~PIC_IC4_MASK)  | PIC_IC4_EXPECT;
 
-    // ICW1
+    // ICW1 Begin initilaization of PICs.
     pic_send_command(icw, 0);
     pic_send_command(icw, 1);
     
-    // ICW2
+    // ICW2 Set new offsets
     pic_send_data(base0, 0);
     pic_send_data(base1, 1);
     
-    // ICW3
+    // ICW3 Enable cascading.
     pic_send_data(0x04, 0);
     pic_send_data(0x02, 1);
     
     icw = (icw & ~PIC_UPM_MASK) | PIC_UPM_86MODE;
     
-    // ICW4
+    // ICW4 Place PICs in 8086 mode.
     pic_send_data(icw, 0);
     pic_send_data(icw, 1);
+
+    // Set original masks.
+    pic_send_data(mask1, 0);
+    pic_send_data(mask2, 1);
 }
 

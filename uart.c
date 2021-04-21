@@ -23,15 +23,17 @@ chardev_t uartdev = { uart_read, uart_write };
 extern void uart_int();
 
 void uart_init(void) {
-    // Turn off the FIFO
-  outportb(UART_PORT+2, 0);
+  // Disable all interrupts.
+  outportb(UART_PORT + 1, 0);
 
   // 9600 baud, 8 data bits, 1 stop bit, parity off.
-  outportb(UART_PORT + 3, 0x80);    // Unlock divisor
+  outportb(UART_PORT + 3, 0x80); // Unlock divisor
   outportb(UART_PORT + 0, 115200/9600);
-  outportb(UART_PORT + 1, 0);
-  outportb(UART_PORT + 3, 0x03);    // Lock divisor, 8 data bits.
+  outportb(UART_PORT + 3, 0x03); // Lock divisor, 8 data bits.
   outportb(UART_PORT + 4, 0x0B); // Interrupt enable and DTR,RTS high
+
+  // Turn off the FIFO.
+  outportb(UART_PORT + 2, 0);
 
   // If status is 0xFF, no serial port.
   if (inportb(UART_PORT + 5) == 0xFF)
@@ -48,7 +50,8 @@ void uart_rx_ir(void) {
 
   install_ir(32 + 4, 0x80 | 0x0E, 0x8, &uart_int);
 
-  outportb(UART_PORT + 1, 0x01);    // Enable receive interrupts.
+  // Enable receive interrupts.
+  outportb(UART_PORT + 1, 0x01);
 }
 
 int uart_getc(void) {

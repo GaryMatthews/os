@@ -10,13 +10,13 @@ void beep(int value) {
     count = PIT_TICK_RATE / value;
 
   outportb(0x43, 0xB6);
-  /* select desired HZ */
+  /* Select desired HZ. */
   outportb(0x42, count & 0xff);
   outportb(0x42, (count >> 8) & 0xff);
-  /* enable counter 2 */
+  /* Enable counter 2. */
   outportb(0x61, inportb(0x61) | 3);
 }
 
 void beep_off(void) {
-    outportb(0x61, inportb(0x61) & 0xFC);
+  outportb(0x61, inportb(0x61) & 0xFC);
 }

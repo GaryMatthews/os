@@ -80,7 +80,7 @@ int start_proc(char *name, char *arguments) {
     
     proc->thread_list->state = PROC_ACTIVE;
     proc->state = PROC_ACTIVE;
-    
+
     sched_add_proc(proc);
     return proc->thread_list->pid;
 }
@@ -211,7 +211,8 @@ void end_proc(int ret) {
     }
     
     if(ret)
-        printf("Process %d returned with error: %d\n", cur->thread_list->pid, ret);
+        printf("Process %d returned with error: %d\n",
+               cur->thread_list->pid, ret);
     
     cur->state = PROC_STOPPED;
     

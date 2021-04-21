@@ -14,8 +14,8 @@ int elf_validate(elf_header_t *eh) {
     if(eh == 0)
         return 0;
 
-    printf("ELF magic: %d %c %c %c\n",
-           eh->magic[0], eh->magic[1], eh->magic[2], eh->magic[3]);
+    //printf("ELF magic: %d %c %c %c\n",
+    //       eh->magic[0], eh->magic[1], eh->magic[2], eh->magic[3]);
     
     if(!((eh->magic[0] == 0x7F) && (eh->magic[1] == 'E') && (eh->magic[2] == 'L') && (eh->magic[3] == 'F'))) {
         printf("Magic number wrong\n");
@@ -80,7 +80,6 @@ int load_elf(char *name, thread_t *thread, page_dir_t *pdir) {
  * Moves the file from the disk to RAM
  */
 int load_elf_file(char *name) {
-    (void)name;
     // Open the executable
     file *f = vfs_file_open(name, "r");
     if((f->type == FS_NULL) || (f->type == FS_DIR)) {
@@ -105,6 +104,7 @@ int load_elf_file(char *name) {
         j++;
     }
     vfs_file_close(f);
+
     return file_size;
 }
 
@@ -112,9 +112,6 @@ int load_elf_file(char *name) {
  * Moves the executable parts to the correct virtual address for execution
  */
 int load_elf_relocate(thread_t *thread, page_dir_t *pdir, elf_header_t *eh) {
-    (void)thread;
-    (void)pdir;
-    (void)eh;
     // Get the program header
     program_header_t *ph = (program_header_t *) ((uint32_t) eh + eh->program_header);
     // Get the entry point of the program

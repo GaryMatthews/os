@@ -6,6 +6,8 @@
 //#include <proc/thread.h>
 #include <printf.h>
 #include <keyboard.h>
+#include <vfs.h>
+#include <heap.h>
 
 #define MAX_SYSCALL 2
 
@@ -14,17 +16,15 @@ typedef uint32_t (*syscall_call_func)(uint32_t, ...);
 static void *syscalls[] = {
     &printf,                    // printf   0
     &gets,                      // scanf    1
-    /*
-    &clear,                     // clear    2
+    NULL,                       // clear    2
     &start_thread,              // fork     3
     &stop_thread,               // exit     4
     &end_process,               // return n 5
     &vfs_file_open_user,        // fopen    6
     &vfs_file_close_user,       // fclose   7
-    &console_pwd_user,          // PWD      8
+    NULL,                       // PWD      8
     &umalloc_sys,               // malloc   9
     &ufree_sys                  // free     10
-    */
 };
 
 void syscall_init() {
@@ -32,6 +32,7 @@ void syscall_init() {
 }
 
 void syscall_disp(struct regs *re) {
+    printf("syscall_disp() eax %d", re->eax);
     if(re->eax >= MAX_SYSCALL) {
         re->eax = -1;
         return;

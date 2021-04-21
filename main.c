@@ -117,7 +117,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     idt_init(0x8);
     pic_init(0x20, 0x28);
     pit_init();
-    pit_start_counter(500, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
+    pit_start_counter(1000, PIT_COUNTER_0, PIT_MODE_SQUAREWAVEGEN);
     
     vfs_init();
     //ata_init();

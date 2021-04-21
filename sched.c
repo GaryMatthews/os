@@ -61,7 +61,7 @@ void main_proc() {
     console_exec("ls");
     console_exec("cd fda");
     console_exec("ls");
-    //console_exec("start hello");
+    console_exec("start hello");
     
     while(1) halt();
 }
@@ -140,7 +140,6 @@ void sched_init() {
     sched_state(1);
     change_page_directory(proc->pdir);
     set_esp0(main_thread->stack_kernel_limit);
-    //enable_int(); // XXX
     asm volatile("mov %%eax, %%esp" : : "a" (main_thread->esp_kernel));
     asm volatile("pop %gs;          \
                   pop %fs;          \

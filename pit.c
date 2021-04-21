@@ -52,7 +52,7 @@ void pit_start_counter(uint32_t frequency, uint8_t counter, uint8_t mode) {
     if(frequency == 0)
         return;
     
-    uint16_t divisor = (uint16_t) (1193180 / (uint16_t) frequency);
+    uint16_t divisor = 1193180 / frequency;
 
     uint8_t ocw = 0;
     ocw = (ocw & ~PIT_MODE_MASK)    | mode;
