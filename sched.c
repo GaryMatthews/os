@@ -61,7 +61,8 @@ void main_proc() {
     console_exec("ls");
     console_exec("cd fda");
     console_exec("ls");
-    console_exec("start hello");
+    //console_exec("start tst");
+    //console_exec("start hello");
     console_exec("ps");
     
     while(1) halt();

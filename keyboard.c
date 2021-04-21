@@ -44,16 +44,17 @@ void keyboard_invalidate_lastkey() {
 static char* qwertzuiop = "qwertzuiop"; // 0x10-0x1c
 static char* asdfghjkl = "asdfghjkl";
 static char* yxcvbnm = "yxcvbnm";
-static char* num = "123456789";
+static char* num = "1234567890";
 uint8_t keyboard_to_ascii(uint8_t key){
+    //printf("0x%x", key);
 	if(key == 0x1C) return '\n';
 	if(key == 0x39) return ' ';
 	if(key == 0xE) return '\b';
 	if(key == POINT_RELEASED) return '.';
 	if(key == SLASH_RELEASED) return '/';
-	if(key == ZERO_PRESSED) return '0';
+	//if(key == ZERO_PRESSED) return '0';
 	if(key == BACKSLASH_PRESSED) return '\\';
-	if(key >= ONE_PRESSED && key <= NINE_PRESSED)
+	if(key >= ONE_PRESSED && key <= ZERO_PRESSED)
 		return num[key - ONE_PRESSED];
 	else if(key >= 0x10 && key <= 0x1C)
 		return qwertzuiop[key - 0x10];

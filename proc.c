@@ -213,6 +213,8 @@ void end_proc(int ret) {
     if(ret)
         printf("Process %d returned with error: %d\n",
                cur->thread_list->pid, ret);
+    else
+        printf("Process %d returned with exit code 0.\n");
     
     cur->state = PROC_STOPPED;
     

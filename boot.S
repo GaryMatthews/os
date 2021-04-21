@@ -118,6 +118,8 @@ _start:
     pushl %ebx
     pushl %eax
 
+    cli
+
 	/* Transfer control to the main kernel. */
 	call kernel_main
 

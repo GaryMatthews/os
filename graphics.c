@@ -81,7 +81,7 @@ void mu_2() {
         //mu_layout_row(&ctx, 3, (int[]) { 100, 100, 100 }, 0);
         mu_layout_begin_column(&ctx);
         if (mu_button(&ctx, "beep on")) {
-            beep(400);
+            beep_note(0, 0);
         }
         if (mu_button(&ctx, "beep off")) {
             beep_off();

@@ -9,7 +9,7 @@
 #include <vfs.h>
 #include <heap.h>
 
-#define MAX_SYSCALL 2
+#define MAX_SYSCALL 11
 
 typedef uint32_t (*syscall_call_func)(uint32_t, ...);
 
@@ -32,7 +32,7 @@ void syscall_init() {
 }
 
 void syscall_disp(struct regs *re) {
-    printf("syscall_disp() eax %d", re->eax);
+    printf("syscall_disp() eax %d ebx %d ecx %d\n", re->eax, re->ebx, re->ecx);
     if(re->eax >= MAX_SYSCALL) {
         re->eax = -1;
         return;

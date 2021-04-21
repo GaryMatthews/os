@@ -103,8 +103,23 @@ void ex_gpf(struct regs_error *re) {
 void ex_page_fault(struct regs_error *re) {
     int virt_addr = get_cr2();
     mm_addr_t phys_addr = (mm_addr_t) get_phys_addr(get_page_directory(), virt_addr);
-    
-    printf("\nPage fault at addr: 0x%x\n", (unsigned)virt_addr);
+
+    int present = !(re->error & 1);   // Page not present
+    int rw = re->error & 0x2;         // Write operation
+    int us = re->error & 0x4;         // User mode?
+    int reserved = re->error & 0x8;   // Overwritten CPU-reserved bits of page entry
+    int id = re->error & 0x10;        // Caused by an instruction fetch?
+
+    printf("\nPage fault occurs while %s address 0x%x\nPage attributes: %s%s%s%s",
+           rw?"writing":"reading",
+           (unsigned)virt_addr,
+           present?"\0":"not-present ",
+           us?"user-mode ":"\0",
+           reserved?"cpu-reserved ":"\0",
+           id?"instruction-fetch":"\0"
+    );
+
+    //printf("\nPage fault at addr: 0x%x\n", (unsigned)virt_addr);
     printf("Phys addr: 0x%x\n", phys_addr);
     // If a Page Fault occurs in kernel mode, we don't really want to continue
     if(re->es == 0x10) {
