@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LO=`losetup -f`
+LO=`sudo losetup -f`
 
 MNT=/mnt/hda
 IMG=hda.img
