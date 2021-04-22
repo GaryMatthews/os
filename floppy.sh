@@ -16,6 +16,7 @@ sudo rm -f $MNT/hello
 sudo cp apps/hello/hello $MNT/hello
 sudo rm -f $MNT/tst
 sudo cp apps/01/01 $MNT/tst
+sudo cp mouse.bmp $MNT/mouse.bmp
 
 sudo umount $MNT
 sudo losetup -d $LO

@@ -13,6 +13,7 @@
 #include <keyboard.h>
 #include <pcspk.h>
 #include <commands.h>
+#include <bmp.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -51,6 +52,25 @@ void paint_mouse() {
             buf++;
         }
     }
+}
+
+void paint_mouse2() {
+    static bmp_image_t* mouse_cursor;
+
+    int mouse_x = get_mouse_info()->x;
+    int mouse_y = get_mouse_info()->y;
+
+    if (!mouse_cursor)
+        mouse_cursor = bmp_image_from_file("/fda/mouse.bmp");
+
+    //printf("paint_mouse: %dkB %dx%dpx (%dbits), data @ +%d\n", mouse_cursor->total_size,
+    //       mouse_cursor->width, mouse_cursor->height, mouse_cursor->bpp, mouse_cursor->offset);
+    
+    draw_data_with_alfa((uint32_t *) mouse_cursor->data,
+                        mouse_cursor->width, mouse_cursor->height,
+                        mouse_x, mouse_y);
+
+    //kfree(mouse_cursor);
 }
 
 mu_Context ctx;
@@ -194,5 +214,7 @@ void paint_desktop() {
         }
     }
     
-    paint_mouse();
+    //paint_mouse();
+
+    paint_mouse2();
 }

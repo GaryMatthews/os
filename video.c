@@ -56,7 +56,7 @@ void refresh_screen() {
 }
 
 void draw_pixel(int x, int y, uint32_t color) {
-    if(x < 0 || x > vbemem.xres || y < 0 || y > vbemem.yres)
+    if(x < 0 || x >= vbemem.xres || y < 0 || y >= vbemem.yres)
         return;
     x = x * (vbemem.bpp / 8);
     y = y * vbemem.pitch;
@@ -135,4 +135,12 @@ void draw_string(uint32_t x, uint32_t y, const char *text) {
         }
         text++;
     }
+}
+
+void draw_data_with_alfa(uint32_t* data, uint32_t width, uint32_t height, uint32_t x, uint32_t y) {
+  uint32_t i, j;
+  for( j = 0; j < height; j++)
+      for( i = 0; i < width; i++ )
+          if( data[(j*width+i)] & 0xFF000000 )
+              draw_pixel(x+i, y+j, (uint32_t){data[(j*width+i)]});
 }

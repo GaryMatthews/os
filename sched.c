@@ -58,12 +58,12 @@ void main_proc() {
     //start_kernel_proc("uart_read", &uart_read_proc);
 
     //console_exec("help");
-    console_exec("ls");
-    console_exec("cd fda");
-    console_exec("ls");
+    //console_exec("ls");
+    //console_exec("cd fda");
+    //console_exec("ls");
     //console_exec("start tst");
     //console_exec("start hello");
-    console_exec("ps");
+    //console_exec("ps");
     
     while(1) halt();
 }
