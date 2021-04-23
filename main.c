@@ -107,7 +107,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
             pmm_init_reg(map.base_address & 0xffffffff, map.size & 0xffffffff);
         }
     }
-    
+        
     pmm_init2();
     
     vmm_init();
@@ -135,7 +135,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     install_tss();
 
     rtc_init();
-        
+
     sched_init();
     
     while(1) halt();

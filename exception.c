@@ -16,37 +16,37 @@ void return_exception() {
 void default_ir_handler() {
     disable_int();
     printf("Unhandled exception\n");
-    panic();
+    panic("");
 }
 
 void ex_divide_by_zero() {
     printf("Division by zero\n");
-    panic();
+    panic("");
 }
 
 void ex_single_step() {
     printf("Single step\n");
-    panic();
+    panic("");
 }
 
 void ex_nmi() {
     printf("NMI trap\n");
-    panic();
+    panic("");
 }
 
 void ex_breakpoint() {
     printf("Breakpoint\n");
-    panic();
+    panic("");
 }
 
 void ex_overflow() {
     printf("Overflow\n");
-    panic();
+    panic("");
 }
 
 void ex_bounds_check() {
     printf("Bounds check\n");
-    panic();
+    panic("");
 }
 
 void ex_invalid_opcode(struct regs *re) {
@@ -54,7 +54,7 @@ void ex_invalid_opcode(struct regs *re) {
     printf("eip: %x cs: %x\neax: %d ebx: %d ecx: %d edx: %d\nesp: %x ebp: %x esi: %d edi: %d\nds: %x es: %x fs: %x gs: %x\n", re->eip, re->cs, re->eax, re->ebx, re->ecx, re->edx, re->esp, re->ebp, re->esi, re->edi, re->ds, re->es, re->fs, re->gs);
     if(re->es == 0x10) {
         // If an Invalid Opcode occurs in kernel mode, we don't really want to continue
-        panic();
+        panic("");
     } else {
         // If we were in user mode, just kill that thread or process
         return_exception();
@@ -63,27 +63,27 @@ void ex_invalid_opcode(struct regs *re) {
 
 void ex_device_not_available() {
     printf("Device not available\n");
-    panic();
+    panic("");
 }
 
 void ex_double_fault() {
     printf("Double fault\n");
-    panic();
+    panic("");
 }
 
 void ex_invalid_tss() {
     printf("Invalid TSS\n");
-    panic();
+    panic("");
 }
 
 void ex_segment_not_present() {
     printf("Segment not present\n");
-    panic();
+    panic("");
 }
 
 void ex_stack_fault() {
     printf("Stack fault\n");
-    panic();
+    panic("");
 }
 
 void ex_gpf(struct regs_error *re) {
@@ -93,7 +93,7 @@ void ex_gpf(struct regs_error *re) {
     
     // If a GPF occurs in kernel mode, we don't really want to continue
     if(re->es == 0x10) {
-        panic();
+        panic("");
     } else {
         // If we were in user mode, just kill that thread or process
         return_exception();
@@ -123,7 +123,7 @@ void ex_page_fault(struct regs_error *re) {
     printf("Phys addr: 0x%x\n", phys_addr);
     // If a Page Fault occurs in kernel mode, we don't really want to continue
     if(re->es == 0x10) {
-        panic();
+        panic("");
     } else {
         // If we were in user mode, just kill that thread or process
         return_exception();
@@ -132,21 +132,21 @@ void ex_page_fault(struct regs_error *re) {
 
 void ex_fpu_error() {
     printf("FPU error\n");
-    panic();
+    panic("");
 }
 
 void ex_alignment_check() {
     printf("Alignment check\n");
-    panic();
+    panic("");
 }
 
 void ex_machine_check() {
     printf("Machine check\n");
-    panic();
+    panic("");
 }
 
 void ex_simd_fpu() {
     printf("SIMD FPU error\n");
-    panic();
+    panic("");
 }
 

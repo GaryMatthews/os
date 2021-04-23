@@ -1,12 +1,15 @@
-/*
- * This function is used through-out the kernel (included in mm and fs)
- * to indicate a major problem.
- */
 #include <io.h>
 #include <printf.h>
 
-void panic() {
-	printf("Kernel panic. Halting the system.\n\r");
+void panic(const char *format, ...) {
+    disable_int();
+
+	printf("\n\nKernel panic:\n");
+    
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    
+    printf("\nHalting the system.\n\n");
     halt();
-	//exit(1);
 }
