@@ -8,7 +8,7 @@ uint8_t sched_on = 0;
 // Set alignment to 32-bit for ticks. See Intel® 64 and IA-32
 // Architectures Software Developer’s Manual, Vol 3A, 8.1.1 Guaranteed
 // Atomic Operations.
-uint8_t pit_ticks __attribute__ ((aligned (4)));
+uint32_t pit_ticks __attribute__ ((aligned (4)));
 
 extern void pit_int();
 

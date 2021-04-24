@@ -42,6 +42,18 @@ void idt_init(uint16_t code) {
     idt_set(&idtr);
 }
 
+#define PIC1 0x20
+#define PIC1_DATA (PIC1 + 1)
+
+#define PIC2 0xA0
+#define PIC2_DATA (PIC2 + 1)
+
+static void irq_clear_mask(size_t i) {
+    uint16_t port = i < 8 ? PIC1_DATA : PIC2_DATA;
+    uint8_t value = inportb(port) & ~(1 << i);
+    outportb(port, value);
+}
+
 void install_ir(uint32_t i, uint16_t flags, uint16_t sel, void *irq) {
     uint32_t ir_addr = (uint32_t) irq;
     
@@ -50,6 +62,8 @@ void install_ir(uint32_t i, uint16_t flags, uint16_t sel, void *irq) {
 	idt[i].reserved = 0;
 	idt[i].flags = (uint8_t) flags;
 	idt[i].sel = sel;
+
+    irq_clear_mask(i);
 
     //klogf(LOG_INFO, "install_ir addr 0x%x irq %d\n", ir_addr, i);
 }

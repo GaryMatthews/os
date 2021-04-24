@@ -14,6 +14,7 @@
 #include <pcspk.h>
 #include <commands.h>
 #include <bmp.h>
+#include <sound.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -97,14 +98,11 @@ void write_log(char *text) {
 void mu_2() {
     mu_begin(&ctx);
     if (mu_begin_window(&ctx, "system",
-                        mu_rect(10, 10, 90, 114))) {
+                        mu_rect(10, 10, 90, 90))) {
         //mu_layout_row(&ctx, 3, (int[]) { 100, 100, 100 }, 0);
         mu_layout_begin_column(&ctx);
-        if (mu_button(&ctx, "beep on")) {
-            beep_note(0, 0);
-        }
-        if (mu_button(&ctx, "beep off")) {
-            beep_off();
+        if (mu_button(&ctx, "sound on")) {
+            sound_toggle();
         }
         if (mu_button(&ctx, "shutdown")) {
             exit_qemu(0);

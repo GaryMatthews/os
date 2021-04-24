@@ -34,6 +34,7 @@
 #include <floppy.h>
 
 #include <fpu.h>
+#include <sound.h>
 
 void floppy_detect() {
     unsigned char a, b, c;
@@ -130,6 +131,7 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     keyboard_init();
     mouse_init();
     uart_rx_ir();
+    sound_init();
     
     syscall_init();
     install_tss();

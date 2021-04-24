@@ -36,11 +36,12 @@ QEMUFLAGS += -vga std -m 128M -no-reboot
 QEMUFLAGS += -device isa-debug-exit,iobase=0xf4,iosize=0x04
 QEMUFLAGS += -enable-kvm
 QEMUFLAGS += -soundhw pcspk -soundhw sb16
-QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
+#QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 QEMUFLAGS += -drive file=floppy.img,format=raw,index=0,if=floppy
 QEMUFLAGS += -drive file=hda.img,format=raw,if=ide,index=0,media=disk
 QEMUFLAGS += -drive file=os.iso,if=ide,index=1,media=cdrom
+QEMUFLAGS += -display sdl
 
 all: lib apps $(KERNEL) qemu-iso
 

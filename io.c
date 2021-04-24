@@ -44,12 +44,13 @@ void disable_int() {
 }
 
 void sleep(int s) {
-    for (int i = 0; i < s * 1000000; i++) { } return;
+    //for (int i = 0; i < s * 1000000; i++) { } return;
     //XXX if (get_tick_count() == 0) return;
     // TODO better solution
     int ticks = get_tick_count() + s;
     int passed = 0;
     while((passed += get_tick_count()) < ticks) {
-        // printf("sleep %d ...\n", passed);
+        halt();
+        //printf("sleep %d ...\n", passed);
     }
 }

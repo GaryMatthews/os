@@ -49,12 +49,21 @@ void uart_read_proc() {
     }
 }
 
+void demo_thread() {
+    beep_note(0, 0);
+    sleep(100);
+    beep_off();
+    while(1) halt();
+}
+
 void main_proc() {
+    //enable_int();
     floppy_init(); // requires irqs to be enabled
     
     mu();
 
     start_kernel_proc("draw_thread", &refresh_screen);
+    //start_kernel_proc("demo_thread", &demo_thread);
     //start_kernel_proc("uart_read", &uart_read_proc);
 
     //console_exec("help");
