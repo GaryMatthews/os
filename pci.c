@@ -1,7 +1,7 @@
 #include <pci.h>
 
 #include <io.h>
-#include <printf.h>
+#include <log.h>
 
 #define PCI_CONFIG  0xCF8
 #define PCI_DATA    0xCFC
@@ -75,9 +75,8 @@ pci_find_class(int8_t class, uint8_t subclass, uint8_t* bus,  uint8_t* dev, uint
 }
 
 void pci_test() {
-    uint32_t vend_dev, b, d, f;
-    printf("Devices over PCI:\n");
-    // print all devices
+    uint32_t vend_dev, b, d, f, devices = 0;
+    klogf(LOG_INFO, "PCI devices:\n");
     for(b = 0; b < 256; b++)
         for(d = 0; d < 32; d++)
             for(f = 0; f < 8; f++) {
@@ -86,12 +85,16 @@ void pci_test() {
                     unsigned short vendor = vend_dev & 0xffff;
                     unsigned short device = (vend_dev >> 16) & 0xffff;
 
-                    printf(" * [%d:%d.%d] %x:%x\n", b, d, f, vendor, device);
+                    klogf(LOG_INFO, " * [%d:%d.%d] %x:%x\n", b, d, f, vendor, device);
                     
                     if (vendor == 0x8086 && device == 0x2415) {
-                        printf("=> found 82801 AA AC'97 sound card.\n");
+                        klogf(LOG_INFO, "=> found 82801 AA AC'97 sound card.\n");
                     }
+
+                    devices++;
                 }
             }
+
+    klogf(LOG_INFO, "PCI scan: found %d devices.\n", devices);
 }
 
