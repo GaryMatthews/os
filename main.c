@@ -49,11 +49,8 @@ void floppy_detect() {
         "1.2MB 5.25\" floppy drive", "720KB 3.5\"",
         "1.44MB 3.5\"", "2.88MB 3.5\""};
 
-    printf("Floppy drive A is an: ");
-    printf("%s", drive_type[a]);
-    printf("\nFloppy drive B is an: ");
-    printf("%s", drive_type[b]);
-    printf("\n");
+    klogf(LOG_INFO, "Floppy drive A is a: %s\n", drive_type[a]);
+    klogf(LOG_INFO, "Floppy drive B is a: %s\n", drive_type[b]);
 }
 
 static const char *e820names[] = {

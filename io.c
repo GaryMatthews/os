@@ -1,6 +1,7 @@
 #include <io.h>
 #include <pit.h> // for get_tick_count()
 #include <printf.h>
+#include <log.h>
 
 uint8_t inportb(uint16_t port) {
     uint8_t ret;
@@ -34,12 +35,12 @@ void exit_qemu(const int status_code) {
 }
 
 void enable_int() {
-    printf("\e[97;44m   INTERRUPTS ARE ENABLED   \e[0m\n");
+    klogf(LOG_INFO, "Interrupts are enabled.\n");
     __asm__ volatile("sti");
 }
 
 void disable_int() {
-    printf("\e[97;44m   INTERRUPTS ARE DISABLED   \e[0m\n");
+    klogf(LOG_INFO, "Interrupts are disabled.\n");
     __asm__ volatile("cli");
 }
 
