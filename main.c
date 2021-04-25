@@ -6,6 +6,7 @@
 #include <multiboot.h>
 #include <multiboot2.h>
 #include <io.h>
+#include <cpu.h>
 
 #include <memory.h>
 
@@ -68,6 +69,8 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     unsigned size = *(unsigned *) addr;
     (void)size;
     (void)e820names;
+
+    uint64_t tsc = rdtsc();
     
     uart_init();
     kconsole = &uartdev;
@@ -134,6 +137,8 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     install_tss();
 
     rtc_init();
+
+    klogf(LOG_INFO, "Initialization took: %li\n", rdtsc() - tsc);
 
     sched_init();
     
