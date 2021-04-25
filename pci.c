@@ -79,11 +79,19 @@ void pci_test() {
     printf("Devices over PCI:\n");
     // print all devices
     for(b = 0; b < 256; b++)
-      for(d = 0; d < 32; d++)
-        for(f = 0; f < 8; f++){
-          vend_dev = pci_read(b,d,f,PCI_VENDOR_DEVICE);
-          if(vend_dev != 0xFFFFFFFF)
-            printf(" * [%d:%d.%d] %x:%x\n", b, d, f, vend_dev & 0xFFFF, vend_dev >> 16);
-        }
+        for(d = 0; d < 32; d++)
+            for(f = 0; f < 8; f++) {
+                vend_dev = pci_read(b,d,f,PCI_VENDOR_DEVICE);
+                if(vend_dev != 0xFFFFFFFF) {
+                    unsigned short vendor = vend_dev & 0xffff;
+                    unsigned short device = (vend_dev >> 16) & 0xffff;
+
+                    printf(" * [%d:%d.%d] %x:%x\n", b, d, f, vendor, device);
+                    
+                    if (vendor == 0x8086 && device == 0x2415) {
+                        printf("=> found 82801 AA AC'97 sound card.\n");
+                    }
+                }
+            }
 }
 
