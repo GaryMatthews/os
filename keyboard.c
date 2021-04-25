@@ -9,15 +9,40 @@ enum KBD_PORTS {
 	KBD_IN = 0x60,
 };
 
-static uint8_t lastkey = 0;
-/*
-static uint8_t caps_lock = 0;
-static uint8_t num_pad = 0;
-static uint8_t scroll_led = 0;
+static const uint8_t keyboard_map[] =
+{
+    0,
+   27, // Escape
+  '1', '2', '3', '4', '5', '6', '7', '8',  '9', '0', '-',  '=', '\b',
+ '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o',  'p', '[', ']',
+ '\n', // Enter
+    0, // Ctrl
+  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`',   0, '\\',
+  'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',
+    0, // Shift
+    0, // Print Scrn
+    0, // Alt
+  ' ', // Spacebar
+};
 
-static uint8_t ctrl = 0;
-static uint8_t shift = 0;
-static uint8_t alt = 0;*/
+static const uint8_t shifted_keyboard_map[] =
+{
+    0,
+   27, // Escape
+  '!', '@', '#', '$', '%', '^', '&', '*',  '(', ')', '_',  '+', '\b',
+ '\t', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',  'P', '{', '}',
+ '\n', // Enter
+    0, // Ctrl
+  'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\"', '~',   0, '|',
+  'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?',
+    0, // Shift
+    0, // Print Scrn
+    0, // Alt
+  ' ', // Spacebar
+};
+
+static uint8_t lastkey = 0;
+static volatile uint8_t shift_pressed = 0;
 
 extern void keyboard_int();
 
@@ -29,7 +54,24 @@ void keyboard_init() {
 void keyboard_read_key() {
     lastkey = 0;
     if(inportb(KBD_CHECK) & 1) {
-        lastkey = keyboard_to_ascii(inportb(KBD_IN));
+        uint8_t keycode = inportb(KBD_IN);
+
+        if (shift_pressed == 0 && (keycode == 42 || keycode == 54)) {
+            shift_pressed = keycode;
+        }
+        // Release shifted keyboard map if shift was relieved
+        if ((shift_pressed == 42 && keycode == 170) ||
+            (shift_pressed == 54 && keycode == 182)) {
+            shift_pressed = 0;
+        }
+        if (keycode > sizeof(keyboard_map)) {
+            return;
+        }
+        if (shift_pressed > 0) {
+            lastkey = shifted_keyboard_map[keycode];
+        } else {
+            lastkey = keyboard_map[keycode];
+        }
 	}
 }
 
@@ -39,39 +81,6 @@ char keyboard_get_lastkey() {
 
 void keyboard_invalidate_lastkey() {
     lastkey = 0;
-}
-
-static char* qwertzuiop = "qwertzuiop"; // 0x10-0x1c
-static char* asdfghjkl = "asdfghjkl";
-static char* yxcvbnm = "yxcvbnm";
-static char* num = "1234567890";
-uint8_t keyboard_to_ascii(uint8_t key){
-    //printf("0x%x", key);
-	if(key == 0x1C) return '\n';
-	if(key == 0x39) return ' ';
-	if(key == 0xE) return '\b';
-	if(key == POINT_RELEASED) return '.';
-	if(key == SLASH_RELEASED) return '/';
-	//if(key == ZERO_PRESSED) return '0';
-	if(key == BACKSLASH_PRESSED) return '\\';
-	if(key >= ONE_PRESSED && key <= ZERO_PRESSED)
-		return num[key - ONE_PRESSED];
-	else if(key >= 0x10 && key <= 0x1C)
-		return qwertzuiop[key - 0x10];
-	else if(key >= 0x1E && key <= 0x26)
-		return asdfghjkl[key - 0x1E];
-	else if(key >= 0x2C && key <= 0x32)
-		return yxcvbnm[key - 0x2C];
-	return 0;
-}
-
-void keyboard_set_leds(int num, int capslock, int scroll) {
-    uint8_t cmd = 0;
-    cmd = (scroll) ? (cmd | 1) : (cmd & 1);
-    cmd = (num) ? (cmd | 2) : (cmd & 2);
-    cmd = (capslock) ? (cmd | 4) : (cmd & 4);
-    outportb(KBD_IN, 0xED);
-    outportb(KBD_IN, cmd);
 }
 
 char getchar() {
