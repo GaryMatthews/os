@@ -4,6 +4,8 @@ LC_COLLATE=C
 LC_NUMERIC=C
 export LC_COLLATE LC_NUMERIC
 
+MAKEFLAGS += --no-print-directory
+
 TARGET ?= i386
 
 CC=i686-elf-gcc
