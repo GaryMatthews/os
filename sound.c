@@ -1,7 +1,6 @@
 #include <sound.h>
 #include <io.h>
 #include <lib/string.h>
-#include <panic.h>
 #include <idt.h>
 #include <log.h>
 
@@ -124,7 +123,7 @@ static void reset() {
 
     return;
 fail:
-    panic("Failed to reset SB16: %d\n", 128);
+    klogf(LOG_ERR, "Failed to reset SB16: %d\n", 128);
 }
 
 static void set_sample_rate(uint16_t hz) {
