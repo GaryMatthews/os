@@ -64,7 +64,7 @@ void identify(drive_t *drive) {
         outportb(drive->sel_reg, 0xA0);
     else
         outportb(drive->sel_reg, 0xB0);
-    outportb(drive->sectors_reg, 0); // koppi
+    //outportb(drive->sectors_reg, 0); // koppi
     outportb(drive->lba_low_reg, 0);
     outportb(drive->lba_mid_reg, 0);
     outportb(drive->lba_high_reg, 0);
