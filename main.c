@@ -37,6 +37,8 @@
 #include <fpu.h>
 #include <sound.h>
 
+#include <pci.h>
+
 void floppy_detect() {
     unsigned char a, b, c;
     outportb(0x70, 0x10);
@@ -137,6 +139,8 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     install_tss();
 
     rtc_init();
+
+    pci_test();
 
     klogf(LOG_INFO, "Initialization took: %li\n", rdtsc() - tsc);
 
