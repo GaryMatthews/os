@@ -14,6 +14,7 @@
 #include <kconsole.h>
 #include <commands.h>
 #include <graphics.h>
+#include <pcspk.h>
 
 #include <floppy.h>
 
