@@ -16,7 +16,8 @@ KERNEL = kernel.elf
 
 ASFLAGS += -m32 -I.
 
-CFLAGS += -O3 -g -DDEBUG
+CFLAGS += -O3 -g
+#CFLAGS += -DDEBUG
 CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
 CFLAGS += -finline-functions -Wno-missing-field-initializers
