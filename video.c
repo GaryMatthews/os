@@ -1,5 +1,6 @@
 #include <video.h>
 
+#include <stdlib.h>
 #include <graphics.h>
 #include <memory.h>
 #include <lib/string.h>
@@ -143,4 +144,27 @@ void draw_data_with_alfa(uint32_t* data, uint32_t width, uint32_t height, uint32
       for( i = 0; i < width; i++ )
           if( data[(j*width+i)] & 0xFF000000 )
               draw_pixel(x+i, y+j, (uint32_t){data[(j*width+i)]});
+}
+
+int abs(int a) { return (a >= 0) ? a : -a; }
+
+void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
+    int deltax = abs(x1 - x0);
+    int deltay = abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int error = deltax - deltay;
+    while (1) {
+        draw_pixel(x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        int e2 = 2 * error;
+        if (e2 > -deltay) {
+            error -= deltay;
+            x0 += sx;
+        }
+        if (e2 < deltax) {
+            error += deltax;
+            y0 += sy;
+        }
+    }
 }
