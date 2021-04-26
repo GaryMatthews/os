@@ -4,12 +4,12 @@
 void panic(const char *format, ...) {
     disable_int();
 
-	printf("\n\nKernel panic:\n");
+	printf("\n\nKernel panic: ");
     
     va_list args;
     va_start(args, format);
     vprintf(format, args);
     
-    printf("\nHalting the system.\n\n");
+    printf("\nHalting the system.\n");
     halt();
 }
