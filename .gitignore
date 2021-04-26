@@ -5,6 +5,7 @@
 *.iso
 iso/
 hda.img
+floppy.img
 apps/01/01
 apps/hello/hello
 apps/example/example
