@@ -15,6 +15,7 @@
 #include <commands.h>
 #include <bmp.h>
 #include <sound.h>
+#include <rand.h>
 
 short mouse_icon[] =  {
         1,0,0,0,0,0,0,0,0,0,0,
@@ -150,6 +151,8 @@ void mu() {
 
 void paint_desktop() {
     draw_rect(0, 0, 640, 480, 0x2D);
+
+    //draw_line(rand() % 639, rand() % 479, rand() % 639, rand() % 479, 0xffffffff);
 
     rtc_read_datetime();
     char* dt = get_current_datetime_str();
