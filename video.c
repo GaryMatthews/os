@@ -98,9 +98,10 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
     }
 }
 
-void draw_string(uint32_t x, uint32_t y, const char *text) {
+void draw_string(uint32_t x, uint32_t y, const char *text, uint32_t color) {
     int startx = x;
     ssfn_y = y; ssfn_x = x;
+    ssfn_fg = color;
 
     while(*text) {
         switch(*text) {

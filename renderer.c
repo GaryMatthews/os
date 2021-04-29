@@ -14,7 +14,7 @@ void r_draw_rect(mu_Rect rect, mu_Color color) {
 
 void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
     (void)color;
-    draw_string(pos.x, pos.y, text);
+    draw_string(pos.x, pos.y, text, RGB(color.r, color.g, color.b));
 }
 
 

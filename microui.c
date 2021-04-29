@@ -57,16 +57,16 @@ static mu_Style default_style = {
   /* title_height | scrollbar_size | thumb_size */
   24, 12, 8,
   {
-    { 230, 230, 230, 255 }, /* MU_COLOR_TEXT */
-    { 25,  25,  25,  255 }, /* MU_COLOR_BORDER */
-    { 50,  50,  50,  255 }, /* MU_COLOR_WINDOWBG */
-    { 25,  25,  25,  255 }, /* MU_COLOR_TITLEBG */
-    { 240, 240, 240, 255 }, /* MU_COLOR_TITLETEXT */
+    {  0,   0,   0,  255 }, /* MU_COLOR_TEXT */
+    { 128,  128,  128,  255 }, /* MU_COLOR_BORDER */
+    { 128,  128,  128,  255 }, /* MU_COLOR_WINDOWBG */
+    { 128,  128,  128,  255 }, /* MU_COLOR_TITLEBG */
+    { 255,   255,   255,   255 }, /* MU_COLOR_TITLETEXT */
     { 0,   0,   0,   0   }, /* MU_COLOR_PANELBG */
-    { 75,  75,  75,  255 }, /* MU_COLOR_BUTTON */
+    { 128, 128, 128,  255 }, /* MU_COLOR_BUTTON */
     { 95,  95,  95,  255 }, /* MU_COLOR_BUTTONHOVER */
-    { 115, 115, 115, 255 }, /* MU_COLOR_BUTTONFOCUS */
-    { 30,  30,  30,  255 }, /* MU_COLOR_BASE */
+    { 128, 128, 128, 255 }, /* MU_COLOR_BUTTONFOCUS */
+    { 128,  128,  128,  255 }, /* MU_COLOR_BASE */
     { 35,  35,  35,  255 }, /* MU_COLOR_BASEHOVER */
     { 40,  40,  40,  255 }, /* MU_COLOR_BASEFOCUS */
     { 43,  43,  43,  255 }, /* MU_COLOR_SCROLLBASE */
@@ -477,10 +477,30 @@ void mu_draw_rect(mu_Context *ctx, mu_Rect rect, mu_Color color) {
 
 
 void mu_draw_box(mu_Context *ctx, mu_Rect rect, mu_Color color) {
+    (void)color;
+    /*XXX
   mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y, rect.w - 2, 1), color);
   mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y + rect.h - 1, rect.w - 2, 1), color);
   mu_draw_rect(ctx, mu_rect(rect.x, rect.y, 1, rect.h), color);
   mu_draw_rect(ctx, mu_rect(rect.x + rect.w - 1, rect.y, 1, rect.h), color);
+    */
+
+    mu_draw_rect(ctx, mu_rect(rect.x, rect.y, rect.w - 1, rect.h - 1), mu_color(255,255,255,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y + 1, rect.w - 4, 1), mu_color(223,233,223,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y + 1, 1, rect.h - 4), mu_color(223,233,223,255));
+
+    mu_draw_rect(ctx, mu_rect(rect.x + 2, rect.y + 2, rect.w - 4, rect.h - 4), mu_color(192,192,192,255));
+
+    mu_draw_rect(ctx, mu_rect(rect.x, rect.y + rect.h, rect.w, 1), mu_color(0,0,0,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + rect.w - 1, rect.y, 1, rect.h), mu_color(0,0,0,255));
+
+    mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y + rect.h - 1, rect.w - 2, 1), mu_color(64,64,64,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + 2, rect.y + rect.h - 2, rect.w - 3, 1), mu_color(128,128,128,255));
+    mu_draw_rect(ctx, mu_rect(rect.x, rect.y, 1, rect.h), mu_color(223,233,233,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + rect.w - 1, rect.y, 1, rect.h), mu_color(64,64,64,255));
+    mu_draw_rect(ctx, mu_rect(rect.x + rect.w - 2, rect.y + 1, 1, rect.h - 1), mu_color(128,128,128,255));
+    //mu_draw_rect(ctx, mu_rect(rect.x + 1, rect.y + 1, rect.w - 3, rect.h - 3), color);
+
 }
 
 

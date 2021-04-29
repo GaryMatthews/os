@@ -6,7 +6,7 @@ void vbe_init();
 void refresh_screen();
 void draw_pixel(int x, int y, uint32_t color);
 void draw_rect(int x, int y, int w, int h, uint32_t color);
-void draw_string(uint32_t x, uint32_t y, const char *text);
+void draw_string(uint32_t x, uint32_t y, const char *text, uint32_t color);
 void draw_data_with_alfa(uint32_t* data, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
 void draw_line(int x0, int y0, int x1, int y1, uint32_t color);
 
