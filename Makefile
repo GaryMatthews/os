@@ -38,7 +38,8 @@ QEMU ?= qemu-system-$(TARGET)
 QEMUFLAGS += -vga std -m 128M -no-reboot
 QEMUFLAGS += -device isa-debug-exit,iobase=0xf4,iosize=0x04
 QEMUFLAGS += -enable-kvm
-QEMUFLAGS += -soundhw pcspk -soundhw sb16
+QEMUFLAGS += -audiodev id=pa,driver=pa -machine pcspk-audiodev=pa
+QEMUFLAGS += -device sb16,audiodev=pa
 #QEMUFLAGS += -d in_asm,cpu,guest_errors,exec
 QEMUFLAGS += -rtc base=localtime,clock=vm
 QEMUFLAGS += -drive file=floppy.img,format=raw,index=0,if=floppy
