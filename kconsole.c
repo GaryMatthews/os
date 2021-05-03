@@ -1,5 +1,6 @@
 #include <kconsole.h>
 #include <graphics.h>
+#include <vga.h>
 
 void _putchar(char c) {
     kconsole->write(kconsole, &c, 1);
@@ -7,4 +8,5 @@ void _putchar(char c) {
     buf[0] = c;
     buf[1] = 0;
     write_log(buf);
+    vga_putchar(c);
 }

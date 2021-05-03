@@ -10,7 +10,9 @@
 
 #include <memory.h>
 
+#include <bfb.h>
 #include <video.h>
+#include <vga.h>
 
 #include <gdt.h>
 #include <idt.h>
@@ -115,8 +117,12 @@ void kernel_main(unsigned long magic, unsigned long addr) {
     
     vmm_init();
     kheap_init();
-    
-    vbe_init();
+
+    if (!bfb_addr) {
+        vga_init();
+    } else {
+        vbe_init();
+    }
     
     gdt_init();
     idt_init(0x8);
@@ -140,9 +146,10 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
     rtc_init();
 
+    pci_init();
     pci_test();
 
-    klogf(LOG_INFO, "Initialization took: %li\n", rdtsc() - tsc);
+    klogf(LOG_INFO, "Initialization took: %lu\n", rdtsc() - tsc);
 
     sched_init();
     
