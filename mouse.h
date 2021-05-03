@@ -38,5 +38,5 @@ int mouse_left_button_up();
 int mouse_right_button_down();
 int mouse_right_button_up();
 
-mouse_info_t mouse_info;
+extern mouse_info_t mouse_info;
 

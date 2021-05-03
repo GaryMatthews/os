@@ -1,5 +1,5 @@
-CC=i686-elf-gcc
-LD=i686-elf-ld
+CC=gcc
+LD=ld
 
 LDFLAGS += -melf_i386 -T hello.lds -Map hello.map
 

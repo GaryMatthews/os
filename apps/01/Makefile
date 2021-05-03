@@ -1,5 +1,5 @@
-CC=i686-elf-gcc
-LD=i686-elf-ld
+CC=gcc
+LD=ld
 
 LDFLAGS += -melf_i386 -T link.lds -Map 01.map
 

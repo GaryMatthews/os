@@ -11,6 +11,8 @@
 #define SSFN_CONSOLEBITMAP_TRUECOLOR
 #include "ssfn.h"
 
+struct vbe_mem vbemem;
+
 extern ssfn_font_t _binary_unifont_sfn_start;
 
 void vbe_init() {

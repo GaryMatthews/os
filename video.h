@@ -20,4 +20,4 @@ struct vbe_mem {
     uint16_t pitch;
 };
 
-struct vbe_mem vbemem;
+extern struct vbe_mem vbemem;

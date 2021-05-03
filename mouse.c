@@ -2,6 +2,8 @@
 #include <io.h>
 #include <idt.h>
 
+mouse_info_t mouse_info;
+
 uint8_t mouse_cycle = 0;
 char mouse_byte[3];
 

@@ -146,7 +146,6 @@ void kernel_main(unsigned long magic, unsigned long addr) {
 
     rtc_init();
 
-    pci_init();
     pci_test();
 
     klogf(LOG_INFO, "Initialization took: %lu\n", rdtsc() - tsc);

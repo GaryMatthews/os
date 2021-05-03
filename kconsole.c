@@ -2,6 +2,8 @@
 #include <graphics.h>
 #include <vga.h>
 
+chardev_t *kconsole;
+
 void _putchar(char c) {
     kconsole->write(kconsole, &c, 1);
     char buf[2];

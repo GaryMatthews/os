@@ -2,6 +2,6 @@
 
 #include <chardev.h>
 
-chardev_t *kconsole;
+extern chardev_t *kconsole;
 
 void _putchar(char c);
