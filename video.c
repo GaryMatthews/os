@@ -14,6 +14,9 @@
 extern ssfn_font_t _binary_unifont_sfn_start;
 
 void vbe_init() {
+    if (!bfb_addr) {
+        return;
+    }
         
     klogf(LOG_DEBUG, "vbe: framebuffer at 0x%x %dx%d %d bpp scanline %d.\n",
           bfb_addr, bfb_width, bfb_height, bfb_bpp, bfb_scanline);
@@ -57,6 +60,10 @@ void refresh_screen() {
 }
 
 void draw_pixel(int x, int y, uint32_t color) {
+    if (!bfb_addr) {
+        return;
+    }
+
     if(x < 0 || x >= vbemem.xres || y < 0 || y >= vbemem.yres)
         return;
     x = x * (vbemem.bpp / 8);
@@ -69,6 +76,10 @@ void draw_pixel(int x, int y, uint32_t color) {
 }
 
 void draw_rect(int x, int y, int w, int h, uint32_t color) {
+    if (!bfb_addr) {
+        return;
+    }
+
     if(x < 0 || x > vbemem.xres || y < 0 || y > vbemem.yres)
         return;
 
@@ -99,6 +110,10 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
 }
 
 void draw_string(uint32_t x, uint32_t y, const char *text, uint32_t color) {
+    if (!bfb_addr) {
+        return;
+    }
+
     int startx = x;
     ssfn_y = y; ssfn_x = x;
     ssfn_fg = color;
@@ -140,16 +155,24 @@ void draw_string(uint32_t x, uint32_t y, const char *text, uint32_t color) {
 }
 
 void draw_data_with_alfa(uint32_t* data, uint32_t width, uint32_t height, uint32_t x, uint32_t y) {
-  uint32_t i, j;
-  for( j = 0; j < height; j++)
-      for( i = 0; i < width; i++ )
-          if( data[(j*width+i)] & 0xFF000000 )
-              draw_pixel(x+i, y+j, (uint32_t){data[(j*width+i)]});
+    if (!bfb_addr) {
+        return;
+    }
+
+    uint32_t i, j;
+    for( j = 0; j < height; j++)
+        for( i = 0; i < width; i++ )
+            if( data[(j*width+i)] & 0xFF000000 )
+                draw_pixel(x+i, y+j, (uint32_t){data[(j*width+i)]});
 }
 
 int abs(int a) { return (a >= 0) ? a : -a; }
 
 void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
+    if (!bfb_addr) {
+        return;
+    }
+
     int deltax = abs(x1 - x0);
     int deltay = abs(y1 - y0);
     int sx = (x0 < x1) ? 1 : -1;
