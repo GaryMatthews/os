@@ -1,7 +1,5 @@
 #include <floppy.h>
-//#include <hal/hal.h>
 #include <device.h>
-//#include <ivers/video.h>
 #include <lib/string.h>
 #include <fat.h>
 #include <idt.h>

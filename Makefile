@@ -23,8 +23,9 @@ CFLAGS += -DDEBUG
 CFLAGS += -Wall -Wextra -Wunused #-pedantic
 CFLAGS += -m32 -std=gnu11 -pipe -fno-stack-protector
 CFLAGS += -finline-functions -Wno-missing-field-initializers
-CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin -nostdlib
+CFLAGS += -fno-omit-frame-pointer -ffreestanding -fno-builtin
 CFLAGS += -nodefaultlibs
+#CFLAGS += -nostdlib -nostdinc -fno-builtin
 CFLAGS += -I. -Iinclude
 #CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function
 #CFLAGS += -Wno-type-limits -Wno-array-bounds -Wno-discarded-qualifiers

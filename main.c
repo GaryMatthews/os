@@ -31,7 +31,6 @@
 #include <pcspk.h>
 
 #include <vfs.h>
-#include <fat.h>
 
 #include <ata.h>
 #include <floppy.h>
