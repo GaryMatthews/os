@@ -213,9 +213,10 @@
 /// ## API
 ///
 */
+#ifndef NK_SINGLE_FILE
+  #define NK_SINGLE_FILE
+#endif
 
-#ifndef NK_SINGLE_HEADER
-#define NK_SINGLE_HEADER
 #ifndef NK_NUKLEAR_H_
 #define NK_NUKLEAR_H_
 
@@ -5679,9 +5680,9 @@ template<typename T> struct nk_alignof{struct Big {T x; char c;}; enum {
 #endif
 
 #endif /* NK_NUKLEAR_H_ */
-#endif /* NK_SINGLE_HEADER */
 
 #ifdef NK_IMPLEMENTATION
+
 #ifndef NK_INTERNAL_H
 #define NK_INTERNAL_H
 
@@ -6020,6 +6021,7 @@ NK_LIB void nk_property(struct nk_context *ctx, const char *name, struct nk_prop
 
 
 
+
 /* ===============================================================
  *
  *                              MATH
@@ -6085,8 +6087,8 @@ nk_sin(float x)
 NK_LIB float
 nk_cos(float x)
 {
-    // New implementation. Also generated using lolremez.
-    // Old version significantly deviated from expected results.
+    /* New implementation. Also generated using lolremez. */
+    /* Old version significantly deviated from expected results. */
     NK_STORAGE const float a0 = 9.9995999154986614e-1f;
     NK_STORAGE const float a1 = 1.2548995793001028e-3f;
     NK_STORAGE const float a2 = -5.0648546280678015e-1f;
@@ -6314,6 +6316,7 @@ nk_triangle_from_direction(struct nk_vec2 *result, struct nk_rect r,
         result[2] = nk_vec2(r.x + r.w, r.y + r.h);
     }
 }
+
 
 
 
@@ -7437,6 +7440,7 @@ nk_text_calculate_text_bounds(const struct nk_user_font *font,
 
 
 
+
 /* ==============================================================
  *
  *                          COLOR
@@ -7851,6 +7855,7 @@ nk_color_hsv_bv(nk_byte *out, struct nk_color in)
 
 
 
+
 /* ===============================================================
  *
  *                              UTF-8
@@ -7991,6 +7996,7 @@ nk_utf_at(const char *buffer, int length, int index,
     if (i != index) return 0;
     return buffer + src_len;
 }
+
 
 
 
@@ -8268,6 +8274,7 @@ nk_buffer_total(struct nk_buffer *buffer)
     if (!buffer) return 0;
     return buffer->memory.size;
 }
+
 
 
 
@@ -8719,6 +8726,7 @@ nk_str_free(struct nk_str *str)
     nk_buffer_free(&str->buffer);
     str->len = 0;
 }
+
 
 
 
@@ -9200,6 +9208,7 @@ nk_draw_text(struct nk_command_buffer *b, struct nk_rect r,
     NK_MEMCPY(cmd->string, string, (nk_size)length);
     cmd->string[length] = '\0';
 }
+
 
 
 
@@ -10538,6 +10547,7 @@ nk__draw_next(const struct nk_draw_command *cmd,
     return nk__draw_list_next(cmd, buffer, &ctx->draw_list);
 }
 #endif
+
 
 
 
@@ -13925,6 +13935,7 @@ nk_font_atlas_clear(struct nk_font_atlas *atlas)
 
 
 
+
 /* ===============================================================
  *
  *                          INPUT
@@ -14178,6 +14189,7 @@ nk_input_is_key_down(const struct nk_input *i, enum nk_keys key)
     if (k->down) return nk_true;
     return nk_false;
 }
+
 
 
 
@@ -14947,6 +14959,7 @@ nk_style_load_all_cursors(struct nk_context *ctx, struct nk_cursor *cursors)
 
 
 
+
 /* ==============================================================
  *
  *                          CONTEXT
@@ -15291,6 +15304,7 @@ nk__next(struct nk_context *ctx, const struct nk_command *cmd)
 
 
 
+
 /* ===============================================================
  *
  *                              POOL
@@ -15354,6 +15368,7 @@ nk_pool_alloc(struct nk_pool *pool)
 
 
 
+
 /* ===============================================================
  *
  *                          PAGE ELEMENT
@@ -15412,6 +15427,7 @@ nk_free_page_element(struct nk_context *ctx, struct nk_page_element *elem)
         ctx->memory.size -= sizeof(struct nk_page_element);
     else nk_link_page_element_into_freelist(ctx, elem);}
 }
+
 
 
 
@@ -15502,6 +15518,7 @@ nk_find_value(struct nk_window *win, nk_hash name)
     }
     return 0;
 }
+
 
 
 
@@ -16106,6 +16123,7 @@ nk_panel_end(struct nk_context *ctx)
     /* helper to make sure you have a 'nk_tree_push' for every 'nk_tree_pop' */
     NK_ASSERT(!layout->row.tree_depth);
 }
+
 
 
 
@@ -16776,6 +16794,7 @@ nk_window_set_focus(struct nk_context *ctx, const char *name)
 
 
 
+
 /* ===============================================================
  *
  *                              POPUP
@@ -17039,6 +17058,7 @@ nk_popup_set_scroll(struct nk_context *ctx, nk_uint offset_x, nk_uint offset_y)
 
 
 
+
 /* ==============================================================
  *
  *                          CONTEXTUAL
@@ -17256,6 +17276,7 @@ nk_contextual_end(struct nk_context *ctx)
     nk_popup_end(ctx);
     return;
 }
+
 
 
 
@@ -17551,6 +17572,7 @@ nk_menu_end(struct nk_context *ctx)
 {
     nk_contextual_end(ctx);
 }
+
 
 
 
@@ -18320,6 +18342,7 @@ nk_layout_peek(struct nk_rect *bounds, struct nk_context *ctx)
 
 
 
+
 /* ===============================================================
  *
  *                              TREE
@@ -18661,6 +18684,7 @@ nk_tree_element_pop(struct nk_context *ctx)
 
 
 
+
 /* ===============================================================
  *
  *                          GROUP
@@ -18897,6 +18921,7 @@ nk_group_set_scroll(struct nk_context *ctx, const char *id, nk_uint x_offset, nk
 
 
 
+
 /* ===============================================================
  *
  *                          LIST VIEW
@@ -18975,6 +19000,7 @@ nk_list_view_end(struct nk_list_view *view)
     *view->scroll_pointer = *view->scroll_pointer + view->scroll_value;
     nk_group_end(view->ctx);
 }
+
 
 
 
@@ -19221,6 +19247,7 @@ nk_spacing(struct nk_context *ctx, int cols)
             nk_panel_alloc_space(&none, ctx);
     } layout->row.index = index;
 }
+
 
 
 
@@ -19517,6 +19544,7 @@ nk_label_colored_wrap(struct nk_context *ctx, const char *str, struct nk_color c
 
 
 
+
 /* ===============================================================
  *
  *                          IMAGE
@@ -19653,6 +19681,7 @@ nk_image_color(struct nk_context *ctx, struct nk_image img, struct nk_color col)
     if (!nk_widget(&bounds, ctx)) return;
     nk_draw_image(&win->buffer, bounds, &img, col);
 }
+
 
 
 
@@ -20323,6 +20352,7 @@ NK_API int nk_button_image_label_styled(struct nk_context *ctx,
 
 
 
+
 /* ===============================================================
  *
  *                              TOGGLE
@@ -20639,6 +20669,7 @@ nk_radio_label(struct nk_context *ctx, const char *label, int *active)
 {
     return nk_radio_text(ctx, label, nk_strlen(label), active);
 }
+
 
 
 
@@ -20965,6 +20996,7 @@ nk_select_symbol_label(struct nk_context *ctx, enum nk_symbol_type sym,
 
 
 
+
 /* ===============================================================
  *
  *                              SLIDER
@@ -21219,6 +21251,7 @@ nk_slider_int(struct nk_context *ctx, int min, int *val, int max, int step)
 
 
 
+
 /* ===============================================================
  *
  *                          PROGRESS
@@ -21357,6 +21390,7 @@ nk_prog(struct nk_context *ctx, nk_size cur, nk_size max, int modifyable)
     nk_progress(ctx, &cur, max, modifyable);
     return cur;
 }
+
 
 
 
@@ -21653,6 +21687,7 @@ nk_do_scrollbarh(nk_flags *state,
     if (style->draw_end) style->draw_end(out, style->userdata);
     return scroll_offset;
 }
+
 
 
 
@@ -22686,6 +22721,7 @@ nk_textedit_free(struct nk_text_edit *state)
 
 
 
+
 /* ===============================================================
  *
  *                          FILTER
@@ -23492,6 +23528,7 @@ nk_edit_string_zero_terminated(struct nk_context *ctx, nk_flags flags,
 
 
 
+
 /* ===============================================================
  *
  *                              PROPERTY
@@ -23987,6 +24024,7 @@ nk_propertyd(struct nk_context *ctx, const char *name, double min,
 
 
 
+
 /* ==============================================================
  *
  *                          CHART
@@ -24305,6 +24343,7 @@ nk_plot_function(struct nk_context *ctx, enum nk_chart_type type, void *userdata
 
 
 
+
 /* ==============================================================
  *
  *                          COLOR PICKER
@@ -24502,6 +24541,7 @@ nk_color_picker(struct nk_context *ctx, struct nk_colorf color,
     nk_color_pick(ctx, &color, fmt);
     return color;
 }
+
 
 
 
@@ -25269,6 +25309,7 @@ nk_combobox_callback(struct nk_context *ctx,
 
 
 
+
 /* ===============================================================
  *
  *                              TOOLTIP
@@ -25375,6 +25416,7 @@ nk_tooltipfv(struct nk_context *ctx, const char *fmt, va_list args)
     nk_tooltip(ctx, buf);
 }
 #endif
+
 
 
 #endif /* NK_IMPLEMENTATION */
